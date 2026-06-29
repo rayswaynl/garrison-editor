@@ -1,0 +1,1903 @@
+{
+  "CDF": {
+    "side": "WEST",
+    "templates": {
+      "Squad": [
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_Strela",
+          "CDF_Soldier_Medic",
+          "CDF_Soldier_GL",
+          "CDF_Soldier",
+          "CDF_Soldier",
+          "CDF_Soldier_Sniper",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_AR",
+          "CDF_Soldier_RPG"
+        ],
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_Strela",
+          "CDF_Soldier_Strela",
+          "CDF_Soldier_Medic",
+          "CDF_Soldier_GL",
+          "CDF_Soldier_Sniper",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_MG",
+          "CDF_Soldier_Engineer",
+          "CDF_Soldier_AR",
+          "CDF_Soldier_RPG"
+        ]
+      ],
+      "Team": [
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_Medic",
+          "CDF_Soldier",
+          "CDF_Soldier_AR",
+          "CDF_Soldier"
+        ],
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_AR",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_Medic",
+          "CDF_Soldier"
+        ]
+      ],
+      "Team_MG": [
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_AR",
+          "CDF_Soldier_MG",
+          "CDF_Soldier_Medic",
+          "CDF_Soldier"
+        ]
+      ],
+      "Team_AT": [
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "CDF_Soldier_TL",
+          "CDF_Soldier_AR",
+          "CDF_Soldier",
+          "CDF_Soldier_Strela",
+          "CDF_Soldier_Strela"
+        ]
+      ],
+      "Team_Sniper": [
+        [
+          "CDF_Soldier_Sniper",
+          "CDF_Soldier_Spotter",
+          "CDF_Soldier_Marksman",
+          "CDF_Soldier_Marksman"
+        ]
+      ],
+      "Motorized": [
+        [
+          "CDF_Soldier_TL",
+          "UAZ_AGS30_CDF",
+          "UAZ_MG_CDF",
+          "CDF_Soldier",
+          "CDF_Soldier",
+          "CDF_Soldier_AR"
+        ],
+        [
+          "UAZ_AGS30_CDF",
+          "UAZ_MG_CDF",
+          "UAZ_MG_CDF"
+        ],
+        [
+          "Ural_ZU23_CDF",
+          "CDF_Soldier"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "CDF_Soldier_Strela",
+          "Ural_ZU23_CDF",
+          "Ural_ZU23_CDF",
+          "CDF_Soldier_Strela"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "ZSU_CDF",
+          "ZSU_CDF"
+        ]
+      ],
+      "Mechanized": [
+        [
+          "CDF_Soldier_TL",
+          "BRDM2_CDF",
+          "BRDM2_CDF",
+          "CDF_Soldier_MG",
+          "CDF_Soldier_AR",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier"
+        ],
+        [
+          "BRDM2_CDF",
+          "BRDM2_ATGM_CDF"
+        ]
+      ],
+      "Mechanized_Heavy": [
+        [
+          "CDF_Soldier_TL",
+          "BMP2_CDF",
+          "CDF_Soldier",
+          "CDF_Soldier_AR",
+          "CDF_Soldier_RPG",
+          "CDF_Soldier_Medic"
+        ],
+        [
+          "BMP2_CDF",
+          "BMP2_CDF"
+        ]
+      ],
+      "Armored_Light": [
+        [
+          "T72_CDF",
+          "T72_CDF"
+        ]
+      ],
+      "Armored_Heavy": [
+        [
+          "BMP2_CDF",
+          "BMP2_CDF",
+          "T72_CDF",
+          "T72_CDF"
+        ],
+        [
+          "T72_CDF",
+          "T72_CDF",
+          "T72_CDF"
+        ]
+      ]
+    }
+  },
+  "GUE": {
+    "side": "GUER",
+    "templates": {
+      "Squad": [
+        [
+          "GUE_Soldier_CO",
+          "GUE_Soldier_GL",
+          "GUE_Soldier_AR",
+          "GUE_Soldier_1"
+        ]
+      ],
+      "Squad_Advanced": [
+        [
+          "Soldier_TL_PMC",
+          "Soldier_M4A3_PMC",
+          "Soldier_AA_PMC",
+          "Soldier_Bodyguard_M4_PMC",
+          "Soldier_GL_M16A2_PMC"
+        ]
+      ],
+      "Team": [
+        [
+          "GUE_Worker2",
+          "GUE_Woodlander3",
+          "GUE_Villager3",
+          "GUE_Woodlander2",
+          "GUE_Woodlander1",
+          "GUE_Villager4"
+        ]
+      ],
+      "Team_AT": [
+        [
+          "GUE_Soldier_AT",
+          "GUE_Soldier_AT"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "GUE_Soldier_AA",
+          "GUE_Soldier_AA"
+        ]
+      ],
+      "Team_Sniper": [
+        [
+          "GUE_Soldier_Sniper"
+        ]
+      ],
+      "Motorized": [
+        [
+          "Offroad_DSHKM_Gue",
+          "Offroad_SPG9_Gue",
+          "ArmoredSUV_PMC"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "Ural_ZU23_Gue"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "Ural_ZU23_Gue",
+          "Ural_ZU23_Gue"
+        ]
+      ],
+      "Mechanized": [
+        [
+          "BRDM2_GUE",
+          "M113_UN_EP1"
+        ]
+      ],
+      "Mechanized_Heavy": [
+        [
+          "BRDM2_GUE",
+          "M113_UN_EP1"
+        ]
+      ],
+      "Armored_Light": [
+        [
+          "BMP2_GUE",
+          "BMP2_GUE"
+        ]
+      ],
+      "Armored_Heavy": [
+        [
+          "T72_GUE",
+          "T72_GUE"
+        ]
+      ]
+    }
+  },
+  "INS": {
+    "side": "EAST",
+    "templates": {
+      "Squad": [
+        [
+          "Ins_Soldier_CO",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_Medic",
+          "Ins_Soldier_AA",
+          "Ins_Soldier_1",
+          "Ins_Soldier_1",
+          "Ins_Soldier_GL",
+          "Ins_Soldier_1"
+        ],
+        [
+          "Ins_Soldier_CO",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_AA",
+          "Ins_Soldier_Sniper",
+          "Ins_Soldier_AR",
+          "Ins_Soldier_GL",
+          "Ins_Soldier_Medic"
+        ]
+      ],
+      "Team": [
+        [
+          "Ins_Soldier_CO",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_Medic",
+          "Ins_Soldier_2"
+        ],
+        [
+          "Ins_Soldier_CO",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_Sniper",
+          "Ins_Soldier_AR",
+          "Ins_Soldier_GL"
+        ]
+      ],
+      "Team_MG": [
+        [
+          "Ins_Soldier_CO",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_AR"
+        ]
+      ],
+      "Team_AT": [
+        [
+          "Ins_Soldier_CO",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_AT"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "Ins_Soldier_AA",
+          "Ins_Soldier_AA",
+          "Ins_Soldier_AA",
+          "Ins_Soldier_1"
+        ]
+      ],
+      "Team_Sniper": [
+        [
+          "Ins_Soldier_Sniper",
+          "Ins_Soldier_Sniper",
+          "Ins_Soldier_Sniper"
+        ]
+      ],
+      "Motorized": [
+        [
+          "Ins_Soldier_CO",
+          "UAZ_MG_INS",
+          "UAZ_AGS30_INS",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_GL",
+          "Ins_Soldier_AR",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_2",
+          "Ins_Soldier_1"
+        ],
+        [
+          "UAZ_AGS30_INS",
+          "UAZ_AGS30_INS",
+          "UAZ_AGS30_INS"
+        ],
+        [
+          "Offroad_DSHKM_INS",
+          "Pickup_PK_INS"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "Ins_Soldier_AA",
+          "Ural_ZU23_INS",
+          "Ural_ZU23_INS",
+          "Ins_Soldier_AA"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "ZSU_INS",
+          "ZSU_INS"
+        ]
+      ],
+      "Mechanized": [
+        [
+          "Ins_Soldier_CO",
+          "BRDM2_INS",
+          "BRDM2_INS",
+          "Ins_Soldier_MG",
+          "Ins_Soldier_AR",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_1"
+        ],
+        [
+          "BRDM2_INS",
+          "BRDM2_ATGM_INS"
+        ]
+      ],
+      "Mechanized_Heavy": [
+        [
+          "Ins_Soldier_CO",
+          "BMP2_INS",
+          "Ins_Soldier_1",
+          "Ins_Soldier_AR",
+          "Ins_Soldier_AT",
+          "Ins_Soldier_Medic"
+        ],
+        [
+          "BMP2_INS",
+          "BMP2_INS"
+        ]
+      ],
+      "Armored_Light": [
+        [
+          "T72_INS",
+          "T72_INS"
+        ]
+      ],
+      "Armored_Heavy": [
+        [
+          "BMP2_INS",
+          "BMP2_INS",
+          "T72_INS",
+          "T72_INS"
+        ],
+        [
+          "T72_INS",
+          "T72_INS",
+          "T72_INS"
+        ]
+      ]
+    }
+  },
+  "PMC": {
+    "side": "GUER",
+    "templates": {
+      "Squad": [
+        [
+          "Soldier_TL_PMC",
+          "Soldier_M4A3_PMC",
+          "Soldier_MG_PMC",
+          "Soldier_Engineer_PMC",
+          "Soldier_PMC",
+          "Soldier_Medic_PMC",
+          "Soldier_AT_PMC"
+        ],
+        [
+          "Soldier_TL_PMC",
+          "Soldier_M4A3_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_Bodyguard_AA12_PMC",
+          "Soldier_GL_M16A2_PMC",
+          "Soldier_Sniper_PMC"
+        ]
+      ],
+      "Team": [
+        [
+          "Soldier_TL_PMC",
+          "Soldier_MG_PKM_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_Bodyguard_M4_PMC"
+        ],
+        [
+          "Soldier_TL_PMC",
+          "Soldier_Bodyguard_AA12_PMC",
+          "Soldier_Bodyguard_M4_PMC",
+          "Soldier_GL_PMC",
+          "Soldier_PMC"
+        ],
+        [
+          "Soldier_TL_PMC",
+          "Soldier_MG_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_PMC"
+        ],
+        [
+          "Soldier_TL_PMC",
+          "Soldier_MG_PKM_PMC",
+          "Soldier_Bodyguard_M4_PMC",
+          "Soldier_AT_PMC"
+        ]
+      ],
+      "Team_AT": [
+        [
+          "Soldier_AT_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_MG_PKM_PMC"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "Soldier_TL_PMC",
+          "Soldier_AA_PMC",
+          "Soldier_MG_PKM_PMC"
+        ]
+      ],
+      "Team_Sniper": [
+        [
+          "Soldier_Sniper_PMC",
+          "Soldier_Sniper_KSVK_PMC",
+          "Soldier_Sniper_PMC"
+        ]
+      ],
+      "Motorized": [
+        [
+          "Soldier_TL_PMC",
+          "ArmoredSUV_PMC",
+          "ArmoredSUV_PMC",
+          "Soldier_MG_PMC",
+          "Soldier_Sniper_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_Medic_PMC"
+        ],
+        [
+          "SUV_PMC",
+          "SUV_PMC",
+          "Offroad_DSHKM_TK_GUE_EP1"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "Soldier_TL_PMC",
+          "Ural_ZU23_TK_GUE_EP1",
+          "Soldier_AA_PMC",
+          "Soldier_AA_PMC",
+          "Soldier_PMC"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "Ural_ZU23_TK_GUE_EP1",
+          "Ural_ZU23_TK_GUE_EP1",
+          "Ural_ZU23_TK_GUE_EP1",
+          "Soldier_AA_PMC"
+        ]
+      ],
+      "Mechanized": [
+        [
+          "Soldier_TL_PMC",
+          "BTR40_MG_TK_GUE_EP1",
+          "BRDM2_TK_GUE_EP1",
+          "Soldier_Bodyguard_AA12_PMC",
+          "Soldier_PMC"
+        ],
+        [
+          "BRDM2_TK_GUE_EP1",
+          "BRDM2_TK_GUE_EP1"
+        ],
+        [
+          "BTR40_MG_TK_GUE_EP1",
+          "Soldier_GL_PMC",
+          "Soldier_MG_PMC",
+          "Soldier_PMC"
+        ]
+      ],
+      "Mechanized_Heavy": [
+        [
+          "Soldier_TL_PMC",
+          "T34_TK_GUE_EP1",
+          "BTR40_MG_TK_GUE_EP1",
+          "Soldier_MG_PMC",
+          "Soldier_PMC",
+          "Soldier_AT_PMC",
+          "Soldier_Sniper_PMC"
+        ],
+        [
+          "T34_TK_GUE_EP1",
+          "BTR40_MG_TK_GUE_EP1"
+        ]
+      ],
+      "Armored_Light": [
+        [
+          "T34_TK_GUE_EP1",
+          "T34_TK_GUE_EP1"
+        ]
+      ],
+      "Armored_Heavy": [
+        [
+          "T55_TK_GUE_EP1",
+          "T55_TK_GUE_EP1"
+        ],
+        [
+          "T55_TK_GUE_EP1",
+          "T55_TK_GUE_EP1",
+          "T34_TK_GUE_EP1"
+        ]
+      ]
+    }
+  },
+  "RU": {
+    "side": "EAST",
+    "templates": {
+      "Squad_0": [
+        [
+          "RU_Soldier_GL",
+          "RU_Soldier_MG",
+          "RU_Soldier_LAT",
+          "RU_Soldier_GL",
+          "RU_Soldier_LAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Squad_1": [
+        [
+          "RU_Soldier_TL",
+          "RU_Soldier_AR",
+          "RU_Soldier_TL",
+          "RU_Soldier_TL",
+          "RU_Soldier_LAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Squad_2": [
+        [
+          "RU_Soldier_SL",
+          "RU_Soldier_AR",
+          "RU_Soldier_SL",
+          "RU_Soldier_AT",
+          "RU_Soldier_AR",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Squad_3": [
+        [
+          "RU_Soldier_SL",
+          "RU_Soldier_AR",
+          "RU_Soldier_SL",
+          "RU_Soldier_AT",
+          "RU_Soldier_AR",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Squad_Advanced": [
+        [
+          "MVD_Soldier_TL",
+          "MVD_Soldier_Marksman",
+          "MVD_Soldier_MG",
+          "MVD_Soldier_Marksman",
+          "MVD_Soldier_MG"
+        ]
+      ],
+      "Team_0": [
+        [
+          "RU_Soldier_TL",
+          "RU_Soldier_MG",
+          "RU_Soldier",
+          "RU_Soldier_GL",
+          "RU_Soldier_LAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_1": [
+        [
+          "RU_Soldier_TL",
+          "RU_Soldier_AR",
+          "RU_Soldier",
+          "RU_Soldier_GL",
+          "RU_Soldier_LAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_2": [
+        [
+          "RU_Soldier_SL",
+          "RU_Soldier_AR",
+          "RU_Soldier_GL",
+          "RU_Soldier",
+          "RU_Soldier_Medic",
+          "RU_Soldier_Sniper"
+        ]
+      ],
+      "Team_3": [
+        [
+          "RU_Soldier_SL",
+          "RU_Soldier_AR",
+          "RU_Soldier",
+          "RU_Soldier_AT",
+          "RU_Soldier_HAT",
+          "RU_Soldier_GL",
+          "RU_Soldier_SniperH"
+        ]
+      ],
+      "Team_MG_0": [
+        [
+          "RU_Soldier_MG",
+          "RU_Soldier_MG",
+          "RU_Soldier_MG",
+          "RU_Soldier_MG",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_MG_1": [
+        [
+          "RU_Soldier_AR",
+          "RU_Soldier_AR",
+          "RU_Soldier_MG",
+          "RU_Soldier_MG",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_MG_2": [
+        [
+          "RU_Soldier_AR",
+          "RU_Soldier_AR",
+          "RU_Soldier_AR",
+          "RU_Soldier_AR",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_MG_3": [
+        [
+          "MVD_Soldier_MG",
+          "MVD_Soldier_MG",
+          "MVD_Soldier_MG",
+          "MVD_Soldier_MG",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_0": [
+        [
+          "RU_Soldier_LAT",
+          "RU_Soldier_LAT",
+          "RU_Soldier_LAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_1": [
+        [
+          "RU_Soldier_LAT",
+          "RU_Soldier_LAT",
+          "RU_Soldier_LAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_2": [
+        [
+          "RU_Soldier_AT",
+          "RU_Soldier_AT",
+          "RU_Soldier_AT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_3": [
+        [
+          "RU_Soldier_AT",
+          "RU_Soldier_HAT",
+          "RU_Soldier_HAT",
+          "RU_Soldier_Medic"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "RU_Soldier_AA",
+          "RU_Soldier_AA",
+          "RU_Soldier_AA"
+        ]
+      ],
+      "Team_Sniper_0": [
+        [
+          "RU_Soldier_Sniper",
+          "RU_Soldier_Sniper"
+        ]
+      ],
+      "Team_Sniper_1": [
+        [
+          "RU_Soldier_Sniper",
+          "RU_Soldier_Sniper",
+          "RU_Soldier_Sniper"
+        ]
+      ],
+      "Team_Sniper_2": [
+        [
+          "RU_Soldier_Sniper",
+          "RU_Soldier_Sniper",
+          "RU_Soldier_Sniper",
+          "RU_Soldier_Sniper"
+        ]
+      ],
+      "Team_Sniper_3": [
+        [
+          "RU_Soldier_SniperH",
+          "RU_Soldier_SniperH",
+          "RU_Soldier_SniperH"
+        ]
+      ],
+      "Motorized_0": [
+        [
+          "UAZ_MG_INS",
+          "UAZ_AGS30_RU"
+        ]
+      ],
+      "Motorized_1": [
+        [
+          "UAZ_MG_INS",
+          "UAZ_AGS30_RU",
+          "UAZ_AGS30_RU"
+        ]
+      ],
+      "Motorized_2": [
+        [
+          "GAZ_Vodnik",
+          "BRDM2_INS",
+          "BRDM2_INS"
+        ]
+      ],
+      "Motorized_3": [
+        [
+          "GAZ_Vodnik_HMG",
+          "GAZ_Vodnik_HMG",
+          "UAZ_SPG9_INS"
+        ]
+      ],
+      "Motorized_4": [
+        [
+          "BRDM2_ATGM_INS",
+          "BTR90",
+          "BTR90"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "ZSU_INS",
+          "ZSU_INS"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "ZSU_INS",
+          "2S6M_Tunguska"
+        ]
+      ],
+      "Mechanized_0": [
+        [
+          "BMP2_INS",
+          "BMP2_INS"
+        ]
+      ],
+      "Mechanized_1": [
+        [
+          "BMP2_INS",
+          "BMP2_INS"
+        ]
+      ],
+      "Mechanized_2": [
+        [
+          "BMP2_INS",
+          "BMP2_INS"
+        ]
+      ],
+      "Mechanized_3": [
+        [
+          "BMP2_INS",
+          "BMP2_INS",
+          "BMP3"
+        ]
+      ],
+      "Mechanized_4": [
+        [
+          "BMP2_INS",
+          "BMP3",
+          "BMP3"
+        ]
+      ],
+      "Armored_0": [
+        [
+          "BMP2_INS",
+          "BMP3"
+        ]
+      ],
+      "Armored_1": [
+        [
+          "BMP3",
+          "BMP3"
+        ]
+      ],
+      "Armored_2": [
+        [
+          "T72_RU",
+          "T72_RU"
+        ]
+      ],
+      "Armored_3": [
+        [
+          "T72_RU",
+          "T90",
+          "T90"
+        ]
+      ],
+      "Armored_4": [
+        [
+          "T90",
+          "T90",
+          "T90"
+        ]
+      ]
+    }
+  },
+  "TKA": {
+    "side": "EAST",
+    "templates": {
+      "Squad_0": [
+        [
+          "TK_Soldier_GL_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_GL_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_1": [
+        [
+          "TK_Special_Forces_TL_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Special_Forces_TL_EP1",
+          "TK_Special_Forces_TL_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_2": [
+        [
+          "TK_Soldier_SL_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_SL_EP1",
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_3": [
+        [
+          "TK_Soldier_SL_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_SL_EP1",
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_Advanced": [
+        [
+          "TK_Special_Forces_TL_EP1",
+          "TK_Special_Forces_EP1",
+          "TK_Special_Forces_MG_EP1",
+          "TK_Special_Forces_EP1",
+          "TK_Special_Forces_MG_EP1"
+        ]
+      ],
+      "Team_0": [
+        [
+          "TK_Special_Forces_TL_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_EP1",
+          "TK_Soldier_GL_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_1": [
+        [
+          "TK_Special_Forces_TL_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_EP1",
+          "TK_Soldier_GL_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_2": [
+        [
+          "TK_Soldier_SL_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_GL_EP1",
+          "TK_Soldier_EP1",
+          "TK_Soldier_Medic_EP1",
+          "TK_Soldier_Sniper_EP1"
+        ]
+      ],
+      "Team_3": [
+        [
+          "TK_Soldier_SL_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_EP1",
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_AT_EP1",
+          "TK_Soldier_GL_EP1",
+          "TK_Soldier_SniperH_EP1"
+        ]
+      ],
+      "Team_MG_0": [
+        [
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_MG_1": [
+        [
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_MG_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_MG_2": [
+        [
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_AR_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_MG_3": [
+        [
+          "TK_Special_Forces_MG_EP1",
+          "TK_Special_Forces_MG_EP1",
+          "TK_Special_Forces_MG_EP1",
+          "TK_Special_Forces_MG_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_0": [
+        [
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_1": [
+        [
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_LAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_2": [
+        [
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_3": [
+        [
+          "TK_Soldier_HAT_EP1",
+          "TK_Soldier_AT_EP1",
+          "TK_Soldier_AT_EP1",
+          "TK_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "TK_Soldier_AA_EP1",
+          "TK_Soldier_AA_EP1",
+          "TK_Soldier_AA_EP1"
+        ]
+      ],
+      "Team_Sniper_0": [
+        [
+          "TK_Soldier_Sniper_EP1",
+          "TK_Soldier_Sniper_EP1"
+        ]
+      ],
+      "Team_Sniper_1": [
+        [
+          "TK_Soldier_Sniper_EP1",
+          "TK_Soldier_Sniper_EP1",
+          "TK_Soldier_Sniper_EP1"
+        ]
+      ],
+      "Team_Sniper_2": [
+        [
+          "TK_Soldier_Sniper_EP1",
+          "TK_Soldier_Sniper_EP1",
+          "TK_Soldier_Sniper_EP1",
+          "TK_Soldier_Sniper_EP1"
+        ]
+      ],
+      "Team_Sniper_3": [
+        [
+          "TK_Soldier_SniperH_EP1",
+          "TK_Soldier_SniperH_EP1",
+          "TK_Soldier_SniperH_EP1"
+        ]
+      ],
+      "Motorized_0": [
+        [
+          "UAZ_MG_TK_EP1",
+          "UAZ_AGS30_TK_EP1"
+        ]
+      ],
+      "Motorized_1": [
+        [
+          "LandRover_MG_TK_EP1",
+          "UAZ_AGS30_TK_EP1",
+          "UAZ_MG_TK_EP1"
+        ]
+      ],
+      "Motorized_2": [
+        [
+          "BRDM2_TK_EP1",
+          "BRDM2_TK_EP1",
+          "BRDM2_TK_EP1"
+        ]
+      ],
+      "Motorized_3": [
+        [
+          "BTR60_TK_EP1",
+          "BRDM2_TK_EP1",
+          "UAZ_SPG9_INS"
+        ]
+      ],
+      "Motorized_4": [
+        [
+          "BTR90",
+          "BRDM2_ATGM_TK_EP1",
+          "BRDM2_ATGM_TK_EP1"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "ZSU_TK_EP1",
+          "ZSU_TK_EP1"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "ZSU_TK_EP1",
+          "2S6M_Tunguska"
+        ]
+      ],
+      "Mechanized_0": [
+        [
+          "T34_TK_EP1",
+          "T34_TK_EP1"
+        ]
+      ],
+      "Mechanized_1": [
+        [
+          "T34_TK_EP1",
+          "BMP2_TK_EP1"
+        ]
+      ],
+      "Mechanized_2": [
+        [
+          "BMP2_TK_EP1",
+          "BMP2_TK_EP1"
+        ]
+      ],
+      "Mechanized_3": [
+        [
+          "BMP2_TK_EP1",
+          "BMP2_TK_EP1",
+          "BMP3"
+        ]
+      ],
+      "Mechanized_4": [
+        [
+          "BMP2_TK_EP1",
+          "BMP3",
+          "BMP3"
+        ]
+      ],
+      "Armored_0": [
+        [
+          "BMP2_TK_EP1",
+          "BMP3"
+        ]
+      ],
+      "Armored_1": [
+        [
+          "BMP3",
+          "BMP3"
+        ]
+      ],
+      "Armored_2": [
+        [
+          "T72_TK_EP1",
+          "T72_TK_EP1"
+        ]
+      ],
+      "Armored_3": [
+        [
+          "T72_TK_EP1",
+          "T90",
+          "T90"
+        ]
+      ],
+      "Armored_4": [
+        [
+          "T90",
+          "T90",
+          "T90"
+        ]
+      ]
+    }
+  },
+  "TKGUE": {
+    "side": "GUER",
+    "templates": {
+      "Squad": [
+        [
+          "TK_GUE_Warlord_EP1",
+          "TK_GUE_Soldier_3_EP1",
+          "TK_GUE_Soldier_AR_EP1",
+          "TK_GUE_Soldier_AR_EP1",
+          "TK_GUE_Soldier_MG_EP1"
+        ]
+      ],
+      "Squad_Advanced": [
+        [
+          "TK_GUE_Soldier_EP1",
+          "TK_GUE_Soldier_4_EP1",
+          "TK_GUE_Soldier_4_EP1",
+          "TK_GUE_Soldier_MG_EP1",
+          "TK_GUE_Soldier_AR_EP1"
+        ]
+      ],
+      "Team": [
+        [
+          "TK_GUE_Soldier_Warlord_EP1",
+          "TK_GUE_Soldier_AR_EP1",
+          "TK_GUE_Bonesetter_EP1",
+          "TK_GUE_Soldier_5_EP1",
+          "TK_GUE_Soldier_4_EP1"
+        ]
+      ],
+      "Team_MG": [
+        [
+          "TK_GUE_Soldier_MG_EP1",
+          "TK_GUE_Soldier_MG_EP1"
+        ]
+      ],
+      "Team_AT": [
+        [
+          "TK_GUE_Soldier_AT_EP1",
+          "TK_GUE_Soldier_HAT_EP1",
+          "TK_GUE_Soldier_AT_EP1",
+          "TK_GUE_Soldier_AT_EP1"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "TK_GUE_Soldier_AA_EP1",
+          "TK_GUE_Soldier_AA_EP1"
+        ]
+      ],
+      "Team_Sniper": [
+        [
+          "TK_GUE_Soldier_Sniper_EP1",
+          "TK_GUE_Soldier_Sniper_EP1"
+        ]
+      ],
+      "Motorized": [
+        [
+          "Offroad_DSHKM_TK_GUE_EP1",
+          "Offroad_SPG9_TK_GUE_EP1",
+          "ArmoredSUV_PMC"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "Ural_ZU23_TK_GUE_EP1",
+          "Ural_ZU23_TK_GUE_EP1"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "Ural_ZU23_TK_GUE_EP1",
+          "Ural_ZU23_TK_GUE_EP1"
+        ]
+      ],
+      "Mechanized": [
+        [
+          "BTR40_MG_TK_GUE_EP1",
+          "BRDM2_TK_GUE_EP1"
+        ]
+      ],
+      "Mechanized_Heavy": [
+        [
+          "BRDM2_TK_GUE_EP1",
+          "ArmoredSUV_PMC"
+        ]
+      ],
+      "Armored_Light": [
+        [
+          "T34_TK_GUE_EP1",
+          "T34_TK_GUE_EP1"
+        ]
+      ],
+      "Armored_Heavy": [
+        [
+          "T55_TK_GUE_EP1",
+          "T55_TK_GUE_EP1"
+        ]
+      ]
+    }
+  },
+  "US": {
+    "side": "WEST",
+    "templates": {
+      "Squad_0": [
+        [
+          "US_Soldier_GL_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_GL_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_1": [
+        [
+          "US_Soldier_TL_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_TL_EP1",
+          "US_Soldier_TL_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_2": [
+        [
+          "US_Soldier_SL_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_SL_EP1",
+          "BAF_Soldier_AAT_DDPM",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_3": [
+        [
+          "US_Soldier_SL_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_SL_EP1",
+          "US_Soldier_AT_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Squad_Advanced": [
+        [
+          "US_Delta_Force_TL_EP1",
+          "US_Delta_Force_Assault_EP1",
+          "US_Delta_Force_MG_EP1",
+          "US_Delta_Force_Assault_EP1",
+          "US_Delta_Force_M14_EP1"
+        ]
+      ],
+      "Team_0": [
+        [
+          "US_Soldier_TL_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_EP1",
+          "US_Soldier_GL_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_1": [
+        [
+          "US_Soldier_TL_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_EP1",
+          "US_Soldier_GL_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_2": [
+        [
+          "US_Soldier_SL_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_GL_EP1",
+          "US_Soldier_EP1",
+          "US_Soldier_Medic_EP1",
+          "US_Soldier_Marksman_EP1"
+        ]
+      ],
+      "Team_3": [
+        [
+          "US_Soldier_SL_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_EP1",
+          "US_Soldier_AT_EP1",
+          "US_Soldier_HAT_EP1",
+          "US_Soldier_GL_EP1",
+          "US_Soldier_SniperH_EP1"
+        ]
+      ],
+      "Team_MG_0": [
+        [
+          "US_Soldier_MG_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_MG_1": [
+        [
+          "US_Soldier_AR_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_MG_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_MG_2": [
+        [
+          "US_Soldier_AR_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_AR_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_MG_3": [
+        [
+          "GER_Soldier_MG_EP1",
+          "GER_Soldier_MG_EP1",
+          "GER_Soldier_MG_EP1",
+          "GER_Soldier_MG_EP1"
+        ]
+      ],
+      "Team_AT_0": [
+        [
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_1": [
+        [
+          "US_Soldier_LAT_EP1",
+          "US_Soldier_LAT_EP1",
+          "BAF_Soldier_AT_DDPM",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_2": [
+        [
+          "BAF_Soldier_AT_DDPM",
+          "BAF_Soldier_AT_DDPM",
+          "BAF_Soldier_AAT_DDPM",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AT_3": [
+        [
+          "US_Soldier_AT_EP1",
+          "US_Soldier_HAT_EP1",
+          "US_Soldier_HAT_EP1",
+          "US_Soldier_Medic_EP1"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "US_Soldier_AA_EP1",
+          "US_Soldier_AA_EP1",
+          "US_Soldier_AA_EP1"
+        ]
+      ],
+      "Team_Sniper_0": [
+        [
+          "US_Soldier_EP1",
+          "US_Soldier_EP1",
+          "US_Soldier_EP1"
+        ]
+      ],
+      "Team_Sniper_1": [
+        [
+          "US_Soldier_EP1",
+          "US_Soldier_EP1"
+        ]
+      ],
+      "Team_Sniper_2": [
+        [
+          "US_Soldier_EP1",
+          "US_Soldier_Marksman_EP1"
+        ]
+      ],
+      "Team_Sniper_3": [
+        [
+          "US_Soldier_Spotter_EP1",
+          "US_Soldier_SniperH_EP1",
+          "BAF_Soldier_SniperH_MTP"
+        ]
+      ],
+      "Motorized_0": [
+        [
+          "HMMWV_M1151_M2_DES_EP1",
+          "HMMWV_MK19_DES_EP1"
+        ]
+      ],
+      "Motorized_1": [
+        [
+          "HMMWV_M1151_M2_DES_EP1",
+          "HMMWV_MK19_DES_EP1"
+        ]
+      ],
+      "Motorized_2": [
+        [
+          "HMMWV_M998_crows_M2_DES_EP1",
+          "HMMWV_M998_crows_MK19_DES_EP1",
+          "BAF_Jackal2_GMG_D"
+        ]
+      ],
+      "Motorized_3": [
+        [
+          "M1126_ICV_M2_EP1",
+          "M1126_ICV_mk19_EP1",
+          "HMMWV_TOW_DES_EP1"
+        ]
+      ],
+      "Motorized_4": [
+        [
+          "LAV25",
+          "M1135_ATGMV_EP1",
+          "M1128_MGS_EP1"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "HMMWV_Avenger_DES_EP1",
+          "HMMWV_Avenger_DES_EP1"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "HMMWV_Avenger_DES_EP1",
+          "M6_EP1"
+        ]
+      ],
+      "Mechanized_0": [
+        [
+          "AAV",
+          "AAV"
+        ]
+      ],
+      "Mechanized_1": [
+        [
+          "M2A2_EP1",
+          "M2A2_EP1"
+        ]
+      ],
+      "Mechanized_2": [
+        [
+          "M2A2_EP1",
+          "M2A2_EP1"
+        ]
+      ],
+      "Mechanized_3": [
+        [
+          "BAF_FV510_D",
+          "BAF_FV510_D",
+          "M2A3_EP1"
+        ]
+      ],
+      "Mechanized_4": [
+        [
+          "M1A2_US_TUSK_MG_EP1",
+          "BAF_FV510_D",
+          "M2A3_EP1"
+        ]
+      ],
+      "Armored_0": [
+        [
+          "M2A2_EP1",
+          "M2A2_EP1"
+        ]
+      ],
+      "Armored_1": [
+        [
+          "M2A3_EP1",
+          "M2A3_EP1"
+        ]
+      ],
+      "Armored_2": [
+        [
+          "M1A1_US_DES_EP1",
+          "M1A1_US_DES_EP1"
+        ]
+      ],
+      "Armored_3": [
+        [
+          "M1A2_US_TUSK_MG_EP1",
+          "M1A2_US_TUSK_MG_EP1",
+          "M1A2_US_TUSK_MG_EP1"
+        ]
+      ],
+      "Armored_4": [
+        [
+          "M1A2_US_TUSK_MG_EP1",
+          "M1A2_US_TUSK_MG_EP1",
+          "M1A2_US_TUSK_MG_EP1"
+        ]
+      ]
+    }
+  },
+  "USMC": {
+    "side": "WEST",
+    "templates": {
+      "Squad_0": [
+        [
+          "USMC_Soldier_GL",
+          "USMC_Soldier_MG",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_GL",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Squad_1": [
+        [
+          "USMC_Soldier_TL",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_TL",
+          "USMC_Soldier_TL",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Squad_2": [
+        [
+          "USMC_Soldier_SL",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_SL",
+          "BAF_Soldier_AAT_W",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Squad_3": [
+        [
+          "USMC_Soldier_SL",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_SL",
+          "USMC_Soldier_AT",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Squad_Advanced": [
+        [
+          "FR_TL",
+          "FR_Assault_R",
+          "FR_AR",
+          "FR_R",
+          "FR_Marksman"
+        ]
+      ],
+      "Team_0": [
+        [
+          "USMC_Soldier_TL",
+          "USMC_Soldier_MG",
+          "USMC_Soldier2",
+          "USMC_Soldier_GL",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_1": [
+        [
+          "USMC_Soldier_TL",
+          "USMC_Soldier_AR",
+          "USMC_Soldier2",
+          "USMC_Soldier_GL",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_2": [
+        [
+          "USMC_Soldier_SL",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_GL",
+          "USMC_Soldier2",
+          "USMC_Soldier_Medic",
+          "USMC_SoldierM_Marksman"
+        ]
+      ],
+      "Team_3": [
+        [
+          "USMC_Soldier_SL",
+          "USMC_Soldier_AR",
+          "USMC_Soldier2",
+          "USMC_Soldier_AT",
+          "USMC_Soldier_HAT",
+          "USMC_Soldier_GL",
+          "USMC_SoldierS_SniperH"
+        ]
+      ],
+      "Team_MG_0": [
+        [
+          "USMC_Soldier_MG",
+          "USMC_Soldier_MG",
+          "USMC_Soldier_MG",
+          "USMC_Soldier_MG",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_MG_1": [
+        [
+          "USMC_Soldier_AR",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_MG",
+          "USMC_Soldier_MG",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_MG_2": [
+        [
+          "USMC_Soldier_AR",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_AR",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_MG_3": [
+        [
+          "BAF_Soldier_MG_W",
+          "BAF_Soldier_MG_W",
+          "BAF_Soldier_MG_W",
+          "BAF_Soldier_MG_W"
+        ]
+      ],
+      "Team_AT_0": [
+        [
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_1": [
+        [
+          "USMC_Soldier_LAT",
+          "USMC_Soldier_LAT",
+          "BAF_Soldier_AT_W",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_2": [
+        [
+          "BAF_Soldier_AT_W",
+          "BAF_Soldier_AT_W",
+          "BAF_Soldier_AAT_W",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_AT_3": [
+        [
+          "USMC_Soldier_AT",
+          "USMC_Soldier_HAT",
+          "USMC_Soldier_HAT",
+          "USMC_Soldier_Medic"
+        ]
+      ],
+      "Team_AA": [
+        [
+          "USMC_Soldier_AA",
+          "USMC_Soldier_AA",
+          "USMC_Soldier_AA"
+        ]
+      ],
+      "Team_Sniper_0": [
+        [
+          "USMC_Soldier2",
+          "USMC_Soldier2",
+          "USMC_Soldier2"
+        ]
+      ],
+      "Team_Sniper_1": [
+        [
+          "USMC_Soldier2",
+          "USMC_Soldier2"
+        ]
+      ],
+      "Team_Sniper_2": [
+        [
+          "USMC_Soldier2",
+          "USMC_SoldierM_Marksman"
+        ]
+      ],
+      "Team_Sniper_3": [
+        [
+          "US_Soldier_Spotter_EP1",
+          "USMC_SoldierS_SniperH",
+          "BAF_Soldier_SniperH_W"
+        ]
+      ],
+      "Motorized_0": [
+        [
+          "HMMWV_M1151_M2_DES_EP1",
+          "HMMWV_MK19"
+        ]
+      ],
+      "Motorized_1": [
+        [
+          "HMMWV_M1151_M2_DES_EP1",
+          "HMMWV_MK19"
+        ]
+      ],
+      "Motorized_2": [
+        [
+          "HMMWV_M998_crows_M2_DES_EP1",
+          "HMMWV_M998_crows_MK19_DES_EP1",
+          "BAF_Jackal2_GMG_D"
+        ]
+      ],
+      "Motorized_3": [
+        [
+          "M1126_ICV_M2_EP1",
+          "M1126_ICV_mk19_EP1",
+          "HMMWV_TOW"
+        ]
+      ],
+      "Motorized_4": [
+        [
+          "LAV25",
+          "M1135_ATGMV_EP1",
+          "M1128_MGS_EP1"
+        ]
+      ],
+      "AA_Light": [
+        [
+          "HMMWV_Avenger",
+          "HMMWV_Avenger"
+        ]
+      ],
+      "AA_Heavy": [
+        [
+          "HMMWV_Avenger",
+          "M6_EP1"
+        ]
+      ],
+      "Mechanized_0": [
+        [
+          "AAV",
+          "AAV"
+        ]
+      ],
+      "Mechanized_1": [
+        [
+          "M2A2_EP1",
+          "M2A2_EP1"
+        ]
+      ],
+      "Mechanized_2": [
+        [
+          "M2A2_EP1",
+          "M2A2_EP1"
+        ]
+      ],
+      "Mechanized_3": [
+        [
+          "BAF_FV510_W",
+          "BAF_FV510_W",
+          "M2A3_EP1"
+        ]
+      ],
+      "Mechanized_4": [
+        [
+          "BAF_FV510_W",
+          "BAF_FV510_W",
+          "M2A3_EP1"
+        ]
+      ],
+      "Armored_0": [
+        [
+          "M2A2_EP1",
+          "M2A2_EP1"
+        ]
+      ],
+      "Armored_1": [
+        [
+          "M2A3_EP1",
+          "M2A3_EP1"
+        ]
+      ],
+      "Armored_2": [
+        [
+          "M1A1",
+          "M1A1"
+        ]
+      ],
+      "Armored_3": [
+        [
+          "M1A2_TUSK_MG",
+          "M1A2_TUSK_MG",
+          "M1A2_TUSK_MG"
+        ]
+      ],
+      "Armored_4": [
+        [
+          "M1A2_TUSK_MG",
+          "M1A2_TUSK_MG",
+          "M1A2_TUSK_MG"
+        ]
+      ]
+    }
+  }
+}
