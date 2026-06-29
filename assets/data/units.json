@@ -1,0 +1,866 @@
+{
+  "2S6M_Tunguska": {
+    "name": "2S6M Tunguska",
+    "thumb": "2S6M_Tunguska.jpg"
+  },
+  "AAV": {
+    "name": "AAVP7A1",
+    "thumb": "AAV.jpg"
+  },
+  "ArmoredSUV_PMC": {
+    "name": "ArmoredSUV_PMC",
+    "thumb": null
+  },
+  "BAF_FV510_D": {
+    "name": "FV510 Warrior 2",
+    "thumb": null
+  },
+  "BAF_FV510_W": {
+    "name": "BAF_FV510_W",
+    "thumb": null
+  },
+  "BAF_Jackal2_GMG_D": {
+    "name": "Jackal 2 MWMIK (GMG)",
+    "thumb": null
+  },
+  "BAF_Soldier_AAT_DDPM": {
+    "name": "BAF_Soldier_AAT_DDPM",
+    "thumb": null
+  },
+  "BAF_Soldier_AAT_W": {
+    "name": "BAF_Soldier_AAT_W",
+    "thumb": null
+  },
+  "BAF_Soldier_AT_DDPM": {
+    "name": "BAF_Soldier_AT_DDPM",
+    "thumb": null
+  },
+  "BAF_Soldier_AT_W": {
+    "name": "BAF_Soldier_AT_W",
+    "thumb": null
+  },
+  "BAF_Soldier_MG_W": {
+    "name": "BAF_Soldier_MG_W",
+    "thumb": null
+  },
+  "BAF_Soldier_SniperH_MTP": {
+    "name": "Sniper (AS50)",
+    "thumb": null
+  },
+  "BAF_Soldier_SniperH_W": {
+    "name": "BAF_Soldier_SniperH_W",
+    "thumb": null
+  },
+  "BMP2_CDF": {
+    "name": "BMP2_CDF",
+    "thumb": "BMP2_CDF.jpg"
+  },
+  "BMP2_GUE": {
+    "name": "BMP2_GUE",
+    "thumb": "BMP2_GUE.jpg"
+  },
+  "BMP2_INS": {
+    "name": "BMP2_INS",
+    "thumb": "BMP2_INS.jpg"
+  },
+  "BMP2_TK_EP1": {
+    "name": "BMP2_TK_EP1",
+    "thumb": "BMP2_TK_EP1.jpg"
+  },
+  "BMP3": {
+    "name": "BMP-3",
+    "thumb": "BMP3.jpg"
+  },
+  "BRDM2_ATGM_CDF": {
+    "name": "BRDM2_ATGM_CDF",
+    "thumb": "BRDM2_ATGM_CDF.jpg"
+  },
+  "BRDM2_ATGM_INS": {
+    "name": "BRDM2_ATGM_INS",
+    "thumb": "BRDM2_ATGM_INS.jpg"
+  },
+  "BRDM2_ATGM_TK_EP1": {
+    "name": "BRDM2_ATGM_TK_EP1",
+    "thumb": "BRDM2_ATGM_TK_EP1.jpg"
+  },
+  "BRDM2_CDF": {
+    "name": "BRDM2_CDF",
+    "thumb": "BRDM2_CDF.jpg"
+  },
+  "BRDM2_GUE": {
+    "name": "BRDM2_GUE",
+    "thumb": "BRDM2_GUE.jpg"
+  },
+  "BRDM2_INS": {
+    "name": "BRDM2_INS",
+    "thumb": "BRDM2_INS.jpg"
+  },
+  "BRDM2_TK_EP1": {
+    "name": "BRDM2_TK_EP1",
+    "thumb": "BRDM2_TK_EP1.jpg"
+  },
+  "BRDM2_TK_GUE_EP1": {
+    "name": "BRDM2_TK_GUE_EP1",
+    "thumb": "BRDM2_TK_GUE_EP1.jpg"
+  },
+  "BTR40_MG_TK_GUE_EP1": {
+    "name": "BTR40_MG_TK_GUE_EP1",
+    "thumb": "BTR40_MG_TK_GUE_EP1.jpg"
+  },
+  "BTR60_TK_EP1": {
+    "name": "BTR-60",
+    "thumb": "BTR60_TK_EP1.jpg"
+  },
+  "BTR90": {
+    "name": "BTR90",
+    "thumb": "BTR90.jpg"
+  },
+  "CDF_Soldier": {
+    "name": "Rifleman",
+    "thumb": "CDF_Soldier.jpg"
+  },
+  "CDF_Soldier_AR": {
+    "name": "Automatic Rifleman",
+    "thumb": "CDF_Soldier_AR.jpg"
+  },
+  "CDF_Soldier_Engineer": {
+    "name": "Engineer",
+    "thumb": "CDF_Soldier_Engineer.jpg"
+  },
+  "CDF_Soldier_GL": {
+    "name": "Grenadier",
+    "thumb": "CDF_Soldier_GL.jpg"
+  },
+  "CDF_Soldier_MG": {
+    "name": "Machinegunner",
+    "thumb": "CDF_Soldier_MG.jpg"
+  },
+  "CDF_Soldier_Marksman": {
+    "name": "Marksman",
+    "thumb": "CDF_Soldier_Marksman.jpg"
+  },
+  "CDF_Soldier_Medic": {
+    "name": "Medic",
+    "thumb": "CDF_Soldier_Medic.jpg"
+  },
+  "CDF_Soldier_RPG": {
+    "name": "AT Specialist",
+    "thumb": "CDF_Soldier_RPG.jpg"
+  },
+  "CDF_Soldier_Sniper": {
+    "name": "Sniper",
+    "thumb": "CDF_Soldier_Sniper.jpg"
+  },
+  "CDF_Soldier_Spotter": {
+    "name": "Spotter",
+    "thumb": "CDF_Soldier_Spotter.jpg"
+  },
+  "CDF_Soldier_Strela": {
+    "name": "AA Specialist",
+    "thumb": "CDF_Soldier_Strela.jpg"
+  },
+  "CDF_Soldier_TL": {
+    "name": "Team Leader",
+    "thumb": "CDF_Soldier_TL.jpg"
+  },
+  "FR_AR": {
+    "name": "Heavy Gunner",
+    "thumb": "FR_AR.jpg"
+  },
+  "FR_Assault_R": {
+    "name": "Assault Rifleman",
+    "thumb": "FR_Assault_R.jpg"
+  },
+  "FR_Marksman": {
+    "name": "Marksman",
+    "thumb": "FR_Marksman.jpg"
+  },
+  "FR_R": {
+    "name": "Saboteur",
+    "thumb": "FR_R.jpg"
+  },
+  "FR_TL": {
+    "name": "Team Leader",
+    "thumb": "FR_TL.jpg"
+  },
+  "GAZ_Vodnik": {
+    "name": "Vodnik (2xPK)",
+    "thumb": "GAZ_Vodnik.jpg"
+  },
+  "GAZ_Vodnik_HMG": {
+    "name": "Vodnik (BPPU)",
+    "thumb": "GAZ_Vodnik_HMG.jpg"
+  },
+  "GER_Soldier_MG_EP1": {
+    "name": "KSK Machinegunner",
+    "thumb": "GER_Soldier_MG_EP1.jpg"
+  },
+  "GUE_Soldier_1": {
+    "name": "Rifleman (AKSU)",
+    "thumb": "GUE_Soldier_1.jpg"
+  },
+  "GUE_Soldier_AA": {
+    "name": "Rifleman (Stinger)",
+    "thumb": "GUE_Soldier_AA.jpg"
+  },
+  "GUE_Soldier_AR": {
+    "name": "Automatic Rifleman",
+    "thumb": "GUE_Soldier_AR.jpg"
+  },
+  "GUE_Soldier_AT": {
+    "name": "Rifleman (RPG-7)",
+    "thumb": "GUE_Soldier_AT.jpg"
+  },
+  "GUE_Soldier_CO": {
+    "name": "Commander",
+    "thumb": "GUE_Soldier_CO.jpg"
+  },
+  "GUE_Soldier_GL": {
+    "name": "Grenadier",
+    "thumb": "GUE_Soldier_GL.jpg"
+  },
+  "GUE_Soldier_Sniper": {
+    "name": "Hunter",
+    "thumb": "GUE_Soldier_Sniper.jpg"
+  },
+  "GUE_Villager3": {
+    "name": "Farmer",
+    "thumb": "GUE_Villager3.jpg"
+  },
+  "GUE_Villager4": {
+    "name": "Villager",
+    "thumb": "GUE_Villager4.jpg"
+  },
+  "GUE_Woodlander1": {
+    "name": "Woodman",
+    "thumb": "GUE_Woodlander1.jpg"
+  },
+  "GUE_Woodlander2": {
+    "name": "Gamekeeper",
+    "thumb": "GUE_Woodlander2.jpg"
+  },
+  "GUE_Woodlander3": {
+    "name": "Forester",
+    "thumb": "GUE_Woodlander3.jpg"
+  },
+  "GUE_Worker2": {
+    "name": "Local",
+    "thumb": "GUE_Worker2.jpg"
+  },
+  "HMMWV_Avenger": {
+    "name": "HMMWV Avenger",
+    "thumb": "HMMWV_Avenger.jpg"
+  },
+  "HMMWV_Avenger_DES_EP1": {
+    "name": "HMMWV_Avenger_DES_EP1",
+    "thumb": "HMMWV_Avenger_DES_EP1.jpg"
+  },
+  "HMMWV_M1151_M2_DES_EP1": {
+    "name": "HMMWV_M1151_M2_DES_EP1",
+    "thumb": "HMMWV_M1151_M2_DES_EP1.jpg"
+  },
+  "HMMWV_M998_crows_M2_DES_EP1": {
+    "name": "HMMWV CROWS (M2)",
+    "thumb": "HMMWV_M998_crows_M2_DES_EP1.jpg"
+  },
+  "HMMWV_M998_crows_MK19_DES_EP1": {
+    "name": "HMMWV CROWS (Mk19)",
+    "thumb": "HMMWV_M998_crows_MK19_DES_EP1.jpg"
+  },
+  "HMMWV_MK19": {
+    "name": "HMMWV (Mk19)",
+    "thumb": "HMMWV_MK19.jpg"
+  },
+  "HMMWV_MK19_DES_EP1": {
+    "name": "HMMWV_MK19_DES_EP1",
+    "thumb": "HMMWV_MK19_DES_EP1.jpg"
+  },
+  "HMMWV_TOW": {
+    "name": "HMMWV (TOW)",
+    "thumb": "HMMWV_TOW.jpg"
+  },
+  "HMMWV_TOW_DES_EP1": {
+    "name": "HMMWV_TOW_DES_EP1",
+    "thumb": "HMMWV_TOW_DES_EP1.jpg"
+  },
+  "Ins_Soldier_1": {
+    "name": "Rifleman",
+    "thumb": "Ins_Soldier_1.jpg"
+  },
+  "Ins_Soldier_2": {
+    "name": "Rifleman (AK-74)",
+    "thumb": "Ins_Soldier_2.jpg"
+  },
+  "Ins_Soldier_AA": {
+    "name": "AA Specialist",
+    "thumb": "Ins_Soldier_AA.jpg"
+  },
+  "Ins_Soldier_AR": {
+    "name": "Automatic Rifleman",
+    "thumb": "Ins_Soldier_AR.jpg"
+  },
+  "Ins_Soldier_AT": {
+    "name": "AT Specialist",
+    "thumb": "Ins_Soldier_AT.jpg"
+  },
+  "Ins_Soldier_CO": {
+    "name": "Officer",
+    "thumb": "Ins_Soldier_CO.jpg"
+  },
+  "Ins_Soldier_GL": {
+    "name": "Grenadier",
+    "thumb": "Ins_Soldier_GL.jpg"
+  },
+  "Ins_Soldier_MG": {
+    "name": "Machinegunner",
+    "thumb": "Ins_Soldier_MG.jpg"
+  },
+  "Ins_Soldier_Medic": {
+    "name": "Medic",
+    "thumb": "Ins_Soldier_Medic.jpg"
+  },
+  "Ins_Soldier_Sniper": {
+    "name": "Sniper",
+    "thumb": "Ins_Soldier_Sniper.jpg"
+  },
+  "LAV25": {
+    "name": "LAV25",
+    "thumb": "LAV25.jpg"
+  },
+  "LandRover_MG_TK_EP1": {
+    "name": "LandRover_MG_TK_EP1",
+    "thumb": "LandRover_MG_TK_EP1.jpg"
+  },
+  "M1126_ICV_M2_EP1": {
+    "name": "Stryker ICV (M2)",
+    "thumb": "M1126_ICV_M2_EP1.jpg"
+  },
+  "M1126_ICV_mk19_EP1": {
+    "name": "Stryker ICV (Mk19)",
+    "thumb": "M1126_ICV_mk19_EP1.jpg"
+  },
+  "M1128_MGS_EP1": {
+    "name": "Stryker MGS",
+    "thumb": "M1128_MGS_EP1.jpg"
+  },
+  "M1135_ATGMV_EP1": {
+    "name": "Stryker (TOW)",
+    "thumb": "M1135_ATGMV_EP1.jpg"
+  },
+  "M113_UN_EP1": {
+    "name": "M113_UN_EP1",
+    "thumb": "M113_UN_EP1.jpg"
+  },
+  "M1A1": {
+    "name": "M1A1",
+    "thumb": "M1A1.jpg"
+  },
+  "M1A1_US_DES_EP1": {
+    "name": "M1A1_US_DES_EP1",
+    "thumb": "M1A1_US_DES_EP1.jpg"
+  },
+  "M1A2_TUSK_MG": {
+    "name": "M1A2 TUSK",
+    "thumb": "M1A2_TUSK_MG.jpg"
+  },
+  "M1A2_US_TUSK_MG_EP1": {
+    "name": "M1A2_US_TUSK_MG_EP1",
+    "thumb": "M1A2_US_TUSK_MG_EP1.jpg"
+  },
+  "M2A2_EP1": {
+    "name": "M2A2 Bradley IFV",
+    "thumb": "M2A2_EP1.jpg"
+  },
+  "M2A3_EP1": {
+    "name": "M2A3 ERA Bradley IFV",
+    "thumb": "M2A3_EP1.jpg"
+  },
+  "M6_EP1": {
+    "name": "M6 Linebacker",
+    "thumb": "M6_EP1.jpg"
+  },
+  "MVD_Soldier_MG": {
+    "name": "Machinegunner",
+    "thumb": "MVD_Soldier_MG.jpg"
+  },
+  "MVD_Soldier_Marksman": {
+    "name": "Marksman",
+    "thumb": "MVD_Soldier_Marksman.jpg"
+  },
+  "MVD_Soldier_TL": {
+    "name": "Team Leader",
+    "thumb": "MVD_Soldier_TL.jpg"
+  },
+  "Offroad_DSHKM_Gue": {
+    "name": "Off-road (DShKM)",
+    "thumb": "Offroad_DSHKM_Gue.jpg"
+  },
+  "Offroad_DSHKM_INS": {
+    "name": "Off-road (DShKM)",
+    "thumb": "Offroad_DSHKM_INS.jpg"
+  },
+  "Offroad_DSHKM_TK_GUE_EP1": {
+    "name": "Off-road (DShKM)",
+    "thumb": "Offroad_DSHKM_TK_GUE_EP1.jpg"
+  },
+  "Offroad_SPG9_Gue": {
+    "name": "Off-road (SPG-9)",
+    "thumb": "Offroad_SPG9_Gue.jpg"
+  },
+  "Offroad_SPG9_TK_GUE_EP1": {
+    "name": "Offroad_SPG9_TK_GUE_EP1",
+    "thumb": "Offroad_SPG9_TK_GUE_EP1.jpg"
+  },
+  "Pickup_PK_INS": {
+    "name": "Pickup_PK_INS",
+    "thumb": "Pickup_PK_INS.jpg"
+  },
+  "RU_Soldier": {
+    "name": "Rifleman",
+    "thumb": "RU_Soldier.jpg"
+  },
+  "RU_Soldier_AA": {
+    "name": "AA Specialist",
+    "thumb": "RU_Soldier_AA.jpg"
+  },
+  "RU_Soldier_AR": {
+    "name": "Automatic Rifleman",
+    "thumb": "RU_Soldier_AR.jpg"
+  },
+  "RU_Soldier_AT": {
+    "name": "Rifleman (RPG-7)",
+    "thumb": "RU_Soldier_AT.jpg"
+  },
+  "RU_Soldier_GL": {
+    "name": "Grenadier",
+    "thumb": "RU_Soldier_GL.jpg"
+  },
+  "RU_Soldier_HAT": {
+    "name": "AT Specialist (Metis)",
+    "thumb": "RU_Soldier_HAT.jpg"
+  },
+  "RU_Soldier_LAT": {
+    "name": "Rifleman (RPG-18)",
+    "thumb": "RU_Soldier_LAT.jpg"
+  },
+  "RU_Soldier_MG": {
+    "name": "Machinegunner",
+    "thumb": "RU_Soldier_MG.jpg"
+  },
+  "RU_Soldier_Medic": {
+    "name": "Medic",
+    "thumb": "RU_Soldier_Medic.jpg"
+  },
+  "RU_Soldier_SL": {
+    "name": "Squad Leader",
+    "thumb": "RU_Soldier_SL.jpg"
+  },
+  "RU_Soldier_Sniper": {
+    "name": "Sniper",
+    "thumb": "RU_Soldier_Sniper.jpg"
+  },
+  "RU_Soldier_SniperH": {
+    "name": "Sniper (KSVK)",
+    "thumb": "RU_Soldier_SniperH.jpg"
+  },
+  "RU_Soldier_TL": {
+    "name": "Team Leader",
+    "thumb": "RU_Soldier_TL.jpg"
+  },
+  "SUV_PMC": {
+    "name": "SUV_PMC",
+    "thumb": null
+  },
+  "Soldier_AA_PMC": {
+    "name": "Tactical Specialist (Stinger)",
+    "thumb": null
+  },
+  "Soldier_AT_PMC": {
+    "name": "Field Specialist (RPG-18)",
+    "thumb": null
+  },
+  "Soldier_Bodyguard_AA12_PMC": {
+    "name": "Bodyguard (AA-12)",
+    "thumb": null
+  },
+  "Soldier_Bodyguard_M4_PMC": {
+    "name": "Bodyguard (M4A1)",
+    "thumb": null
+  },
+  "Soldier_Engineer_PMC": {
+    "name": "Field Technician",
+    "thumb": null
+  },
+  "Soldier_GL_M16A2_PMC": {
+    "name": "Security Contractor (M16A2-GL)",
+    "thumb": null
+  },
+  "Soldier_GL_PMC": {
+    "name": "Security Contractor (M8-GL)",
+    "thumb": null
+  },
+  "Soldier_M4A3_PMC": {
+    "name": "Security Contractor (M4A3)",
+    "thumb": null
+  },
+  "Soldier_MG_PKM_PMC": {
+    "name": "Field Specialist (PKM)",
+    "thumb": null
+  },
+  "Soldier_MG_PMC": {
+    "name": "Field Specialist (M8-Auto)",
+    "thumb": null
+  },
+  "Soldier_Medic_PMC": {
+    "name": "Field Medic",
+    "thumb": null
+  },
+  "Soldier_PMC": {
+    "name": "Security Contractor (M8)",
+    "thumb": null
+  },
+  "Soldier_Sniper_KSVK_PMC": {
+    "name": "Tactical Specialist (KSVK)",
+    "thumb": null
+  },
+  "Soldier_Sniper_PMC": {
+    "name": "Defensive Marksman",
+    "thumb": null
+  },
+  "Soldier_TL_PMC": {
+    "name": "Team Coordinator",
+    "thumb": null
+  },
+  "T34_TK_EP1": {
+    "name": "T34_TK_EP1",
+    "thumb": "T34_TK_EP1.jpg"
+  },
+  "T34_TK_GUE_EP1": {
+    "name": "T34_TK_GUE_EP1",
+    "thumb": "T34_TK_GUE_EP1.jpg"
+  },
+  "T55_TK_GUE_EP1": {
+    "name": "T55_TK_GUE_EP1",
+    "thumb": "T55_TK_GUE_EP1.jpg"
+  },
+  "T72_CDF": {
+    "name": "T72_CDF",
+    "thumb": "T72_CDF.jpg"
+  },
+  "T72_GUE": {
+    "name": "T72_GUE",
+    "thumb": "T72_GUE.jpg"
+  },
+  "T72_INS": {
+    "name": "T72_INS",
+    "thumb": "T72_INS.jpg"
+  },
+  "T72_RU": {
+    "name": "T72_RU",
+    "thumb": "T72_RU.jpg"
+  },
+  "T72_TK_EP1": {
+    "name": "T72_TK_EP1",
+    "thumb": "T72_TK_EP1.jpg"
+  },
+  "T90": {
+    "name": "T-90",
+    "thumb": "T90.jpg"
+  },
+  "TK_GUE_Bonesetter_EP1": {
+    "name": "Bonesetter",
+    "thumb": "TK_GUE_Bonesetter_EP1.jpg"
+  },
+  "TK_GUE_Soldier_3_EP1": {
+    "name": "Guerilla (M16A2)",
+    "thumb": "TK_GUE_Soldier_3_EP1.jpg"
+  },
+  "TK_GUE_Soldier_4_EP1": {
+    "name": "Guerilla (M16A2 GL)",
+    "thumb": "TK_GUE_Soldier_4_EP1.jpg"
+  },
+  "TK_GUE_Soldier_5_EP1": {
+    "name": "Guerilla (Lee-Enfield)",
+    "thumb": "TK_GUE_Soldier_5_EP1.jpg"
+  },
+  "TK_GUE_Soldier_AA_EP1": {
+    "name": "AA Specialist",
+    "thumb": "TK_GUE_Soldier_AA_EP1.jpg"
+  },
+  "TK_GUE_Soldier_AR_EP1": {
+    "name": "Automatic Rifleman",
+    "thumb": "TK_GUE_Soldier_AR_EP1.jpg"
+  },
+  "TK_GUE_Soldier_AT_EP1": {
+    "name": "Guerilla (RPG-7)",
+    "thumb": "TK_GUE_Soldier_AT_EP1.jpg"
+  },
+  "TK_GUE_Soldier_EP1": {
+    "name": "Guerilla (AK-47)",
+    "thumb": "TK_GUE_Soldier_EP1.jpg"
+  },
+  "TK_GUE_Soldier_HAT_EP1": {
+    "name": "Guerilla (Dragon)",
+    "thumb": "TK_GUE_Soldier_HAT_EP1.jpg"
+  },
+  "TK_GUE_Soldier_MG_EP1": {
+    "name": "Machinegunner",
+    "thumb": "TK_GUE_Soldier_MG_EP1.jpg"
+  },
+  "TK_GUE_Soldier_Sniper_EP1": {
+    "name": "Guerilla Sniper",
+    "thumb": "TK_GUE_Soldier_Sniper_EP1.jpg"
+  },
+  "TK_GUE_Soldier_Warlord_EP1": {
+    "name": "TK_GUE_Soldier_Warlord_EP1",
+    "thumb": null
+  },
+  "TK_GUE_Warlord_EP1": {
+    "name": "Warlord",
+    "thumb": "TK_GUE_Warlord_EP1.jpg"
+  },
+  "TK_Soldier_AA_EP1": {
+    "name": "AA Specialist",
+    "thumb": "TK_Soldier_AA_EP1.jpg"
+  },
+  "TK_Soldier_AR_EP1": {
+    "name": "Automatic Rifleman",
+    "thumb": "TK_Soldier_AR_EP1.jpg"
+  },
+  "TK_Soldier_AT_EP1": {
+    "name": "Rifleman (RPG-7)",
+    "thumb": "TK_Soldier_AT_EP1.jpg"
+  },
+  "TK_Soldier_EP1": {
+    "name": "Rifleman",
+    "thumb": "TK_Soldier_EP1.jpg"
+  },
+  "TK_Soldier_GL_EP1": {
+    "name": "Grenadier",
+    "thumb": "TK_Soldier_GL_EP1.jpg"
+  },
+  "TK_Soldier_HAT_EP1": {
+    "name": "AT Specialist",
+    "thumb": "TK_Soldier_HAT_EP1.jpg"
+  },
+  "TK_Soldier_LAT_EP1": {
+    "name": "Rifleman (RPG-18)",
+    "thumb": "TK_Soldier_LAT_EP1.jpg"
+  },
+  "TK_Soldier_MG_EP1": {
+    "name": "Machinegunner",
+    "thumb": "TK_Soldier_MG_EP1.jpg"
+  },
+  "TK_Soldier_Medic_EP1": {
+    "name": "Medic",
+    "thumb": "TK_Soldier_Medic_EP1.jpg"
+  },
+  "TK_Soldier_SL_EP1": {
+    "name": "Squad leader",
+    "thumb": "TK_Soldier_SL_EP1.jpg"
+  },
+  "TK_Soldier_SniperH_EP1": {
+    "name": "Sniper (KSVK)",
+    "thumb": "TK_Soldier_SniperH_EP1.jpg"
+  },
+  "TK_Soldier_Sniper_EP1": {
+    "name": "Sniper",
+    "thumb": "TK_Soldier_Sniper_EP1.jpg"
+  },
+  "TK_Special_Forces_EP1": {
+    "name": "Special Soldier",
+    "thumb": "TK_Special_Forces_EP1.jpg"
+  },
+  "TK_Special_Forces_MG_EP1": {
+    "name": "Special Machinegunner",
+    "thumb": "TK_Special_Forces_MG_EP1.jpg"
+  },
+  "TK_Special_Forces_TL_EP1": {
+    "name": "Special Team Leader",
+    "thumb": "TK_Special_Forces_TL_EP1.jpg"
+  },
+  "UAZ_AGS30_CDF": {
+    "name": "UAZ_AGS30_CDF",
+    "thumb": "UAZ_AGS30_CDF.jpg"
+  },
+  "UAZ_AGS30_INS": {
+    "name": "UAZ_AGS30_INS",
+    "thumb": "UAZ_AGS30_INS.jpg"
+  },
+  "UAZ_AGS30_RU": {
+    "name": "UAZ_AGS30_RU",
+    "thumb": "UAZ_AGS30_RU.jpg"
+  },
+  "UAZ_AGS30_TK_EP1": {
+    "name": "UAZ_AGS30_TK_EP1",
+    "thumb": "UAZ_AGS30_TK_EP1.jpg"
+  },
+  "UAZ_MG_CDF": {
+    "name": "UAZ_MG_CDF",
+    "thumb": "UAZ_MG_CDF.jpg"
+  },
+  "UAZ_MG_INS": {
+    "name": "UAZ_MG_INS",
+    "thumb": "UAZ_MG_INS.jpg"
+  },
+  "UAZ_MG_TK_EP1": {
+    "name": "UAZ_MG_TK_EP1",
+    "thumb": "UAZ_MG_TK_EP1.jpg"
+  },
+  "UAZ_SPG9_INS": {
+    "name": "UAZ_SPG9_INS",
+    "thumb": "UAZ_SPG9_INS.jpg"
+  },
+  "USMC_Soldier2": {
+    "name": "Rifleman (M1014)",
+    "thumb": "USMC_Soldier2.jpg"
+  },
+  "USMC_SoldierM_Marksman": {
+    "name": "Designated Marksman",
+    "thumb": "USMC_SoldierM_Marksman.jpg"
+  },
+  "USMC_SoldierS_SniperH": {
+    "name": "Sniper (M107)",
+    "thumb": "USMC_SoldierS_SniperH.jpg"
+  },
+  "USMC_Soldier_AA": {
+    "name": "AA Specialist",
+    "thumb": "USMC_Soldier_AA.jpg"
+  },
+  "USMC_Soldier_AR": {
+    "name": "Automatic Rifleman",
+    "thumb": "USMC_Soldier_AR.jpg"
+  },
+  "USMC_Soldier_AT": {
+    "name": "AT Specialist (SMAW)",
+    "thumb": "USMC_Soldier_AT.jpg"
+  },
+  "USMC_Soldier_GL": {
+    "name": "Grenadier",
+    "thumb": "USMC_Soldier_GL.jpg"
+  },
+  "USMC_Soldier_HAT": {
+    "name": "AT Specialist (Javelin)",
+    "thumb": "USMC_Soldier_HAT.jpg"
+  },
+  "USMC_Soldier_LAT": {
+    "name": "Rifleman (M136)",
+    "thumb": "USMC_Soldier_LAT.jpg"
+  },
+  "USMC_Soldier_MG": {
+    "name": "Machinegunner",
+    "thumb": "USMC_Soldier_MG.jpg"
+  },
+  "USMC_Soldier_Medic": {
+    "name": "Corpsman",
+    "thumb": "USMC_Soldier_Medic.jpg"
+  },
+  "USMC_Soldier_SL": {
+    "name": "Squad Leader",
+    "thumb": "USMC_Soldier_SL.jpg"
+  },
+  "USMC_Soldier_TL": {
+    "name": "Fire Team Leader",
+    "thumb": "USMC_Soldier_TL.jpg"
+  },
+  "US_Delta_Force_Assault_EP1": {
+    "name": "Operator (Assault)",
+    "thumb": "US_Delta_Force_Assault_EP1.jpg"
+  },
+  "US_Delta_Force_M14_EP1": {
+    "name": "Operator (M14)",
+    "thumb": "US_Delta_Force_M14_EP1.jpg"
+  },
+  "US_Delta_Force_MG_EP1": {
+    "name": "Machinegunner",
+    "thumb": "US_Delta_Force_MG_EP1.jpg"
+  },
+  "US_Delta_Force_TL_EP1": {
+    "name": "Team Leader",
+    "thumb": "US_Delta_Force_TL_EP1.jpg"
+  },
+  "US_Soldier_AA_EP1": {
+    "name": "AA Specialist",
+    "thumb": "US_Soldier_AA_EP1.jpg"
+  },
+  "US_Soldier_AR_EP1": {
+    "name": "Automatic Rifleman",
+    "thumb": "US_Soldier_AR_EP1.jpg"
+  },
+  "US_Soldier_AT_EP1": {
+    "name": "AT Specialist",
+    "thumb": "US_Soldier_AT_EP1.jpg"
+  },
+  "US_Soldier_EP1": {
+    "name": "Rifleman",
+    "thumb": "US_Soldier_EP1.jpg"
+  },
+  "US_Soldier_GL_EP1": {
+    "name": "Grenadier",
+    "thumb": "US_Soldier_GL_EP1.jpg"
+  },
+  "US_Soldier_HAT_EP1": {
+    "name": "AT Specialist (Javelin)",
+    "thumb": "US_Soldier_HAT_EP1.jpg"
+  },
+  "US_Soldier_LAT_EP1": {
+    "name": "Rifleman (AT)",
+    "thumb": "US_Soldier_LAT_EP1.jpg"
+  },
+  "US_Soldier_MG_EP1": {
+    "name": "Machinegunner",
+    "thumb": "US_Soldier_MG_EP1.jpg"
+  },
+  "US_Soldier_Marksman_EP1": {
+    "name": "Marksman",
+    "thumb": "US_Soldier_Marksman_EP1.jpg"
+  },
+  "US_Soldier_Medic_EP1": {
+    "name": "Medic",
+    "thumb": "US_Soldier_Medic_EP1.jpg"
+  },
+  "US_Soldier_SL_EP1": {
+    "name": "Squad Leader",
+    "thumb": null
+  },
+  "US_Soldier_SniperH_EP1": {
+    "name": "Sniper (M107)",
+    "thumb": null
+  },
+  "US_Soldier_Spotter_EP1": {
+    "name": "Spotter",
+    "thumb": null
+  },
+  "US_Soldier_TL_EP1": {
+    "name": "Team Leader",
+    "thumb": null
+  },
+  "Ural_ZU23_CDF": {
+    "name": "Ural_ZU23_CDF",
+    "thumb": "Ural_ZU23_CDF.jpg"
+  },
+  "Ural_ZU23_Gue": {
+    "name": "Ural_ZU23_Gue",
+    "thumb": "Ural_ZU23_Gue.jpg"
+  },
+  "Ural_ZU23_INS": {
+    "name": "Ural_ZU23_INS",
+    "thumb": "Ural_ZU23_INS.jpg"
+  },
+  "Ural_ZU23_TK_GUE_EP1": {
+    "name": "Ural_ZU23_TK_GUE_EP1",
+    "thumb": "Ural_ZU23_TK_GUE_EP1.jpg"
+  },
+  "ZSU_CDF": {
+    "name": "ZSU_CDF",
+    "thumb": "ZSU_CDF.jpg"
+  },
+  "ZSU_INS": {
+    "name": "ZSU_INS",
+    "thumb": "ZSU_INS.jpg"
+  },
+  "ZSU_TK_EP1": {
+    "name": "ZSU_TK_EP1",
+    "thumb": "ZSU_TK_EP1.jpg"
+  }
+}
