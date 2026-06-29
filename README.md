@@ -2,7 +2,7 @@
 
 A browser-based, offline, single-file **order-of-battle editor** for Arma 2 **WASP "Warfare"** — part of the [Miksuu's Warfare tools](https://miksuu.com/tools) suite (sibling to [WDDM](https://github.com/rayswaynl/WDDM), [Loadout Lab](https://github.com/rayswaynl/loadout-lab), [Sector & Town Planner](https://github.com/rayswaynl/sector-planner), [Strategy & Economy](https://github.com/rayswaynl/strategy-economy)).
 
-> Status: **in development**.
+**▶ Live: https://rayswaynl.github.io/garrison-editor/**
 
 ## What it does
 
