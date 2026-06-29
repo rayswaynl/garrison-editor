@@ -155,7 +155,54 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 .pick-empty{font-size:12px;color:#8b939c;padding:20px;text-align:center}
 .warn-chip{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;background:#3a1a1a;color:var(--orange);border:1px solid #6a3a2a;border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle}
 
-/* ---- Garrison Table placeholder ---- */
+/* ---- Garrison Table ---- */
+.gar-layout{display:flex;width:100%;height:100%;min-height:0;min-width:0}
+.gar-sidebar{width:240px;flex:0 0 240px;border-right:1px solid var(--line);background:var(--steel);display:flex;flex-direction:column;min-height:0}
+.gar-main{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:auto;padding:14px}
+.gar-type-list{overflow-y:auto;flex:1;padding:8px 10px}
+.gar-type-btn{display:flex;align-items:center;gap:6px;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:5px;padding:7px 10px;margin-bottom:4px;color:#9aa3ad;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all .12s}
+.gar-type-btn:hover{background:var(--gunmetal);color:var(--bone);border-color:var(--line)}
+.gar-type-btn.on{background:var(--gunmetal);border-color:var(--orange);color:var(--orange)}
+.gar-type-btn .gar-badge{font-size:9px;background:var(--olive);color:var(--chalk);padding:1px 5px;border-radius:8px;margin-left:auto;white-space:nowrap}
+.gar-type-btn.on .gar-badge{background:var(--orange);color:#1a1208}
+.gar-crosslink{padding:10px;border-top:1px solid var(--line);flex:0 0 auto}
+.gar-crosslink label{margin-top:0;font-size:10px}
+.gar-crosslink-drop{border:1px dashed var(--line);border-radius:5px;padding:8px;text-align:center;font-size:11px;font-family:'JetBrains Mono',monospace;color:#556;cursor:pointer;background:var(--gunmetal);transition:all .15s;margin-bottom:6px}
+.gar-crosslink-drop:hover{border-color:var(--orange);color:var(--orange)}
+.gar-crosslink-drop.drag-over{border-color:var(--orange);background:#1a1208;color:var(--orange)}
+.gar-card{background:var(--steel);border:1px solid var(--line);border-radius:7px;padding:14px;max-width:900px}
+.gar-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.gar-card-hdr h2{font-family:Oswald,sans-serif;font-size:17px;letter-spacing:.5px;flex:1}
+.gar-card-hdr .type-badge{font-family:'JetBrains Mono',monospace;font-size:10px;background:#0d1014;border:1px solid var(--line);border-radius:8px;padding:2px 8px;color:#9aa3ad}
+.gar-scalars{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.gar-scalar-group{display:flex;flex-direction:column;gap:4px}
+.gar-scalar-group label{margin:0;font-size:10px}
+.gar-scalar-row{display:flex;align-items:center;gap:8px}
+.gar-scalar-row input[type=number]{width:72px}
+.gar-scalar-row input[type=range]{width:120px;accent-color:var(--orange)}
+.gar-scalar-row .val-display{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange);min-width:28px}
+.gar-coef-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:#556;margin-top:2px}
+.gar-pool-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.gar-pool-hdr h3{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.5px;flex:1}
+.gar-pool-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
+.gar-pool-table th{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;padding:4px 8px;border-bottom:1px solid var(--line);text-align:left;background:var(--gunmetal)}
+.gar-pool-table td{padding:5px 8px;border-bottom:1px solid #1e232a;vertical-align:middle}
+.gar-pool-table tr:last-child td{border-bottom:none}
+.gar-pool-table tr:hover td{background:#0d1014}
+.gar-pool-table select{width:160px;font-size:12px;padding:4px 6px}
+.gar-pool-table input[type=number]{width:60px;font-size:12px;padding:4px 6px}
+.bucket-toggle{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;font-size:11px;font-family:'JetBrains Mono',monospace}
+.bucket-toggle button{background:none;border:none;color:#9aa3ad;padding:4px 10px;cursor:pointer;border-radius:0;transition:all .1s}
+.bucket-toggle button.on{background:var(--orange);color:#1a1208;font-weight:600}
+.gar-preview{background:#0a0c0f;border:1px solid var(--line);border-radius:5px;padding:10px 12px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#9aa3ad;line-height:1.7}
+.gar-preview .prev-title{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#556;margin-bottom:6px}
+.gar-preview .prev-line{margin-bottom:2px}
+.gar-preview .prev-key{color:var(--bone)}
+.gar-preview .prev-calc{color:var(--orange);font-size:12px;margin-top:6px;font-weight:600}
+.gar-crosslink-status{font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;line-height:1.6}
+.gar-crosslink-status .ok{color:var(--olive)}
+.gar-crosslink-status .cnt{color:var(--orange);font-weight:600}
+/* placeholder-wrap kept for other potential use */
 .placeholder-wrap{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#39414b}
 .placeholder-wrap .big{font-size:56px;line-height:1}
 .placeholder-wrap .p1{font-family:Oswald,sans-serif;font-size:18px;color:#556;letter-spacing:1px}
@@ -238,12 +285,33 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 
 </div>
 
-<!-- ====== Tab: Garrison Table (placeholder) ====== -->
+<!-- ====== Tab: Garrison Table ====== -->
 <div class="tab-content" id="tabGarrison">
-  <div class="placeholder-wrap">
-    <div class="big">🏘</div>
-    <div class="p1">Garrison Table</div>
-    <div class="p2">Coming in Task 3 — per-town-type group pools,<br>inf/veh split, cap, Sector-Planner cross-link.</div>
+  <div class="gar-layout">
+
+    <!-- LEFT: type list + cross-link -->
+    <div class="gar-sidebar">
+      <div class="panel-hdr">
+        <h2>Town Types</h2>
+        <div class="sub">10 types · click to edit</div>
+      </div>
+      <div class="gar-type-list" id="garTypeList"></div>
+      <div class="gar-crosslink">
+        <label>Load Sector-Planner Campaign</label>
+        <div class="gar-crosslink-drop" id="garDropZone" title="Click or drag a seed-towns.json here">
+          📂 Drop seed-towns.json<br><span style="font-size:10px;color:#39414b">or click to browse</span>
+        </div>
+        <input type="file" id="garFileInput" accept=".json" style="display:none">
+        <div class="gar-crosslink-status" id="garCrossLinkStatus"></div>
+      </div>
+    </div>
+
+    <!-- MAIN: selected type card -->
+    <div class="gar-main" id="garMain">
+      <div class="empty-state" id="garEmpty" style="padding-top:60px">Select a town type from the left panel to edit its garrison.</div>
+      <div id="garCard" style="display:none"></div>
+    </div>
+
   </div>
 </div>
 
@@ -274,6 +342,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 const MODEL = {
   groups: {},   // populated from groups.json
   units: {},    // populated from units.json
+  garrison: {}, // populated from garrison.json
   loaded: false,
   faction: null // currently selected faction
 };
@@ -283,25 +352,31 @@ const MODEL = {
 // ============================================================
 async function loadData() {
   try {
-    const [gRes, uRes] = await Promise.all([
+    const [gRes, uRes, garRes] = await Promise.all([
       fetch('assets/data/groups.json'),
-      fetch('assets/data/units.json')
+      fetch('assets/data/units.json'),
+      fetch('assets/data/garrison.json')
     ]);
     if (!gRes.ok) throw new Error('groups.json: ' + gRes.status);
     if (!uRes.ok) throw new Error('units.json: ' + uRes.status);
+    if (!garRes.ok) throw new Error('garrison.json: ' + garRes.status);
     MODEL.groups = await gRes.json();
     MODEL.units = await uRes.json();
+    MODEL.garrison = await garRes.json();
     MODEL.loaded = true;
 
     const factionCount = Object.keys(MODEL.groups).length;
     const unitCount = Object.keys(MODEL.units).length;
+    const garTypeCount = Object.keys(MODEL.garrison).length;
     document.getElementById('statusChip').textContent =
-      `${factionCount} factions · ${unitCount} units`;
-    setStatus(`<span class="ok">Loaded: ${factionCount} factions, ${unitCount} units</span>`);
+      `${factionCount} factions · ${unitCount} units · ${garTypeCount} gar types`;
+    setStatus(`<span class="ok">Loaded: ${factionCount} factions, ${unitCount} units, ${garTypeCount} garrison types</span>`);
     buildFactionChips();
     // Auto-select first faction (CDF)
     const firstFaction = Object.keys(MODEL.groups)[0];
     if (firstFaction) selectFaction(firstFaction);
+    // Init garrison table
+    initGarrisonTable();
   } catch (e) {
     setStatus(`<span class="err">Error: ${e.message}</span>`);
     console.error('Load error:', e);
@@ -317,7 +392,7 @@ function setStatus(html) {
 // ============================================================
 function switchTab(tab) {
   ['templates', 'garrison'].forEach(t => {
-    document.getElementById('tabContent' + cap(t))?.classList?.remove('on');
+    document.getElementById('tab' + cap(t))?.classList?.remove('on');
     document.getElementById('tabBtn' + cap(t))?.classList?.remove('on');
   });
   document.getElementById('tab' + cap(tab)).classList.add('on');
@@ -867,6 +942,368 @@ function pickUnit(cls) {
 // Also handle typed classname not in catalog (warn but allow)
 // The picker UI only shows catalog entries; for typing custom classnames,
 // the validation warn chip appears automatically in renderUnitChip when cls not in MODEL.units.
+
+// ============================================================
+//  GARRISON TABLE
+// ============================================================
+
+// Town-type display order (Tiny → Huge, then default)
+const TOWN_TYPE_ORDER = [
+  'TinyTown1',
+  'SmallTown1','SmallTown2',
+  'MediumTown1','MediumTown2',
+  'LargeTown1','LargeTown2',
+  'HugeTown1','HugeTown2',
+  'default'
+];
+
+// Campaign cross-link: town-type → count of towns that include it
+let CAMPAIGN_COUNTS = {}; // e.g. { SmallTown1: 15, ... }
+
+// Currently selected town-type key
+let GAR_SELECTED = null;
+
+// ---- Derive garrison key vocabulary from garrison.json ----
+function deriveGarrisonKeys() {
+  const keys = new Set();
+  Object.values(MODEL.garrison).forEach(td => {
+    (td.units || []).forEach(([key]) => keys.add(key));
+  });
+  return Array.from(keys).sort();
+}
+
+// ---- Build the sidebar type list ----
+function buildGarTypeList() {
+  const el = document.getElementById('garTypeList');
+  el.innerHTML = '';
+  TOWN_TYPE_ORDER.forEach(tt => {
+    if (!MODEL.garrison[tt]) return;
+    const btn = document.createElement('button');
+    btn.className = 'gar-type-btn' + (GAR_SELECTED === tt ? ' on' : '');
+    btn.dataset.type = tt;
+    btn.innerHTML = `<span>${tt}</span>`;
+    // Campaign badge
+    const cnt = CAMPAIGN_COUNTS[tt];
+    if (cnt !== undefined) {
+      const badge = document.createElement('span');
+      badge.className = 'gar-badge';
+      badge.textContent = `${cnt} towns`;
+      btn.appendChild(badge);
+    }
+    btn.addEventListener('click', () => selectGarType(tt));
+    el.appendChild(btn);
+  });
+}
+
+function selectGarType(tt) {
+  GAR_SELECTED = tt;
+  // Update sidebar highlights
+  document.querySelectorAll('.gar-type-btn').forEach(b =>
+    b.classList.toggle('on', b.dataset.type === tt)
+  );
+  renderGarCard(tt);
+}
+
+// ---- Render the main card for a town-type ----
+function renderGarCard(tt) {
+  const data = MODEL.garrison[tt];
+  const empty = document.getElementById('garEmpty');
+  const card = document.getElementById('garCard');
+  empty.style.display = 'none';
+  card.style.display = '';
+
+  const garKeys = deriveGarrisonKeys();
+  const campaignNote = CAMPAIGN_COUNTS[tt] !== undefined
+    ? `<span class="badge" style="background:var(--olive);font-size:10px">used in ${CAMPAIGN_COUNTS[tt]} towns</span>`
+    : '';
+
+  card.innerHTML = '';
+
+  // Card header
+  const hdr = document.createElement('div');
+  hdr.className = 'gar-card';
+  hdr.innerHTML = `
+    <div class="gar-card-hdr">
+      <h2 id="garCardTitle">${tt}</h2>
+      <span class="type-badge">${tt === 'default' ? 'fallback' : tt.replace(/(\D+)(\d+)/, '$1 $2')}</span>
+      ${campaignNote}
+    </div>
+    <div class="gar-scalars">
+      <div class="gar-scalar-group">
+        <label>percentage_inf (0–100)</label>
+        <div class="gar-scalar-row">
+          <input type="range" min="0" max="100" value="${data.percentage_inf}"
+            id="garPctSlider" oninput="garUpdatePct(this.value)">
+          <span class="val-display" id="garPctVal">${data.percentage_inf}</span>
+          <input type="number" min="0" max="100" value="${data.percentage_inf}"
+            id="garPctNum" style="width:58px" oninput="garUpdatePct(this.value)">
+          <span style="font-size:10px;color:#556;font-family:'JetBrains Mono',monospace">%</span>
+        </div>
+      </div>
+      <div class="gar-scalar-group">
+        <label>groups_max</label>
+        <div class="gar-scalar-row">
+          <input type="number" min="1" max="30" value="${data.groups_max}"
+            id="garGroupsMax" style="width:72px" oninput="garUpdateGroupsMax(this.value)">
+        </div>
+        <div class="gar-coef-note">× DEFENDER_COEF (~1.0) at runtime</div>
+      </div>
+    </div>
+
+    <div class="gar-pool-hdr">
+      <h3>Group Pool</h3>
+      <button class="sm" onclick="garAddPoolEntry()">+ Add entry</button>
+    </div>
+    <table class="gar-pool-table" id="garPoolTable">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Force</th>
+          <th>Bucket</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="garPoolBody"></tbody>
+    </table>
+
+    <div class="gar-preview" id="garPreview"></div>
+  `;
+
+  card.appendChild(hdr);
+  renderGarPool(tt, garKeys);
+  renderGarPreview(tt);
+}
+
+// ---- scalar update helpers ----
+function garUpdatePct(val) {
+  const v = Math.max(0, Math.min(100, parseInt(val) || 0));
+  MODEL.garrison[GAR_SELECTED].percentage_inf = v;
+  document.getElementById('garPctSlider').value = v;
+  document.getElementById('garPctNum').value = v;
+  document.getElementById('garPctVal').textContent = v;
+  renderGarPreview(GAR_SELECTED);
+}
+
+function garUpdateGroupsMax(val) {
+  const v = Math.max(1, parseInt(val) || 1);
+  MODEL.garrison[GAR_SELECTED].groups_max = v;
+  document.getElementById('garGroupsMax').value = v;
+  renderGarPreview(GAR_SELECTED);
+}
+
+// ---- Render pool rows ----
+function renderGarPool(tt, garKeys) {
+  const tbody = document.getElementById('garPoolBody');
+  tbody.innerHTML = '';
+  const units = MODEL.garrison[tt].units;
+  units.forEach((entry, i) => {
+    tbody.appendChild(makePoolRow(tt, i, entry, garKeys));
+  });
+}
+
+function makePoolRow(tt, i, entry, garKeys) {
+  const [key, force, bucket] = entry;
+  const tr = document.createElement('tr');
+  tr.dataset.idx = i;
+
+  // Key select
+  const tdKey = document.createElement('td');
+  const sel = document.createElement('select');
+  sel.className = '';
+  garKeys.forEach(k => {
+    const opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = k;
+    opt.selected = (k === key);
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', () => {
+    MODEL.garrison[tt].units[i][0] = sel.value;
+    renderGarPreview(tt);
+  });
+  tdKey.appendChild(sel);
+  tr.appendChild(tdKey);
+
+  // Force input
+  const tdForce = document.createElement('td');
+  const numIn = document.createElement('input');
+  numIn.type = 'number';
+  numIn.min = '1';
+  numIn.max = '99';
+  numIn.value = force;
+  numIn.addEventListener('change', () => {
+    MODEL.garrison[tt].units[i][1] = parseInt(numIn.value) || 1;
+    renderGarPreview(tt);
+  });
+  tdForce.appendChild(numIn);
+  tr.appendChild(tdForce);
+
+  // Bucket toggle (inf / veh)
+  const tdBucket = document.createElement('td');
+  const tog = document.createElement('div');
+  tog.className = 'bucket-toggle';
+  const infBtn = document.createElement('button');
+  infBtn.textContent = 'Inf';
+  infBtn.className = bucket === 0 ? 'on' : '';
+  const vehBtn = document.createElement('button');
+  vehBtn.textContent = 'Veh';
+  vehBtn.className = bucket === 1 ? 'on' : '';
+  infBtn.addEventListener('click', () => {
+    MODEL.garrison[tt].units[i][2] = 0;
+    infBtn.className = 'on'; vehBtn.className = '';
+    renderGarPreview(tt);
+  });
+  vehBtn.addEventListener('click', () => {
+    MODEL.garrison[tt].units[i][2] = 1;
+    vehBtn.className = 'on'; infBtn.className = '';
+    renderGarPreview(tt);
+  });
+  tog.appendChild(infBtn);
+  tog.appendChild(vehBtn);
+  tdBucket.appendChild(tog);
+  tr.appendChild(tdBucket);
+
+  // Remove button
+  const tdDel = document.createElement('td');
+  const delBtn = document.createElement('button');
+  delBtn.className = 'sm danger';
+  delBtn.textContent = '✕';
+  delBtn.addEventListener('click', () => {
+    MODEL.garrison[tt].units.splice(i, 1);
+    renderGarPool(tt, deriveGarrisonKeys());
+    renderGarPreview(tt);
+  });
+  tdDel.appendChild(delBtn);
+  tr.appendChild(tdDel);
+
+  return tr;
+}
+
+function garAddPoolEntry() {
+  const tt = GAR_SELECTED;
+  if (!tt) return;
+  const garKeys = deriveGarrisonKeys();
+  const firstKey = garKeys[0] || 'Squad';
+  MODEL.garrison[tt].units.push([firstKey, 1, 0]);
+  renderGarPool(tt, garKeys);
+  renderGarPreview(tt);
+}
+
+// ---- Preview calc ----
+function renderGarPreview(tt) {
+  const el = document.getElementById('garPreview');
+  if (!el) return;
+  const data = MODEL.garrison[tt];
+  const cap = data.groups_max;
+  const pct = data.percentage_inf;
+  const infGroups = Math.round(cap * pct / 100);
+  const vehGroups = cap - infGroups;
+
+  // Unique keys in pool
+  const allKeys = data.units.map(e => e[0]);
+  const infKeys = data.units.filter(e => e[2] === 0).map(e => e[0]);
+  const vehKeys = data.units.filter(e => e[2] === 1).map(e => e[0]);
+  const uniqueInf = [...new Set(infKeys)];
+  const uniqueVeh = [...new Set(vehKeys)];
+
+  el.innerHTML = `
+    <div class="prev-title">Preview — what this type fields at runtime</div>
+    <div class="prev-line"><span style="color:#556">Cap:</span> <span class="prev-key">${cap}</span> groups <span style="color:#556">×</span> DEFENDER_COEF</div>
+    <div class="prev-calc">≈${infGroups} inf + ${vehGroups} veh groups (${pct}% inf)</div>
+    <div class="prev-line" style="margin-top:6px"><span style="color:#556">Inf pool:</span> ${uniqueInf.length ? uniqueInf.map(k => `<span class="prev-key">${k}</span>`).join(', ') : '<span style="color:#39414b">none</span>'}</div>
+    <div class="prev-line"><span style="color:#556">Veh pool:</span> ${uniqueVeh.length ? uniqueVeh.map(k => `<span class="prev-key">${k}</span>`).join(', ') : '<span style="color:#39414b">none</span>'}</div>
+    <div class="prev-line" style="color:#39414b;margin-top:4px;font-size:10px">${data.units.length} pool entr${data.units.length !== 1 ? 'ies' : 'y'} total</div>
+  `;
+}
+
+// ============================================================
+//  CROSS-LINK: seed-towns.json loader
+// ============================================================
+function parseCampaignFile(text) {
+  try {
+    const obj = JSON.parse(text);
+    // Support both { chernarus: { towns: [...] } } and { towns: [...] } or just [...]
+    let towns = [];
+    if (Array.isArray(obj)) {
+      towns = obj;
+    } else {
+      // Find the first key that has .towns
+      const root = Object.values(obj).find(v => v && Array.isArray(v.towns));
+      if (root) towns = root.towns;
+      else if (obj.towns) towns = obj.towns;
+    }
+    if (!towns.length) throw new Error('No towns array found');
+
+    const counts = {};
+    towns.forEach(t => {
+      (t.type || []).forEach(tt => {
+        counts[tt] = (counts[tt] || 0) + 1;
+      });
+    });
+    CAMPAIGN_COUNTS = counts;
+    buildGarTypeList();
+    // Re-render current card if open to show badge
+    if (GAR_SELECTED) renderGarCard(GAR_SELECTED);
+
+    const typesFound = Object.keys(counts).length;
+    const totalTowns = towns.length;
+    document.getElementById('garCrossLinkStatus').innerHTML =
+      `<span class="ok">Loaded:</span> ${totalTowns} towns · ${typesFound} types used<br>` +
+      Object.entries(counts).map(([k,v]) => `<span class="cnt">${k}</span>: ${v}`).join('<br>');
+  } catch (e) {
+    document.getElementById('garCrossLinkStatus').innerHTML =
+      `<span style="color:var(--danger)">Parse error: ${e.message}</span>`;
+  }
+}
+
+function initGarCrossLink() {
+  const dropZone = document.getElementById('garDropZone');
+  const fileInput = document.getElementById('garFileInput');
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => parseCampaignFile(ev.target.result);
+    reader.readAsText(file);
+    e.target.value = '';
+  });
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => parseCampaignFile(ev.target.result);
+    reader.readAsText(file);
+  });
+
+  // Also allow paste of JSON text in the cross-link area
+  dropZone.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const text = e.clipboardData.getData('text');
+    if (text) parseCampaignFile(text);
+  });
+  // Make the drop zone focusable for paste
+  dropZone.setAttribute('tabindex', '0');
+}
+
+// ============================================================
+//  GARRISON INIT (called after garrison.json loads)
+// ============================================================
+function initGarrisonTable() {
+  buildGarTypeList();
+  initGarCrossLink();
+  // Auto-select first type
+  selectGarType(TOWN_TYPE_ORDER.find(tt => MODEL.garrison[tt]) || 'SmallTown1');
+}
 
 // ============================================================
 //  BOOT
