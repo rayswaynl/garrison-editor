@@ -214,6 +214,38 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 
 /* ---- Empty state ---- */
 .empty-state{text-align:center;padding:32px;color:#39414b;font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* ---- Export panel ---- */
+.exp-layout{display:flex;width:100%;height:100%;min-height:0;gap:0}
+.exp-sidebar{width:280px;flex:0 0 280px;border-right:1px solid var(--line);background:var(--steel);display:flex;flex-direction:column;min-height:0;overflow:auto;padding:14px}
+.exp-main{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;padding:0}
+.exp-section{margin-bottom:18px}
+.exp-section-title{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:#9aa3ad;margin-bottom:8px}
+.exp-file-area{background:#0a0c0f;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.exp-file-hdr{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--gunmetal);border-bottom:1px solid var(--line)}
+.exp-file-hdr .fname{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bone);flex:1}
+.exp-file-hdr .fstatus{font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 7px;border-radius:8px;white-space:nowrap}
+.exp-file-hdr .fstatus.loaded{background:#1a3a1a;color:var(--olive)}
+.exp-file-hdr .fstatus.unloaded{background:#0d1014;color:#39414b}
+.exp-file-hdr .fstatus.dirty{background:#2a1a08;color:var(--orange)}
+.exp-paste-area{width:100%;min-height:60px;max-height:110px;background:#0a0c0f;border:none;resize:vertical;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;padding:8px 10px;outline:none;display:block;box-sizing:border-box}
+.exp-paste-area::placeholder{color:#39414b}
+.exp-out-wrap{flex:1;display:flex;flex-direction:column;min-height:0;padding:14px;gap:12px}
+.exp-out-file{background:var(--steel);border:1px solid var(--line);border-radius:7px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.exp-out-file-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--gunmetal);flex:0 0 auto}
+.exp-out-file-hdr .outname{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bone);flex:1}
+.exp-out-file-hdr .mode-chip{font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 7px;border-radius:8px}
+.exp-out-file-hdr .mode-chip.patch{background:#1a2a3a;color:#6ab0ff}
+.exp-out-file-hdr .mode-chip.changelist{background:#2a1a08;color:var(--orange)}
+.exp-out-code{flex:1;overflow:auto;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;white-space:pre;line-height:1.6;min-height:80px;max-height:280px;background:#08090c}
+.exp-out-actions{display:flex;gap:6px;padding:8px 12px;background:var(--gunmetal);border-top:1px solid var(--line);flex:0 0 auto}
+.exp-roundtrip-bar{background:var(--gunmetal);border:1px solid var(--line);border-radius:5px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.exp-roundtrip-bar .rt-pass{color:var(--olive)}
+.exp-roundtrip-bar .rt-fail{color:var(--danger)}
+.exp-roundtrip-bar .rt-idle{color:#39414b}
+.diff-line-add{color:#5a9e5a}
+.diff-line-rem{color:#9e5a5a}
+.diff-line-ctx{color:#39414b}
 </style>
 </head>
 <body>
@@ -235,10 +267,11 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
   <div class="chip">model: <b id="statusChip">loading…</b></div>
 </div>
 
-<!-- ====== 2-tab bar ====== -->
+<!-- ====== 3-tab bar ====== -->
 <div class="tabs-bar">
   <button class="tab-btn on" id="tabBtnTemplates" onclick="switchTab('templates')">Group Templates</button>
   <button class="tab-btn" id="tabBtnGarrison" onclick="switchTab('garrison')">Garrison Table</button>
+  <button class="tab-btn" id="tabBtnExport" onclick="switchTab('export')">Export</button>
 </div>
 
 <!-- ====== Tab: Group Templates ====== -->
@@ -310,6 +343,89 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
     <div class="gar-main" id="garMain">
       <div class="empty-state" id="garEmpty" style="padding-top:60px">Select a town type from the left panel to edit its garrison.</div>
       <div id="garCard" style="display:none"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ====== Tab: Export ====== -->
+<div class="tab-content" id="tabExport">
+  <div class="exp-layout">
+
+    <!-- LEFT: source file inputs -->
+    <div class="exp-sidebar">
+      <div class="exp-section-title" style="margin-bottom:12px">Source Files (Paste &amp; Patch)</div>
+      <p class="hint" style="margin-bottom:14px">Paste the original SQF files below. Export will replace <em>only</em> your edited blocks — all other bytes stay identical. Without a source paste, export emits change-list snippets.</p>
+
+      <!-- Groups source -->
+      <div class="exp-section">
+        <div class="exp-file-area">
+          <div class="exp-file-hdr">
+            <span class="fname" id="expGroupsFname">Groups_<em id="expGroupsFacLabel">CDF</em>.sqf</span>
+            <span class="fstatus unloaded" id="expGroupsStatus">not loaded</span>
+            <button class="sm ico" title="Clear" onclick="expClearGroups()">✕</button>
+          </div>
+          <textarea class="exp-paste-area" id="expGroupsPaste"
+            placeholder="Paste Groups_<faction>.sqf content here…"
+            spellcheck="false"></textarea>
+        </div>
+        <div class="hint" id="expGroupsHint" style="margin-top:5px"></div>
+      </div>
+
+      <!-- Garrison source -->
+      <div class="exp-section">
+        <div class="exp-file-area">
+          <div class="exp-file-hdr">
+            <span class="fname">Server_GetTownGroupsDefender.sqf</span>
+            <span class="fstatus unloaded" id="expGarStatus">not loaded</span>
+            <button class="sm ico" title="Clear" onclick="expClearGarrison()">✕</button>
+          </div>
+          <textarea class="exp-paste-area" id="expGarPaste"
+            placeholder="Paste Server_GetTownGroupsDefender.sqf content here…"
+            spellcheck="false"></textarea>
+        </div>
+        <div class="hint" id="expGarHint" style="margin-top:5px"></div>
+      </div>
+
+      <!-- Round-trip status -->
+      <div class="exp-roundtrip-bar" id="expRoundtripBar">
+        <span class="rt-idle">Round-trip gate: paste a source file and click Export to verify.</span>
+      </div>
+
+      <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="primary" onclick="runExport()">Export Both</button>
+        <button onclick="runExport('groups')">Groups only</button>
+        <button onclick="runExport('garrison')">Garrison only</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: output -->
+    <div class="exp-main">
+      <div class="exp-out-wrap" id="expOutWrap">
+        <div class="empty-state" id="expEmpty" style="padding-top:80px">Click Export to generate output.<br><span style="color:#39414b;font-size:11px">Paste source files on the left for byte-identical patch mode.</span></div>
+        <div id="expOutGroups" style="display:none" class="exp-out-file">
+          <div class="exp-out-file-hdr">
+            <span class="outname" id="expOutGroupsName">Groups_CDF.sqf</span>
+            <span class="mode-chip" id="expOutGroupsMode">—</span>
+          </div>
+          <div class="exp-out-code" id="expOutGroupsCode"></div>
+          <div class="exp-out-actions">
+            <button class="primary sm" onclick="expDownload('groups')">Download</button>
+            <button class="sm" onclick="expCopy('groups')">Copy</button>
+          </div>
+        </div>
+        <div id="expOutGarrison" style="display:none" class="exp-out-file">
+          <div class="exp-out-file-hdr">
+            <span class="outname">Server_GetTownGroupsDefender.sqf</span>
+            <span class="mode-chip" id="expOutGarMode">—</span>
+          </div>
+          <div class="exp-out-code" id="expOutGarCode"></div>
+          <div class="exp-out-actions">
+            <button class="primary sm" onclick="expDownload('garrison')">Download</button>
+            <button class="sm" onclick="expCopy('garrison')">Copy</button>
+          </div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -391,12 +507,13 @@ function setStatus(html) {
 //  TAB SWITCHING
 // ============================================================
 function switchTab(tab) {
-  ['templates', 'garrison'].forEach(t => {
+  ['templates', 'garrison', 'export'].forEach(t => {
     document.getElementById('tab' + cap(t))?.classList?.remove('on');
     document.getElementById('tabBtn' + cap(t))?.classList?.remove('on');
   });
   document.getElementById('tab' + cap(tab)).classList.add('on');
   document.getElementById('tabBtn' + cap(tab)).classList.add('on');
+  if (tab === 'export') expOnTabOpen();
 }
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
 
@@ -1304,6 +1421,552 @@ function initGarrisonTable() {
   // Auto-select first type
   selectGarType(TOWN_TYPE_ORDER.find(tt => MODEL.garrison[tt]) || 'SmallTown1');
 }
+
+// ============================================================
+//  EXPORT — PASTE-AND-PATCH ENGINE
+// ============================================================
+
+// Raw text shadows (capture before textarea normalises \r\n → \n)
+const EXP = {
+  groupsRaw: null,    // raw bytes as captured on paste
+  garrisonRaw: null,  // raw bytes as captured on paste
+  groupsOutput: '',   // last generated groups output
+  garrisonOutput: '', // last generated garrison output
+};
+
+// ---- Paste capture (preserve \r\n) ----
+function expInitPasteCapture() {
+  const gpEl = document.getElementById('expGroupsPaste');
+  const garEl = document.getElementById('expGarPaste');
+
+  gpEl.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const raw = e.clipboardData.getData('text');
+    EXP.groupsRaw = raw;
+    // Show preview in textarea (browser normalises, that's fine — we use EXP.groupsRaw)
+    gpEl.value = raw;
+    expUpdateGroupsStatus();
+  });
+
+  garEl.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const raw = e.clipboardData.getData('text');
+    EXP.garrisonRaw = raw;
+    garEl.value = raw;
+    expUpdateGarStatus();
+  });
+
+  // If user types/clears via keyboard instead of paste, fall back to textarea value
+  gpEl.addEventListener('input', () => {
+    if (gpEl.value === '') { EXP.groupsRaw = null; expUpdateGroupsStatus(); }
+    else if (EXP.groupsRaw === null) { EXP.groupsRaw = gpEl.value; expUpdateGroupsStatus(); }
+  });
+  garEl.addEventListener('input', () => {
+    if (garEl.value === '') { EXP.garrisonRaw = null; expUpdateGarStatus(); }
+    else if (EXP.garrisonRaw === null) { EXP.garrisonRaw = garEl.value; expUpdateGarStatus(); }
+  });
+}
+
+function expClearGroups() {
+  document.getElementById('expGroupsPaste').value = '';
+  EXP.groupsRaw = null;
+  expUpdateGroupsStatus();
+}
+function expClearGarrison() {
+  document.getElementById('expGarPaste').value = '';
+  EXP.garrisonRaw = null;
+  expUpdateGarStatus();
+}
+
+function expUpdateGroupsStatus() {
+  const el = document.getElementById('expGroupsStatus');
+  const hint = document.getElementById('expGroupsHint');
+  if (!EXP.groupsRaw) {
+    el.textContent = 'not loaded'; el.className = 'fstatus unloaded';
+    hint.innerHTML = '';
+    return;
+  }
+  const parsed = parseGroupsSqf(EXP.groupsRaw);
+  const count = parsed.blocks.length;
+  el.textContent = `${count} blocks parsed`; el.className = 'fstatus loaded';
+  hint.innerHTML = `<span class="ok">${count} template triplets found</span>`;
+}
+
+function expUpdateGarStatus() {
+  const el = document.getElementById('expGarStatus');
+  const hint = document.getElementById('expGarHint');
+  if (!EXP.garrisonRaw) {
+    el.textContent = 'not loaded'; el.className = 'fstatus unloaded';
+    hint.innerHTML = '';
+    return;
+  }
+  const parsed = parseGarrisonSqf(EXP.garrisonRaw);
+  const count = parsed.blocks.length;
+  el.textContent = `${count} cases parsed`; el.className = 'fstatus loaded';
+  hint.innerHTML = `<span class="ok">${count} case blocks found</span>`;
+}
+
+function expOnTabOpen() {
+  // Update the faction label in the Groups paste header
+  const fac = MODEL.faction || (MODEL.groups ? Object.keys(MODEL.groups)[0] : 'CDF') || 'CDF';
+  document.getElementById('expGroupsFacLabel').textContent = fac;
+  document.getElementById('expOutGroupsName').textContent = `Groups_${fac}.sqf`;
+}
+
+// ============================================================
+//  GROUPS SQF PARSER
+//  Finds each triplet block: _k = _k + ["KEY"]; ... _l = _l + [_u];
+//  Returns { blocks: [{key, units, start, end}], raw }
+//  start/end are char offsets into raw (inclusive of the _k line, up to and including the _l line + \n)
+// ============================================================
+function parseGroupsSqf(raw) {
+  const blocks = [];
+  // We scan line by line, tracking char offsets
+  // Use a regex that finds each triplet.
+  // Pattern: line starting with _k = _k + ["KEY"]; then _u lines, then _l = _l + [_u];
+  // We need char spans for in-place replacement.
+
+  // Split into lines, tracking cumulative offsets
+  const lines = [];
+  let pos = 0;
+  // Split on \n but keep \r if present
+  const rawLines = raw.split('\n');
+  for (let i = 0; i < rawLines.length; i++) {
+    const lineText = rawLines[i]; // does NOT include the \n
+    // The actual text in the file: lineText + '\n' (or just lineText for last)
+    const lineEnd = pos + lineText.length + (i < rawLines.length - 1 ? 1 : 0);
+    lines.push({ text: lineText, start: pos, end: lineEnd });
+    pos = lineEnd;
+  }
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    // Match _k = _k + ["KEY"];  (with optional spaces/tabs)
+    const kMatch = line.text.match(/^_k\s*=\s*_k\s*\+\s*\["([^"]+)"\]\s*;/);
+    if (kMatch) {
+      const key = kMatch[1];
+      const blockStart = line.start;
+      let j = i + 1;
+      const units = [];
+      let blockEnd = line.end;
+
+      // First _u line: _u\t\t= ["cls"];  or _u = ["cls"];
+      if (j < lines.length) {
+        const uFirst = lines[j].text.match(/^_u\s*=\s*\["([^"]+)"\]\s*;/);
+        if (uFirst) {
+          units.push(uFirst[1]);
+          blockEnd = lines[j].end;
+          j++;
+        }
+      }
+      // Subsequent _u lines: _u = _u + ["cls"];
+      while (j < lines.length) {
+        const uMore = lines[j].text.match(/^_u\s*=\s*_u\s*\+\s*\["([^"]+)"\]\s*;/);
+        if (uMore) {
+          units.push(uMore[1]);
+          blockEnd = lines[j].end;
+          j++;
+        } else {
+          break;
+        }
+      }
+      // Expect _l = _l + [_u];
+      if (j < lines.length && /^_l\s*=\s*_l\s*\+\s*\[_u\]\s*;/.test(lines[j].text)) {
+        blockEnd = lines[j].end;
+        j++;
+      }
+
+      blocks.push({ key, units, start: blockStart, end: blockEnd });
+      i = j;
+    } else {
+      i++;
+    }
+  }
+  return { blocks, raw };
+}
+
+// ============================================================
+//  GARRISON SQF PARSER
+//  Finds each case block: case "TownType": { _units=...; _percentage_inf=N; _groups_max=M; };
+//  OR the default block.
+//  Returns { blocks: [{townType, units, percentage_inf, groups_max, start, end}], raw }
+// ============================================================
+function parseGarrisonSqf(raw) {
+  const blocks = [];
+
+  const lines = [];
+  let pos = 0;
+  const rawLines = raw.split('\n');
+  for (let i = 0; i < rawLines.length; i++) {
+    const lineText = rawLines[i];
+    const lineEnd = pos + lineText.length + (i < rawLines.length - 1 ? 1 : 0);
+    lines.push({ text: lineText, start: pos, end: lineEnd });
+    pos = lineEnd;
+  }
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    // Match: \tcase "TownType": {
+    const caseMatch = line.text.match(/^\s+case\s+"([^"]+)"\s*:\s*\{/);
+    // Match: \tdefault { //--- ...
+    const defaultMatch = line.text.match(/^\s+default\s*\{/);
+
+    if (caseMatch || defaultMatch) {
+      const townType = caseMatch ? caseMatch[1] : 'default';
+      const blockStart = line.start;
+      let j = i + 1;
+      let units = [], percentage_inf = 50, groups_max = 3;
+      let blockEnd = line.end;
+
+      // Scan lines until we hit closing \t};
+      while (j < lines.length) {
+        const t = lines[j].text;
+        blockEnd = lines[j].end;
+
+        // _units = [...];
+        const unitsMatch = t.match(/^\s+_units\s*=\s*(\[.*\])\s*;/);
+        if (unitsMatch) {
+          try { units = JSON.parse(unitsMatch[1].replace(/\[/g,'[').replace(/\]/g,']')); } catch(_) {
+            // Parse manually: [["Squad",1,0],["Team",1,0],...]
+            units = parseUnitsArray(unitsMatch[1]);
+          }
+        }
+        // _percentage_inf = N;
+        const pctMatch = t.match(/^\s+_percentage_inf\s*=\s*(\d+)\s*;/);
+        if (pctMatch) percentage_inf = parseInt(pctMatch[1]);
+        // _groups_max = N;
+        const gmMatch = t.match(/^\s+_groups_max\s*=\s*(\d+)\s*;/);
+        if (gmMatch) groups_max = parseInt(gmMatch[1]);
+
+        // End of case block: \t};
+        if (/^\s+\};\s*$/.test(t)) { j++; break; }
+        j++;
+      }
+
+      blocks.push({ townType, units, percentage_inf, groups_max, start: blockStart, end: blockEnd });
+      i = j;
+    } else {
+      i++;
+    }
+  }
+  return { blocks, raw };
+}
+
+// Parse SQF-style units array like [["Squad",1,0],["Team",1,0],...]
+function parseUnitsArray(str) {
+  const result = [];
+  // Extract inner arrays
+  const inner = str.replace(/^\[/, '').replace(/\]$/, '');
+  // Split by ],[
+  const parts = inner.split(/\],\s*\[/);
+  parts.forEach(part => {
+    const cleaned = part.replace(/^\[/, '').replace(/\]$/, '');
+    const items = cleaned.split(',').map(s => s.trim());
+    if (items.length >= 3) {
+      const key = items[0].replace(/^"|"$/g, '');
+      const force = parseInt(items[1]) || 1;
+      const bucket = parseInt(items[2]) || 0;
+      result.push([key, force, bucket]);
+    }
+  });
+  return result;
+}
+
+// ============================================================
+//  EOL DETECTION
+//  Returns '\r\n' if the text uses CRLF, else '\n'
+// ============================================================
+function detectEol(raw) {
+  return raw.includes('\r\n') ? '\r\n' : '\n';
+}
+
+// ============================================================
+//  GROUPS EMITTER
+//  Regenerates the _k/_u/_l triplet block for one variant
+//  eol: '\r\n' or '\n' — must match the source file
+// ============================================================
+function emitGroupsTriplet(key, units, eol) {
+  eol = eol || '\n';
+  // Match the exact whitespace format from the source:
+  // _k = _k + ["KEY"];<eol>_u\t\t= ["cls1"];<eol>_u = _u + ["cls2"];<eol>...<eol>_l = _l + [_u];
+  let out = `_k = _k + ["${key}"];${eol}`;
+  if (units.length === 0) {
+    out += `_u\t\t= [];${eol}`;
+  } else {
+    out += `_u\t\t= ["${units[0]}"];${eol}`;
+    for (let i = 1; i < units.length; i++) {
+      out += `_u = _u + ["${units[i]}"];${eol}`;
+    }
+  }
+  out += `_l = _l + [_u];`;
+  return out;
+}
+
+// ============================================================
+//  GARRISON CASE EMITTER
+//  Regenerates a case block from model data
+//  eol: '\r\n' or '\n'
+// ============================================================
+function emitGarrisonCase(townType, data, eol) {
+  eol = eol || '\n';
+  const NL = eol;
+  // Format: \tcase "TownType": {\n\t\t_units = [...];\n\t\t_percentage_inf = N;\n\t\t_groups_max = M;\n\t};
+  // OR for default: \tdefault { //--- If nothing is set...\n\t\t...
+  const unitsStr = '[' + data.units.map(([k,f,b]) => `["${k}", ${f}, ${b}]`).join(', ') + ']';
+  if (townType === 'default') {
+    return `\tdefault { //--- If nothing is set...${NL}\t\t_units = ${unitsStr};${NL}\t\t_percentage_inf = ${data.percentage_inf};${NL}\t\t_groups_max = ${data.groups_max};${NL}\t};`;
+  }
+  return `\tcase "${townType}": {${NL}\t\t_units = ${unitsStr};${NL}\t\t_percentage_inf = ${data.percentage_inf};${NL}\t\t_groups_max = ${data.groups_max};${NL}\t};`;
+}
+
+// ============================================================
+//  DIFF: find which triplets changed vs parsed source
+// ============================================================
+function diffGroupsBlocks(parsedBlocks, fac) {
+  // parsedBlocks: [{key, units, start, end}, ...]
+  // MODEL.groups[fac].templates: { KEY: [[unit,...], ...], ... }
+  // We need to match model variants to parsed blocks in ORDER (same key appears multiple times).
+  // Track per-key how many variants we've seen
+  const keyCursor = {};
+  const changed = []; // indices into parsedBlocks that are changed
+
+  parsedBlocks.forEach((block, idx) => {
+    const key = block.key;
+    if (!keyCursor[key]) keyCursor[key] = 0;
+    const vi = keyCursor[key]++;
+    const modelVariants = MODEL.groups[fac]?.templates?.[key] || [];
+    const modelUnits = modelVariants[vi] || [];
+
+    // Compare arrays
+    const sameLength = block.units.length === modelUnits.length;
+    const sameUnits = sameLength && block.units.every((u, i) => u === modelUnits[i]);
+    if (!sameUnits) changed.push(idx);
+  });
+
+  return changed;
+}
+
+function diffGarrisonBlocks(parsedBlocks) {
+  const changed = [];
+  parsedBlocks.forEach((block, idx) => {
+    const tt = block.townType;
+    const model = MODEL.garrison[tt];
+    if (!model) return;
+
+    const pctChanged = block.percentage_inf !== model.percentage_inf;
+    const gmChanged = block.groups_max !== model.groups_max;
+    const unitsChanged = JSON.stringify(block.units) !== JSON.stringify(model.units);
+    if (pctChanged || gmChanged || unitsChanged) changed.push(idx);
+  });
+  return changed;
+}
+
+// ============================================================
+//  PATCH: apply replacements to raw text in reverse order
+// ============================================================
+function patchRaw(raw, replacements) {
+  // replacements: [{start, end, newText}] — end is exclusive
+  // Sort descending by start to preserve offsets
+  const sorted = [...replacements].sort((a, b) => b.start - a.start);
+  let result = raw;
+  for (const { start, end, newText } of sorted) {
+    result = result.slice(0, start) + newText + result.slice(end);
+  }
+  return result;
+}
+
+// ============================================================
+//  CHANGE-LIST MODE (no source pasted)
+// ============================================================
+function buildGroupsChangeList(fac) {
+  const data = MODEL.groups[fac];
+  if (!data) return '// No faction data loaded.';
+  let out = `// Groups_${fac}.sqf — change list (paste-ready snippets)\n// Paste these blocks in place of the original triplets.\n\n`;
+  Object.entries(data.templates).forEach(([key, variants]) => {
+    variants.forEach((units, vi) => {
+      out += `// --- ${key} variant ${vi + 1} ---\n`;
+      out += emitGroupsTriplet(key, units);
+      out += '\n\n';
+    });
+  });
+  return out.trimEnd();
+}
+
+function buildGarrisonChangeList() {
+  let out = `// Server_GetTownGroupsDefender.sqf — change list (paste-ready snippets)\n// Replace each case block in the switch statement.\n\n`;
+  TOWN_TYPE_ORDER.forEach(tt => {
+    const data = MODEL.garrison[tt];
+    if (!data) return;
+    out += `// --- ${tt} ---\n`;
+    out += emitGarrisonCase(tt, data);
+    out += '\n\n';
+  });
+  return out.trimEnd();
+}
+
+// ============================================================
+//  MAIN EXPORT FUNCTION
+// ============================================================
+function runExport(which) {
+  const fac = MODEL.faction || Object.keys(MODEL.groups)[0] || 'CDF';
+  document.getElementById('expGroupsFacLabel').textContent = fac;
+  document.getElementById('expOutGroupsName').textContent = `Groups_${fac}.sqf`;
+
+  const doGroups = !which || which === 'groups';
+  const doGarrison = !which || which === 'garrison';
+
+  document.getElementById('expEmpty').style.display = 'none';
+
+  let rtResults = [];
+
+  // ---- GROUPS ----
+  if (doGroups) {
+    const outEl = document.getElementById('expOutGroups');
+    const codeEl = document.getElementById('expOutGroupsCode');
+    const modeEl = document.getElementById('expOutGroupsMode');
+    outEl.style.display = '';
+
+    if (EXP.groupsRaw !== null) {
+      // PATCH MODE
+      const parsed = parseGroupsSqf(EXP.groupsRaw);
+      const changedIdx = diffGroupsBlocks(parsed.blocks, fac);
+      const groupsEol = detectEol(EXP.groupsRaw);
+
+      const replacements = [];
+      const keyCursor = {};
+
+      parsed.blocks.forEach((block, idx) => {
+        const key = block.key;
+        if (!keyCursor[key]) keyCursor[key] = 0;
+        const vi = keyCursor[key]++;
+        if (changedIdx.includes(idx)) {
+          const modelUnits = MODEL.groups[fac]?.templates?.[key]?.[vi] || [];
+          const newTriplet = emitGroupsTriplet(key, modelUnits, groupsEol);
+          // Replace from block.start to block.end; append EOL to match original line ending
+          replacements.push({ start: block.start, end: block.end, newText: newTriplet + groupsEol });
+        }
+      });
+
+      const patched = patchRaw(EXP.groupsRaw, replacements);
+      EXP.groupsOutput = patched;
+
+      // Round-trip check (no-op case)
+      const isNoop = changedIdx.length === 0;
+      const rtPass = isNoop ? (patched === EXP.groupsRaw) : true;
+      rtResults.push({ file: `Groups_${fac}.sqf`, isNoop, rtPass, changed: changedIdx.length, total: parsed.blocks.length });
+
+      modeEl.textContent = `patch · ${changedIdx.length}/${parsed.blocks.length} changed`;
+      modeEl.className = 'mode-chip patch';
+      codeEl.textContent = patched;
+    } else {
+      // CHANGE-LIST MODE
+      const cl = buildGroupsChangeList(fac);
+      EXP.groupsOutput = cl;
+      modeEl.textContent = 'change-list';
+      modeEl.className = 'mode-chip changelist';
+      codeEl.textContent = cl;
+    }
+  }
+
+  // ---- GARRISON ----
+  if (doGarrison) {
+    const outEl = document.getElementById('expOutGarrison');
+    const codeEl = document.getElementById('expOutGarCode');
+    const modeEl = document.getElementById('expOutGarMode');
+    outEl.style.display = '';
+
+    if (EXP.garrisonRaw !== null) {
+      // PATCH MODE
+      const parsed = parseGarrisonSqf(EXP.garrisonRaw);
+      const changedIdx = diffGarrisonBlocks(parsed.blocks);
+      const garEol = detectEol(EXP.garrisonRaw);
+
+      const replacements = [];
+      parsed.blocks.forEach((block, idx) => {
+        if (changedIdx.includes(idx)) {
+          const tt = block.townType;
+          const modelData = MODEL.garrison[tt];
+          if (!modelData) return;
+          const newCase = emitGarrisonCase(tt, modelData, garEol);
+          replacements.push({ start: block.start, end: block.end, newText: newCase + garEol });
+        }
+      });
+
+      const patched = patchRaw(EXP.garrisonRaw, replacements);
+      EXP.garrisonOutput = patched;
+
+      const isNoop = changedIdx.length === 0;
+      const rtPass = isNoop ? (patched === EXP.garrisonRaw) : true;
+      rtResults.push({ file: 'Server_GetTownGroupsDefender.sqf', isNoop, rtPass, changed: changedIdx.length, total: parsed.blocks.length });
+
+      modeEl.textContent = `patch · ${changedIdx.length}/${parsed.blocks.length} changed`;
+      modeEl.className = 'mode-chip patch';
+      codeEl.textContent = patched;
+    } else {
+      const cl = buildGarrisonChangeList();
+      EXP.garrisonOutput = cl;
+      modeEl.textContent = 'change-list';
+      modeEl.className = 'mode-chip changelist';
+      codeEl.textContent = cl;
+    }
+  }
+
+  // ---- Round-trip bar ----
+  updateRoundtripBar(rtResults);
+}
+
+function updateRoundtripBar(results) {
+  const bar = document.getElementById('expRoundtripBar');
+  if (results.length === 0) {
+    bar.innerHTML = '<span class="rt-idle">Round-trip gate: paste a source file and click Export to verify.</span>';
+    return;
+  }
+  let html = '';
+  results.forEach(r => {
+    if (r.isNoop) {
+      const cls = r.rtPass ? 'rt-pass' : 'rt-fail';
+      const icon = r.rtPass ? 'PASS' : 'FAIL';
+      html += `<span class="${cls}">[${icon}] ${r.file}: no-op → ${r.rtPass ? 'byte-identical' : 'MISMATCH — output differs from input'}</span><br>`;
+    } else {
+      html += `<span class="rt-pass">[OK] ${r.file}: ${r.changed}/${r.total} blocks patched</span><br>`;
+    }
+  });
+  bar.innerHTML = html;
+}
+
+// ---- Download / Copy helpers ----
+function expDownload(which) {
+  const fac = MODEL.faction || Object.keys(MODEL.groups)[0] || 'CDF';
+  const fname = which === 'groups' ? `Groups_${fac}.sqf` : 'Server_GetTownGroupsDefender.sqf';
+  const content = which === 'groups' ? EXP.groupsOutput : EXP.garrisonOutput;
+  if (!content) return;
+  const blob = new Blob([content], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fname;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function expCopy(which) {
+  const content = which === 'groups' ? EXP.groupsOutput : EXP.garrisonOutput;
+  if (!content) return;
+  navigator.clipboard.writeText(content).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = content;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+// Init paste capture on DOMContentLoaded (or inline since script is at body end)
+expInitPasteCapture();
 
 // ============================================================
 //  BOOT
