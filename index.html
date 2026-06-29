@@ -17,7 +17,7 @@
   --chalk:#F2EFE8;--line:#39414b;--danger:#c0392b;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:Inter,system-ui,sans-serif;background:var(--gunmetal);color:var(--bone);overflow:hidden}
+html,body{height:100%;font-family:Inter,system-ui,'Segoe UI',Arial,sans-serif;background:var(--gunmetal);color:var(--bone);overflow:hidden}
 h1,h2,h3{font-family:Oswald,Inter,sans-serif;font-weight:600;letter-spacing:.5px}
 
 /* ---- Brand bar ---- */
@@ -31,7 +31,7 @@ h1,h2,h3{font-family:Oswald,Inter,sans-serif;font-weight:600;letter-spacing:.5px
 .brandbar .chip{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;border:1px solid var(--line);border-radius:10px;padding:3px 9px;background:#0d1014}
 .brandbar .chip b{color:var(--olive)}
 
-/* ---- 2-tab layout ---- */
+/* ---- 3-tab layout ---- */
 .tabs-bar{display:flex;gap:0;padding:0 16px;background:#101317;border-bottom:1px solid var(--line)}
 .tab-btn{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;background:none;border:none;color:#8b939c;padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
 .tab-btn:hover{color:var(--bone)}
@@ -147,7 +147,6 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 .pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
 .pick-tile{border:1px solid var(--line);border-radius:5px;background:var(--gunmetal);cursor:pointer;overflow:hidden;display:flex;flex-direction:column;transition:border-color .1s}
 .pick-tile:hover{border-color:var(--orange)}
-.pick-tile.selected{border-color:var(--orange);background:#251f18}
 .pick-tile-img{width:100%;height:60px;object-fit:contain;background:#11141a;display:block}
 .pick-tile-glyph{width:100%;height:60px;display:flex;align-items:center;justify-content:center;background:#11141a;color:#39414b;font-size:22px}
 .pick-tile-name{font-family:'JetBrains Mono',monospace;font-size:9px;color:#c8d0d8;padding:4px 5px;border-top:1px solid var(--steel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -246,6 +245,14 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 .diff-line-add{color:#5a9e5a}
 .diff-line-rem{color:#9e5a5a}
 .diff-line-ctx{color:#39414b}
+
+/* ---- Faction handoff banner ---- */
+#factionHandoffBanner{display:none;align-items:center;gap:10px;padding:7px 14px;background:#1a2a18;border-bottom:1px solid #3a5a30;font-family:'JetBrains Mono',monospace;font-size:11px;color:#a8d4a0;flex:0 0 auto;z-index:4;position:relative}
+#factionHandoffBanner .fhb-token{color:var(--olive);font-weight:600}
+#factionHandoffBanner .fhb-add{background:var(--olive);color:#1a2a12;border:none;border-radius:4px;padding:3px 10px;font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;font-weight:600}
+#factionHandoffBanner .fhb-add:hover{background:#6e7d40}
+#factionHandoffBanner .fhb-dismiss{background:none;border:none;color:#556;font-size:16px;line-height:1;cursor:pointer;padding:0 2px;margin-left:auto}
+#factionHandoffBanner .fhb-dismiss:hover{color:var(--bone)}
 </style>
 </head>
 <body>
@@ -274,6 +281,13 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
   <button class="tab-btn" id="tabBtnExport" onclick="switchTab('export')">Export</button>
 </div>
 
+<!-- ====== Faction handoff banner ====== -->
+<div id="factionHandoffBanner">
+  <span>New faction from Faction Builder: <span class="fhb-token" id="fhbToken"></span></span>
+  <button class="fhb-add" id="fhbAddBtn" onclick="fhbAccept()">Add to editor</button>
+  <button class="fhb-dismiss" onclick="fhbDismiss()" title="Dismiss">×</button>
+</div>
+
 <!-- ====== Tab: Group Templates ====== -->
 <div class="tab-content on" id="tabTemplates">
 
@@ -297,7 +311,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 
       <div style="font-size:11px;color:#9aa3ad;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">Add New Key</div>
       <div style="display:flex;gap:6px">
-        <input type="text" id="newKeyInput" placeholder="e.g. Team_AT" style="flex:1;font-size:12px;padding:6px 8px" autocomplete="off">
+        <input type="text" id="newKeyInput" placeholder="e.g. Team_AT" style="flex:1;font-size:12px;padding:6px 8px" autocomplete="off" onkeydown="if(event.key==='Enter')addNewKey()">
         <button class="sm" onclick="addNewKey()" style="flex:0 0 auto">+ Add</button>
       </div>
       <div class="hint" id="newKeyHint"></div>
@@ -410,8 +424,8 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
           </div>
           <div class="exp-out-code" id="expOutGroupsCode"></div>
           <div class="exp-out-actions">
-            <button class="primary sm" onclick="expDownload('groups')">Download</button>
-            <button class="sm" onclick="expCopy('groups')">Copy</button>
+            <button class="primary sm" id="expDlGroups" onclick="expDownload('groups')" disabled>Download</button>
+            <button class="sm" id="expCpGroups" onclick="expCopy('groups')" disabled>Copy</button>
           </div>
         </div>
         <div id="expOutGarrison" style="display:none" class="exp-out-file">
@@ -421,8 +435,8 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
           </div>
           <div class="exp-out-code" id="expOutGarCode"></div>
           <div class="exp-out-actions">
-            <button class="primary sm" onclick="expDownload('garrison')">Download</button>
-            <button class="sm" onclick="expCopy('garrison')">Copy</button>
+            <button class="primary sm" id="expDlGarrison" onclick="expDownload('garrison')" disabled>Download</button>
+            <button class="sm" id="expCpGarrison" onclick="expCopy('garrison')" disabled>Copy</button>
           </div>
         </div>
       </div>
@@ -845,6 +859,10 @@ function addNewKey() {
   const hint = document.getElementById('newKeyHint');
   const keyName = input.value.trim();
   if (!keyName) { hint.innerHTML = '<span style="color:var(--orange)">Enter a key name.</span>'; return; }
+  if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(keyName)) {
+    hint.innerHTML = '<span style="color:var(--orange)">Invalid SQF identifier — use letters, digits, underscores only; cannot start with a digit.</span>';
+    return;
+  }
   const fac = MODEL.faction;
   if (!fac) { hint.innerHTML = '<span style="color:var(--orange)">Select a faction first.</span>'; return; }
   if (MODEL.groups[fac].templates[keyName]) {
@@ -1851,6 +1869,8 @@ function runExport(which) {
 
       const patched = patchRaw(EXP.groupsRaw, replacements);
       EXP.groupsOutput = patched;
+      document.getElementById('expDlGroups').disabled = false;
+      document.getElementById('expCpGroups').disabled = false;
 
       // Round-trip check (no-op case)
       const isNoop = changedIdx.length === 0;
@@ -1864,6 +1884,8 @@ function runExport(which) {
       // CHANGE-LIST MODE
       const cl = buildGroupsChangeList(fac);
       EXP.groupsOutput = cl;
+      document.getElementById('expDlGroups').disabled = false;
+      document.getElementById('expCpGroups').disabled = false;
       modeEl.textContent = 'change-list';
       modeEl.className = 'mode-chip changelist';
       codeEl.textContent = cl;
@@ -1896,6 +1918,8 @@ function runExport(which) {
 
       const patched = patchRaw(EXP.garrisonRaw, replacements);
       EXP.garrisonOutput = patched;
+      document.getElementById('expDlGarrison').disabled = false;
+      document.getElementById('expCpGarrison').disabled = false;
 
       const isNoop = changedIdx.length === 0;
       const rtPass = isNoop ? (patched === EXP.garrisonRaw) : true;
@@ -1907,6 +1931,8 @@ function runExport(which) {
     } else {
       const cl = buildGarrisonChangeList();
       EXP.garrisonOutput = cl;
+      document.getElementById('expDlGarrison').disabled = false;
+      document.getElementById('expCpGarrison').disabled = false;
       modeEl.textContent = 'change-list';
       modeEl.className = 'mode-chip changelist';
       codeEl.textContent = cl;
@@ -1953,8 +1979,16 @@ function expDownload(which) {
 function expCopy(which) {
   const content = which === 'groups' ? EXP.groupsOutput : EXP.garrisonOutput;
   if (!content) return;
-  navigator.clipboard.writeText(content).catch(() => {
-    // fallback
+  // Find the Copy button that triggered this call
+  const btn = event && event.target instanceof HTMLElement ? event.target : null;
+  function flashBtn() {
+    if (!btn) return;
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.disabled = true;
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1500);
+  }
+  function fallbackCopy() {
     const ta = document.createElement('textarea');
     ta.value = content;
     ta.style.position = 'fixed'; ta.style.opacity = '0';
@@ -1962,11 +1996,68 @@ function expCopy(which) {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
-  });
+    flashBtn();
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(content).then(flashBtn).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+}
+
+// ============================================================
+//  FACTION HANDOFF (from Faction Builder via localStorage)
+// ============================================================
+let FHB_PENDING = null; // { token, side, factionStr, coreUnits }
+
+function fhbCheck() {
+  try {
+    const raw = localStorage.getItem('wasp-faction-handoff');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (!data || !data.token) return;
+    // Only show if the token is not already a known faction key
+    // (avoids re-showing on every page load after dismissal without clearing)
+    const dismissKey = 'wasp-faction-handoff-dismissed';
+    if (localStorage.getItem(dismissKey) === data.token) return;
+    FHB_PENDING = data;
+    document.getElementById('fhbToken').textContent = data.token;
+    document.getElementById('factionHandoffBanner').style.display = 'flex';
+  } catch (_) { /* malformed — ignore */ }
+}
+
+function fhbAccept() {
+  if (!FHB_PENDING || !MODEL.loaded) return;
+  const { token, side, coreUnits } = FHB_PENDING;
+  // If faction already exists, don't overwrite — just select it
+  if (!MODEL.groups[token]) {
+    // Seed from GUE (or first faction) so the new faction has editable templates
+    const seedFac = MODEL.groups['GUE'] ? 'GUE' : Object.keys(MODEL.groups)[0];
+    const seedTemplates = seedFac
+      ? JSON.parse(JSON.stringify(MODEL.groups[seedFac].templates))
+      : {};
+    MODEL.groups[token] = {
+      side: side || 'GUER',
+      templates: seedTemplates
+    };
+    buildFactionChips();
+  }
+  selectFaction(token);
+  switchTab('templates');
+  fhbDismiss();
+}
+
+function fhbDismiss() {
+  if (FHB_PENDING) {
+    try { localStorage.setItem('wasp-faction-handoff-dismissed', FHB_PENDING.token); } catch (_) {}
+  }
+  FHB_PENDING = null;
+  document.getElementById('factionHandoffBanner').style.display = 'none';
 }
 
 // Init paste capture on DOMContentLoaded (or inline since script is at body end)
 expInitPasteCapture();
+fhbCheck();
 
 // ============================================================
 //  BOOT
