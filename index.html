@@ -116,7 +116,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 .unit-chip-btn{font-size:10px;padding:1px 4px;border-radius:3px;background:rgba(20,23,27,.9);border:1px solid var(--line);color:#9aa3ad;cursor:pointer;line-height:1.4}
 .unit-chip-btn:hover{border-color:var(--orange);color:var(--orange)}
 .unit-chip-btn.del:hover{border-color:var(--danger);color:#e88}
-.add-unit-btn{display:flex;flex-direction:column;align-items:center;width:48px;cursor:pointer;opacity:.6}
+.add-unit-btn{display:flex;flex-direction:column;align-items:center;width:48px;cursor:pointer;opacity:.6;background:none;border:none;padding:0;font-family:inherit;color:inherit}
 .add-unit-btn:hover{opacity:1}
 .add-unit-thumb{width:48px;height:48px;border-radius:4px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;color:#39414b;background:none}
 .add-unit-btn:hover .add-unit-thumb{border-color:var(--orange);color:var(--orange)}
@@ -253,13 +253,28 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 #factionHandoffBanner .fhb-add:hover{background:#6e7d40}
 #factionHandoffBanner .fhb-dismiss{background:none;border:none;color:#556;font-size:16px;line-height:1;cursor:pointer;padding:0 2px;margin-left:auto}
 #factionHandoffBanner .fhb-dismiss:hover{color:var(--bone)}
+
+/* ---- Garrison cross-link button (open Sector Planner) ---- */
+.gar-open-planner{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;background:var(--gunmetal);border:1px solid var(--line);border-radius:4px;padding:3px 9px;cursor:pointer;text-decoration:none;transition:border-color .12s,color .12s;white-space:nowrap}
+.gar-open-planner:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ---- Focus-trap modal (picker) ---- */
+.modal-back:focus-visible{outline:none}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* already styled with border-color */
+
+/* ---- Live region (screen reader announcements) ---- */
+#liveAnnounce{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
 
+<!-- Screen-reader live announce region -->
+<div id="liveAnnounce" aria-live="polite" aria-atomic="true"></div>
+
 <!-- ====== Brand bar ====== -->
 <div class="brandbar">
-  <svg class="mark" viewBox="0 0 96 96" aria-label="WASP Warfare">
+  <svg class="mark" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
     <g fill="none" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter">
       <polyline points="20,54 48,30 76,54" stroke="#D9763C"/>
       <polyline points="20,66 48,42 76,66" stroke="#F2EFE8"/>
@@ -275,21 +290,21 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 </div>
 
 <!-- ====== 3-tab bar ====== -->
-<div class="tabs-bar">
-  <button class="tab-btn on" id="tabBtnTemplates" onclick="switchTab('templates')">Group Templates</button>
-  <button class="tab-btn" id="tabBtnGarrison" onclick="switchTab('garrison')">Garrison Table</button>
-  <button class="tab-btn" id="tabBtnExport" onclick="switchTab('export')">Export</button>
+<div class="tabs-bar" role="tablist" aria-label="Editor sections">
+  <button class="tab-btn on" id="tabBtnTemplates" role="tab" aria-selected="true" aria-controls="tabTemplates" onclick="switchTab('templates')">Group Templates</button>
+  <button class="tab-btn" id="tabBtnGarrison" role="tab" aria-selected="false" aria-controls="tabGarrison" onclick="switchTab('garrison')">Garrison Table</button>
+  <button class="tab-btn" id="tabBtnExport" role="tab" aria-selected="false" aria-controls="tabExport" onclick="switchTab('export')">Export</button>
 </div>
 
 <!-- ====== Faction handoff banner ====== -->
-<div id="factionHandoffBanner">
+<div id="factionHandoffBanner" role="alert">
   <span>New faction from Faction Builder: <span class="fhb-token" id="fhbToken"></span></span>
   <button class="fhb-add" id="fhbAddBtn" onclick="fhbAccept()">Add to editor</button>
-  <button class="fhb-dismiss" onclick="fhbDismiss()" title="Dismiss">×</button>
+  <button class="fhb-dismiss" onclick="fhbDismiss()" aria-label="Dismiss faction handoff notification">×</button>
 </div>
 
 <!-- ====== Tab: Group Templates ====== -->
-<div class="tab-content on" id="tabTemplates">
+<div class="tab-content on" id="tabTemplates" role="tabpanel" aria-labelledby="tabBtnTemplates">
 
   <!-- LEFT: faction selector -->
   <div class="panel-left">
@@ -333,7 +348,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 </div>
 
 <!-- ====== Tab: Garrison Table ====== -->
-<div class="tab-content" id="tabGarrison">
+<div class="tab-content" id="tabGarrison" role="tabpanel" aria-labelledby="tabBtnGarrison">
   <div class="gar-layout">
 
     <!-- LEFT: type list + cross-link -->
@@ -344,12 +359,17 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
       </div>
       <div class="gar-type-list" id="garTypeList"></div>
       <div class="gar-crosslink">
-        <label>Load Sector-Planner Campaign</label>
-        <div class="gar-crosslink-drop" id="garDropZone" title="Click or drag a seed-towns.json here">
-          📂 Drop seed-towns.json<br><span style="font-size:10px;color:#39414b">or click to browse</span>
+        <label id="garDropLabel">Load Sector-Planner Campaign</label>
+        <div class="gar-crosslink-drop" id="garDropZone"
+          role="button" tabindex="0"
+          aria-labelledby="garDropLabel"
+          aria-describedby="garDropHint"
+          title="Click or drag a seed-towns.json here">
+          <span aria-hidden="true">📂</span> Drop seed-towns.json<br><span style="font-size:10px;color:#39414b">or click to browse</span>
         </div>
-        <input type="file" id="garFileInput" accept=".json" style="display:none">
-        <div class="gar-crosslink-status" id="garCrossLinkStatus"></div>
+        <div id="garDropHint" class="hint" style="display:none">Accepts seed-towns.json from the Sector Planner export.</div>
+        <input type="file" id="garFileInput" accept=".json" style="display:none" aria-label="Load seed-towns.json campaign file">
+        <div class="gar-crosslink-status" id="garCrossLinkStatus" aria-live="polite"></div>
       </div>
     </div>
 
@@ -363,7 +383,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 </div>
 
 <!-- ====== Tab: Export ====== -->
-<div class="tab-content" id="tabExport">
+<div class="tab-content" id="tabExport" role="tabpanel" aria-labelledby="tabBtnExport">
   <div class="exp-layout">
 
     <!-- LEFT: source file inputs -->
@@ -377,7 +397,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
           <div class="exp-file-hdr">
             <span class="fname" id="expGroupsFname">Groups_<em id="expGroupsFacLabel">CDF</em>.sqf</span>
             <span class="fstatus unloaded" id="expGroupsStatus">not loaded</span>
-            <button class="sm ico" title="Clear" onclick="expClearGroups()">✕</button>
+            <button class="sm ico" title="Clear" aria-label="Clear Groups source" onclick="expClearGroups()">✕</button>
           </div>
           <textarea class="exp-paste-area" id="expGroupsPaste"
             placeholder="Paste Groups_<faction>.sqf content here…"
@@ -392,7 +412,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
           <div class="exp-file-hdr">
             <span class="fname">Server_GetTownGroupsDefender.sqf</span>
             <span class="fstatus unloaded" id="expGarStatus">not loaded</span>
-            <button class="sm ico" title="Clear" onclick="expClearGarrison()">✕</button>
+            <button class="sm ico" title="Clear" aria-label="Clear Garrison source" onclick="expClearGarrison()">✕</button>
           </div>
           <textarea class="exp-paste-area" id="expGarPaste"
             placeholder="Paste Server_GetTownGroupsDefender.sqf content here…"
@@ -425,7 +445,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
           <div class="exp-out-code" id="expOutGroupsCode"></div>
           <div class="exp-out-actions">
             <button class="primary sm" id="expDlGroups" onclick="expDownload('groups')" disabled>Download</button>
-            <button class="sm" id="expCpGroups" onclick="expCopy('groups')" disabled>Copy</button>
+            <button class="sm" id="expCpGroups" onclick="expCopy('groups', this)" disabled>Copy</button>
           </div>
         </div>
         <div id="expOutGarrison" style="display:none" class="exp-out-file">
@@ -436,7 +456,7 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
           <div class="exp-out-code" id="expOutGarCode"></div>
           <div class="exp-out-actions">
             <button class="primary sm" id="expDlGarrison" onclick="expDownload('garrison')" disabled>Download</button>
-            <button class="sm" id="expCpGarrison" onclick="expCopy('garrison')" disabled>Copy</button>
+            <button class="sm" id="expCpGarrison" onclick="expCopy('garrison', this)" disabled>Copy</button>
           </div>
         </div>
       </div>
@@ -446,19 +466,19 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 </div>
 
 <!-- ====== Unit Picker Modal ====== -->
-<div class="modal-back" id="pickerModal">
-  <div class="modal" role="dialog" aria-label="Pick a unit">
+<div class="modal-back" id="pickerModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
     <div class="modal-head">
       <h2 id="pickerTitle">Add Unit</h2>
-      <button class="x" onclick="closePicker()" aria-label="Close">×</button>
+      <button class="x" id="pickerCloseBtn" onclick="closePicker()" aria-label="Close unit picker">×</button>
     </div>
     <div class="modal-search-bar">
-      <input type="text" id="pickerSearch" placeholder="Search by name or classname…" autocomplete="off" oninput="renderPickerGrid()">
+      <input type="text" id="pickerSearch" placeholder="Search by name or classname…" autocomplete="off" aria-label="Search units" oninput="renderPickerGrid()">
     </div>
     <div class="modal-body">
-      <div class="modal-side" id="pickerSide"></div>
+      <div class="modal-side" id="pickerSide" role="listbox" aria-label="Filter by prefix"></div>
       <div class="modal-grid-wrap">
-        <div class="pick-grid" id="pickerGrid"></div>
+        <div class="pick-grid" id="pickerGrid" role="list" aria-label="Units"></div>
         <div class="pick-empty" id="pickerEmpty" style="display:none">No units match your search.</div>
       </div>
     </div>
@@ -501,6 +521,7 @@ async function loadData() {
     document.getElementById('statusChip').textContent =
       `${factionCount} factions · ${unitCount} units · ${garTypeCount} gar types`;
     setStatus(`<span class="ok">Loaded: ${factionCount} factions, ${unitCount} units, ${garTypeCount} garrison types</span>`);
+    announceStatus(`Data loaded: ${factionCount} factions, ${unitCount} units, ${garTypeCount} garrison types.`);
     buildFactionChips();
     // Auto-select first faction (CDF)
     const firstFaction = Object.keys(MODEL.groups)[0];
@@ -518,15 +539,34 @@ function setStatus(html) {
 }
 
 // ============================================================
+//  LIVE REGION ANNOUNCE
+// ============================================================
+function announceStatus(msg) {
+  const el = document.getElementById('liveAnnounce');
+  if (!el) return;
+  el.textContent = '';
+  // Small delay lets screen readers pick up the cleared then re-set text
+  requestAnimationFrame(() => { el.textContent = msg; });
+}
+
+// ============================================================
 //  TAB SWITCHING
 // ============================================================
 function switchTab(tab) {
   ['templates', 'garrison', 'export'].forEach(t => {
-    document.getElementById('tab' + cap(t))?.classList?.remove('on');
-    document.getElementById('tabBtn' + cap(t))?.classList?.remove('on');
+    const panel = document.getElementById('tab' + cap(t));
+    const btn   = document.getElementById('tabBtn' + cap(t));
+    panel?.classList?.remove('on');
+    if (btn) {
+      btn.classList.remove('on');
+      btn.setAttribute('aria-selected', 'false');
+    }
   });
   document.getElementById('tab' + cap(tab)).classList.add('on');
-  document.getElementById('tabBtn' + cap(tab)).classList.add('on');
+  const activeBtn = document.getElementById('tabBtn' + cap(tab));
+  activeBtn.classList.add('on');
+  activeBtn.setAttribute('aria-selected', 'true');
+  document.getElementById('pickerModal').setAttribute('aria-hidden', 'true');
   if (tab === 'export') expOnTabOpen();
 }
 function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -718,6 +758,7 @@ function renderVariantRow(fac, key, vi, units) {
   delBtn.className = 'sm danger';
   delBtn.style.fontSize = '10px';
   delBtn.textContent = '✕ Remove variant';
+  delBtn.setAttribute('aria-label', `Remove Variant ${vi + 1} from ${key}`);
   delBtn.addEventListener('click', () => removeVariant(fac, key, vi));
   acts.appendChild(delBtn);
   hdr.appendChild(acts);
@@ -730,11 +771,12 @@ function renderVariantRow(fac, key, vi, units) {
     chips.appendChild(renderUnitChip(fac, key, vi, ui, cls, units.length));
   });
 
-  // "+ add unit" button
-  const addBtn = document.createElement('div');
+  // "+ add unit" button — use a real button for keyboard accessibility
+  const addBtn = document.createElement('button');
   addBtn.className = 'add-unit-btn';
-  addBtn.title = 'Add unit';
-  addBtn.innerHTML = `<div class="add-unit-thumb">+</div><div class="add-unit-label">add unit</div>`;
+  addBtn.type = 'button';
+  addBtn.setAttribute('aria-label', `Add unit to ${key} Variant ${vi + 1}`);
+  addBtn.innerHTML = `<div class="add-unit-thumb" aria-hidden="true">+</div><div class="add-unit-label">add unit</div>`;
   addBtn.addEventListener('click', () => openPicker(fac, key, vi, units.length));
   chips.appendChild(addBtn);
 
@@ -938,26 +980,54 @@ function refreshKeyBlockMeta(fac, keyOrDisplay) {
 }
 
 // ============================================================
-//  PICKER MODAL
+//  PICKER MODAL  (focus trap + return)
 // ============================================================
 let PICKER_CTX = null; // { fac, key, vi, insertAt }
 let PICKER_FILTER_PREFIX = '';
+let _pickerTriggerEl = null; // element that opened the modal — focus returns here on close
 
 function openPicker(fac, key, vi, insertAt) {
   PICKER_CTX = { fac, key, vi, insertAt };
+  _pickerTriggerEl = document.activeElement;
   document.getElementById('pickerTitle').textContent = `Add Unit — ${key} Variant ${vi + 1}`;
   document.getElementById('pickerSearch').value = '';
   PICKER_FILTER_PREFIX = '';
   buildPickerSide();
   renderPickerGrid();
-  document.getElementById('pickerModal').classList.add('open');
+  const modal = document.getElementById('pickerModal');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
   document.getElementById('pickerSearch').focus();
 }
 
 function closePicker() {
-  document.getElementById('pickerModal').classList.remove('open');
+  const modal = document.getElementById('pickerModal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
   PICKER_CTX = null;
+  // Return focus to the element that triggered the modal
+  if (_pickerTriggerEl && typeof _pickerTriggerEl.focus === 'function') {
+    _pickerTriggerEl.focus();
+  }
+  _pickerTriggerEl = null;
 }
+
+// Focus trap inside modal
+document.getElementById('pickerModal').addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab') return;
+  const modal = document.getElementById('pickerModal').querySelector('.modal');
+  const focusable = Array.from(modal.querySelectorAll(
+    'button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])'
+  )).filter(el => el.offsetParent !== null);
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last  = focusable[focusable.length - 1];
+  if (e.shiftKey) {
+    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+  } else {
+    if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+  }
+});
 
 // Close picker on backdrop click
 document.getElementById('pickerModal').addEventListener('click', (e) => {
@@ -966,7 +1036,10 @@ document.getElementById('pickerModal').addEventListener('click', (e) => {
 
 // Close picker on Escape
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closePicker();
+  if (e.key === 'Escape') {
+    if (document.getElementById('pickerModal').classList.contains('open')) closePicker();
+    else fhbDismiss();
+  }
 });
 
 function buildPickerSide() {
@@ -1151,6 +1224,7 @@ function renderGarCard(tt) {
   const campaignNote = CAMPAIGN_COUNTS[tt] !== undefined
     ? `<span class="badge" style="background:var(--olive);font-size:10px">used in ${CAMPAIGN_COUNTS[tt]} towns</span>`
     : '';
+  const sectorPlannerLink = `<button class="gar-open-planner" onclick="openInSectorPlanner('${tt}')" title="Open Sector Planner filtered to ${tt} towns" aria-label="See ${tt} towns in Sector Planner"><span aria-hidden="true">↗</span> Sector Planner</button>`;
 
   card.innerHTML = '';
 
@@ -1162,6 +1236,7 @@ function renderGarCard(tt) {
       <h2 id="garCardTitle">${tt}</h2>
       <span class="type-badge">${tt === 'default' ? 'fallback' : tt.replace(/(\D+)(\d+)/, '$1 $2')}</span>
       ${campaignNote}
+      ${sectorPlannerLink}
     </div>
     <div class="gar-scalars">
       <div class="gar-scalar-group">
@@ -1396,6 +1471,9 @@ function initGarCrossLink() {
   const fileInput = document.getElementById('garFileInput');
 
   dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
   fileInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -1976,16 +2054,16 @@ function expDownload(which) {
   URL.revokeObjectURL(a.href);
 }
 
-function expCopy(which) {
+function expCopy(which, btn) {
   const content = which === 'groups' ? EXP.groupsOutput : EXP.garrisonOutput;
   if (!content) return;
-  // Find the Copy button that triggered this call
-  const btn = event && event.target instanceof HTMLElement ? event.target : null;
+  const label = which === 'groups' ? 'Groups file' : 'Garrison file';
   function flashBtn() {
     if (!btn) return;
     const orig = btn.textContent;
     btn.textContent = 'Copied!';
     btn.disabled = true;
+    announceStatus(`${label} copied to clipboard.`);
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 1500);
   }
   function fallbackCopy() {
@@ -2003,6 +2081,20 @@ function expCopy(which) {
   } else {
     fallbackCopy();
   }
+}
+
+// ============================================================
+//  CROSS-LINK: open Sector Planner highlighting this town type
+// ============================================================
+function openInSectorPlanner(townType) {
+  try {
+    localStorage.setItem('wasp-garrison-highlight', JSON.stringify({
+      townType,
+      _source: 'garrison-editor',
+      _ts: Date.now()
+    }));
+  } catch (_) { /* localStorage unavailable — open anyway */ }
+  window.open('https://rayswaynl.github.io/sector-planner/', '_blank', 'noopener');
 }
 
 // ============================================================
