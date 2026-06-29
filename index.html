@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Garrison &amp; AI Groups — WASP Order of Battle</title>
+<meta name="description" content="Single-file offline editor for WASP town garrisons and AI group templates — edit rosters, variants, export SQF.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2096%2096'%3E%3Cpolyline%20points%3D'20%2C54%2048%2C30%2076%2C54'%20fill%3D'none'%20stroke%3D'%23D9763C'%20stroke-width%3D'7'%2F%3E%3Cpolyline%20points%3D'20%2C72%2048%2C48%2076%2C72'%20fill%3D'none'%20stroke%3D'%235C6536'%20stroke-width%3D'7'%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ---- Tokens ---- */
+:root{
+  --gunmetal:#14171B;--steel:#2A2F36;--steel2:#343b44;
+  --olive:#5C6536;--bone:#E7E3D6;--orange:#D9763C;--orange-deep:#B85F2A;
+  --chalk:#F2EFE8;--line:#39414b;--danger:#c0392b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:Inter,system-ui,sans-serif;background:var(--gunmetal);color:var(--bone);overflow:hidden}
+h1,h2,h3{font-family:Oswald,Inter,sans-serif;font-weight:600;letter-spacing:.5px}
+
+/* ---- Brand bar ---- */
+.brandbar{height:54px;display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:linear-gradient(90deg,#101317 0%,#171b20 100%);border-bottom:1px solid var(--line);position:relative;z-index:5}
+.brandbar .mark{width:34px;height:34px;flex:0 0 auto}
+.brandbar .word{display:flex;flex-direction:column;line-height:1}
+.brandbar .word .t1{font-family:Oswald,sans-serif;font-weight:600;font-size:19px;letter-spacing:2px;color:var(--bone)}
+.brandbar .word .t2{font-family:Oswald,sans-serif;font-weight:400;font-size:10px;letter-spacing:6px;color:var(--orange);margin-top:2px}
+.brandbar .spacer{flex:1}
+.brandbar .chip{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;border:1px solid var(--line);border-radius:10px;padding:3px 9px;background:#0d1014}
+.brandbar .chip b{color:var(--olive)}
+
+/* ---- 2-tab layout ---- */
+.tabs-bar{display:flex;gap:0;padding:0 16px;background:#101317;border-bottom:1px solid var(--line)}
+.tab-btn{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;background:none;border:none;color:#8b939c;padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+.tab-btn:hover{color:var(--bone)}
+.tab-btn.on{color:var(--orange);border-bottom-color:var(--orange)}
+.tab-content{display:none;height:calc(100vh - 54px - 40px);overflow:hidden}
+.tab-content.on{display:flex}
+
+/* ---- Panels ---- */
+.panel-left{width:290px;flex:0 0 290px;display:flex;flex-direction:column;border-right:1px solid var(--line);background:var(--steel);min-height:0}
+.panel-main{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0}
+.panel-hdr{padding:11px 14px;border-bottom:1px solid var(--line);background:var(--gunmetal);flex:0 0 auto}
+.panel-hdr h2{font-size:14px}
+.panel-hdr .sub{font-size:11px;color:#9aa3ad;margin-top:3px;font-family:'JetBrains Mono',monospace}
+.scroll{overflow:auto;padding:12px 14px;flex:1;min-height:0}
+
+/* ---- Forms ---- */
+label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;margin:10px 0 4px}
+input,select,button{font-family:inherit;font-size:13px}
+input[type=text],select{width:100%;background:var(--gunmetal);border:1px solid var(--line);color:var(--bone);border-radius:5px;padding:7px 8px;outline:none}
+input:focus,select:focus{border-color:var(--orange)}
+button{cursor:pointer;background:var(--steel2);color:var(--bone);border:1px solid var(--line);border-radius:5px;padding:6px 10px}
+button:hover{border-color:var(--orange)}
+button.primary{background:var(--orange);border-color:var(--orange);color:#1a1208;font-weight:600}
+button.primary:hover{background:var(--orange-deep);border-color:var(--orange-deep)}
+button.danger{border-color:var(--danger);color:#e88}
+button.danger:hover{background:var(--danger);color:#fff}
+button.sm{font-size:11px;padding:4px 8px}
+button.ico{font-size:13px;padding:3px 7px;border-color:transparent;background:none;color:#9aa3ad}
+button.ico:hover{color:var(--bone);border-color:var(--line)}
+.btnbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.divider{height:1px;background:var(--line);margin:12px 0}
+.hint{font-size:11px;color:#8b939c;line-height:1.5;margin-top:6px}
+.hint code{background:#0d1014;padding:1px 4px;border-radius:3px;color:var(--orange)}
+.badge{display:inline-block;font-size:10px;background:var(--olive);color:var(--chalk);padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle}
+.badge-count{display:inline-block;font-size:10px;background:var(--steel2);color:#9aa3ad;padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle;font-family:'JetBrains Mono',monospace}
+.warn-text{color:var(--orange);font-size:10px;font-family:'JetBrains Mono',monospace}
+
+/* ---- Status bar ---- */
+.statusbar{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;padding:5px 8px;background:#0d1014;border-radius:4px;border:1px solid var(--line);margin-top:8px}
+.statusbar .ok{color:var(--olive)}
+.statusbar .loading{color:#9aa3ad}
+.statusbar .err{color:var(--danger)}
+
+/* ---- Faction chips ---- */
+.faction-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.faction-chip{font-family:'JetBrains Mono',monospace;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:4px 10px;background:var(--gunmetal);cursor:pointer;color:#9aa3ad;transition:all .12s}
+.faction-chip:hover{border-color:var(--orange);color:var(--bone)}
+.faction-chip.on{border-color:var(--orange);color:var(--orange);background:#251f18;font-weight:600}
+.faction-side{display:inline-block;font-size:9px;margin-left:4px;color:#556;vertical-align:middle}
+
+/* ---- Template key blocks ---- */
+.tpl-key-block{border:1px solid var(--line);border-radius:6px;margin-bottom:10px;overflow:hidden}
+.tpl-key-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0e1115;cursor:pointer;user-select:none}
+.tpl-key-hdr:hover{background:#111518}
+.tpl-key-name{font-family:Oswald,sans-serif;font-size:14px;letter-spacing:.5px;flex:1}
+.tpl-key-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad}
+.tpl-key-body{padding:10px 12px;border-top:1px solid var(--line);display:none}
+.tpl-key-body.open{display:block}
+.tpl-chevron{font-size:10px;color:#9aa3ad;transition:transform .15s}
+.tpl-chevron.open{transform:rotate(90deg)}
+/* tier group header (for suffixed factions) */
+.tier-group-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--gunmetal);border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+.tier-group-hdr:hover{background:#101317}
+.tier-group-name{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.5px;flex:1}
+.tier-group-body{padding:10px 14px;border-bottom:1px solid var(--line);display:none}
+.tier-group-body.open{display:block}
+
+/* ---- Variant rows ---- */
+.variant-row{margin-bottom:8px;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.variant-hdr{display:flex;align-items:center;gap:8px;padding:5px 10px;background:#0d1014;font-size:11px;font-family:'JetBrains Mono',monospace;color:#9aa3ad}
+.variant-hdr .vnum{color:var(--orange);font-weight:600}
+.variant-actions{display:flex;gap:4px;margin-left:auto}
+.unit-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;background:#0a0c0f;min-height:44px;align-items:flex-start;align-content:flex-start}
+.unit-chip{display:flex;flex-direction:column;align-items:center;width:58px;cursor:default;position:relative}
+.unit-chip-thumb{width:48px;height:48px;border-radius:4px;background:var(--gunmetal);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 48px}
+.unit-chip-thumb img{width:100%;height:100%;object-fit:contain}
+.unit-chip-thumb .glyph{font-size:18px;color:#39414b;line-height:1}
+.unit-chip-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:#9aa3ad;text-align:center;margin-top:3px;width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
+.unit-chip-name.warn{color:var(--orange)}
+.unit-chip-btns{display:none;position:absolute;top:0;right:-2px;flex-direction:column;gap:2px;z-index:2}
+.unit-chip:hover .unit-chip-btns{display:flex}
+.unit-chip-btn{font-size:10px;padding:1px 4px;border-radius:3px;background:rgba(20,23,27,.9);border:1px solid var(--line);color:#9aa3ad;cursor:pointer;line-height:1.4}
+.unit-chip-btn:hover{border-color:var(--orange);color:var(--orange)}
+.unit-chip-btn.del:hover{border-color:var(--danger);color:#e88}
+.add-unit-btn{display:flex;flex-direction:column;align-items:center;width:48px;cursor:pointer;opacity:.6}
+.add-unit-btn:hover{opacity:1}
+.add-unit-thumb{width:48px;height:48px;border-radius:4px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;color:#39414b;background:none}
+.add-unit-btn:hover .add-unit-thumb{border-color:var(--orange);color:var(--orange)}
+.add-unit-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:#556;text-align:center;margin-top:3px}
+
+/* ---- Scrollbars ---- */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--steel2);border-radius:6px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---- Picker modal ---- */
+.modal-back{position:fixed;inset:0;background:rgba(8,10,13,.7);display:none;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(3px)}
+.modal-back.open{display:flex}
+.modal{width:820px;max-width:96vw;max-height:88vh;background:var(--steel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;overflow:hidden}
+.modal-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--gunmetal);flex:0 0 auto}
+.modal-head h2{font-size:15px;flex:1}
+.modal-head .x{cursor:pointer;color:#9aa3ad;font-size:22px;line-height:1;background:none;border:none;padding:0 4px}
+.modal-head .x:hover{color:var(--bone)}
+.modal-search-bar{padding:10px 14px;border-bottom:1px solid var(--line);background:var(--gunmetal);flex:0 0 auto}
+.modal-search-bar input{width:100%;background:var(--steel);border:1px solid var(--line);color:var(--bone);border-radius:5px;padding:8px 10px;font-size:13px;outline:none}
+.modal-search-bar input:focus{border-color:var(--orange)}
+.modal-body{display:flex;min-height:0;flex:1}
+.modal-side{width:140px;border-right:1px solid var(--line);overflow-y:auto;padding:8px 6px;flex:0 0 140px}
+.modal-side-chip{display:block;width:100%;text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;background:none;border:1px solid transparent;border-radius:4px;padding:4px 8px;color:#9aa3ad;cursor:pointer;margin-bottom:3px}
+.modal-side-chip:hover{background:var(--steel2);color:var(--bone)}
+.modal-side-chip.on{background:var(--steel2);border-color:var(--orange);color:var(--orange)}
+.modal-grid-wrap{flex:1;overflow-y:auto;padding:12px}
+.pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.pick-tile{border:1px solid var(--line);border-radius:5px;background:var(--gunmetal);cursor:pointer;overflow:hidden;display:flex;flex-direction:column;transition:border-color .1s}
+.pick-tile:hover{border-color:var(--orange)}
+.pick-tile.selected{border-color:var(--orange);background:#251f18}
+.pick-tile-img{width:100%;height:60px;object-fit:contain;background:#11141a;display:block}
+.pick-tile-glyph{width:100%;height:60px;display:flex;align-items:center;justify-content:center;background:#11141a;color:#39414b;font-size:22px}
+.pick-tile-name{font-family:'JetBrains Mono',monospace;font-size:9px;color:#c8d0d8;padding:4px 5px;border-top:1px solid var(--steel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick-tile-class{font-family:'JetBrains Mono',monospace;font-size:8px;color:#556;padding:0 5px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pick-empty{font-size:12px;color:#8b939c;padding:20px;text-align:center}
+.warn-chip{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;background:#3a1a1a;color:var(--orange);border:1px solid #6a3a2a;border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle}
+
+/* ---- Garrison Table placeholder ---- */
+.placeholder-wrap{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#39414b}
+.placeholder-wrap .big{font-size:56px;line-height:1}
+.placeholder-wrap .p1{font-family:Oswald,sans-serif;font-size:18px;color:#556;letter-spacing:1px}
+.placeholder-wrap .p2{font-family:'JetBrains Mono',monospace;font-size:11px;color:#39414b;text-align:center;line-height:1.8}
+
+/* ---- Add-key form ---- */
+.add-key-form{padding:10px 12px;border-top:1px solid var(--line);background:#0a0c0f}
+.add-key-form input{width:100%;margin-bottom:6px}
+
+/* ---- Empty state ---- */
+.empty-state{text-align:center;padding:32px;color:#39414b;font-family:'JetBrains Mono',monospace;font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- ====== Brand bar ====== -->
+<div class="brandbar">
+  <svg class="mark" viewBox="0 0 96 96" aria-label="WASP Warfare">
+    <g fill="none" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter">
+      <polyline points="20,54 48,30 76,54" stroke="#D9763C"/>
+      <polyline points="20,66 48,42 76,66" stroke="#F2EFE8"/>
+      <polyline points="20,78 48,54 76,78" stroke="#5C6536"/>
+    </g>
+  </svg>
+  <div class="word">
+    <span class="t1">GARRISON &amp; AI GROUPS</span>
+    <span class="t2">WASP ORDER OF BATTLE</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="chip">model: <b id="statusChip">loading…</b></div>
+</div>
+
+<!-- ====== 2-tab bar ====== -->
+<div class="tabs-bar">
+  <button class="tab-btn on" id="tabBtnTemplates" onclick="switchTab('templates')">Group Templates</button>
+  <button class="tab-btn" id="tabBtnGarrison" onclick="switchTab('garrison')">Garrison Table</button>
+</div>
+
+<!-- ====== Tab: Group Templates ====== -->
+<div class="tab-content on" id="tabTemplates">
+
+  <!-- LEFT: faction selector -->
+  <div class="panel-left">
+    <div class="panel-hdr">
+      <h2>Faction</h2>
+      <div class="sub">select to load templates</div>
+    </div>
+    <div class="scroll">
+      <div id="factionChips" class="faction-chips"></div>
+      <div class="statusbar" id="statusBar"><span class="loading">Loading data…</span></div>
+
+      <div class="divider"></div>
+
+      <div id="factionMeta" style="display:none">
+        <div style="font-size:11px;color:#9aa3ad;font-family:'JetBrains Mono',monospace" id="factionMetaText"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div style="font-size:11px;color:#9aa3ad;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">Add New Key</div>
+      <div style="display:flex;gap:6px">
+        <input type="text" id="newKeyInput" placeholder="e.g. Team_AT" style="flex:1;font-size:12px;padding:6px 8px" autocomplete="off">
+        <button class="sm" onclick="addNewKey()" style="flex:0 0 auto">+ Add</button>
+      </div>
+      <div class="hint" id="newKeyHint"></div>
+    </div>
+  </div>
+
+  <!-- MAIN: template keys -->
+  <div class="panel-main">
+    <div class="panel-hdr">
+      <h2 id="tplPanelTitle">Group Templates</h2>
+      <div class="sub" id="tplPanelSub">select a faction</div>
+    </div>
+    <div class="scroll" id="tplScroll">
+      <div class="empty-state" id="tplEmpty">Select a faction from the left panel to view its group templates.</div>
+      <div id="tplContent" style="display:none"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ====== Tab: Garrison Table (placeholder) ====== -->
+<div class="tab-content" id="tabGarrison">
+  <div class="placeholder-wrap">
+    <div class="big">🏘</div>
+    <div class="p1">Garrison Table</div>
+    <div class="p2">Coming in Task 3 — per-town-type group pools,<br>inf/veh split, cap, Sector-Planner cross-link.</div>
+  </div>
+</div>
+
+<!-- ====== Unit Picker Modal ====== -->
+<div class="modal-back" id="pickerModal">
+  <div class="modal" role="dialog" aria-label="Pick a unit">
+    <div class="modal-head">
+      <h2 id="pickerTitle">Add Unit</h2>
+      <button class="x" onclick="closePicker()" aria-label="Close">×</button>
+    </div>
+    <div class="modal-search-bar">
+      <input type="text" id="pickerSearch" placeholder="Search by name or classname…" autocomplete="off" oninput="renderPickerGrid()">
+    </div>
+    <div class="modal-body">
+      <div class="modal-side" id="pickerSide"></div>
+      <div class="modal-grid-wrap">
+        <div class="pick-grid" id="pickerGrid"></div>
+        <div class="pick-empty" id="pickerEmpty" style="display:none">No units match your search.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  MODEL
+// ============================================================
+const MODEL = {
+  groups: {},   // populated from groups.json
+  units: {},    // populated from units.json
+  loaded: false,
+  faction: null // currently selected faction
+};
+
+// ============================================================
+//  DATA LOADING
+// ============================================================
+async function loadData() {
+  try {
+    const [gRes, uRes] = await Promise.all([
+      fetch('assets/data/groups.json'),
+      fetch('assets/data/units.json')
+    ]);
+    if (!gRes.ok) throw new Error('groups.json: ' + gRes.status);
+    if (!uRes.ok) throw new Error('units.json: ' + uRes.status);
+    MODEL.groups = await gRes.json();
+    MODEL.units = await uRes.json();
+    MODEL.loaded = true;
+
+    const factionCount = Object.keys(MODEL.groups).length;
+    const unitCount = Object.keys(MODEL.units).length;
+    document.getElementById('statusChip').textContent =
+      `${factionCount} factions · ${unitCount} units`;
+    setStatus(`<span class="ok">Loaded: ${factionCount} factions, ${unitCount} units</span>`);
+    buildFactionChips();
+    // Auto-select first faction (CDF)
+    const firstFaction = Object.keys(MODEL.groups)[0];
+    if (firstFaction) selectFaction(firstFaction);
+  } catch (e) {
+    setStatus(`<span class="err">Error: ${e.message}</span>`);
+    console.error('Load error:', e);
+  }
+}
+
+function setStatus(html) {
+  document.getElementById('statusBar').innerHTML = html;
+}
+
+// ============================================================
+//  TAB SWITCHING
+// ============================================================
+function switchTab(tab) {
+  ['templates', 'garrison'].forEach(t => {
+    document.getElementById('tabContent' + cap(t))?.classList?.remove('on');
+    document.getElementById('tabBtn' + cap(t))?.classList?.remove('on');
+  });
+  document.getElementById('tab' + cap(tab)).classList.add('on');
+  document.getElementById('tabBtn' + cap(tab)).classList.add('on');
+}
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ============================================================
+//  FACTION CHIPS
+// ============================================================
+function buildFactionChips() {
+  const el = document.getElementById('factionChips');
+  el.innerHTML = '';
+  Object.entries(MODEL.groups).forEach(([fac, data]) => {
+    const btn = document.createElement('button');
+    btn.className = 'faction-chip';
+    btn.dataset.faction = fac;
+    btn.innerHTML = fac + `<span class="faction-side">${data.side}</span>`;
+    btn.addEventListener('click', () => selectFaction(fac));
+    el.appendChild(btn);
+  });
+}
+
+function selectFaction(fac) {
+  MODEL.faction = fac;
+  // update chip states
+  document.querySelectorAll('.faction-chip').forEach(btn => {
+    btn.classList.toggle('on', btn.dataset.faction === fac);
+  });
+  const data = MODEL.groups[fac];
+  const keys = Object.keys(data.templates);
+  const variantCount = keys.reduce((s, k) => s + data.templates[k].length, 0);
+  document.getElementById('tplPanelTitle').textContent = `${fac} — Group Templates`;
+  document.getElementById('tplPanelSub').textContent =
+    `${keys.length} keys · ${variantCount} variants · side: ${data.side}`;
+  document.getElementById('factionMeta').style.display = '';
+  document.getElementById('factionMetaText').textContent =
+    `${fac} · ${data.side} · ${keys.length} keys · ${variantCount} total variants`;
+  renderTemplates(fac);
+}
+
+// ============================================================
+//  HELPERS: is this faction using suffixed tier keys?
+// ============================================================
+function isTieredFaction(fac) {
+  const keys = Object.keys(MODEL.groups[fac].templates);
+  // Tiered factions have _0, _1, _2, _3 suffixed keys
+  return keys.some(k => /_\d$/.test(k));
+}
+
+// Group tiered keys: Squad_0, Squad_1 → { Squad: ['Squad_0', ...], ... }
+// Non-tiered keys (AA_Light, Squad_Advanced etc.) are put in their own group
+function groupTieredKeys(keys) {
+  const groups = {};
+  keys.forEach(k => {
+    // Match base + numeric suffix: Squad_0, Team_MG_3, Motorized_4
+    const m = k.match(/^(.+)_(\d+)$/);
+    if (m) {
+      const base = m[1];
+      if (!groups[base]) groups[base] = [];
+      groups[base].push(k);
+    } else {
+      // Non-tiered key gets its own "group" of one
+      if (!groups[k]) groups[k] = [];
+      groups[k].push(k);
+    }
+  });
+  return groups;
+}
+
+// ============================================================
+//  RENDER TEMPLATES
+// ============================================================
+function renderTemplates(fac) {
+  const tplEmpty = document.getElementById('tplEmpty');
+  const tplContent = document.getElementById('tplContent');
+  tplEmpty.style.display = 'none';
+  tplContent.style.display = '';
+  tplContent.innerHTML = '';
+
+  const data = MODEL.groups[fac];
+  const keys = Object.keys(data.templates);
+
+  if (keys.length === 0) {
+    tplEmpty.style.display = '';
+    tplContent.style.display = 'none';
+    return;
+  }
+
+  const tiered = isTieredFaction(fac);
+
+  if (tiered) {
+    // Grouped display: tiered factions get base-name sections
+    const tieredGroups = groupTieredKeys(keys);
+    Object.entries(tieredGroups).forEach(([base, subKeys]) => {
+      const isSingle = subKeys.length === 1 && subKeys[0] === base; // non-tiered key
+      const block = renderKeyBlock(fac, base, subKeys, isSingle);
+      tplContent.appendChild(block);
+    });
+  } else {
+    // Flat display: each key is its own block
+    keys.forEach(key => {
+      const block = renderKeyBlock(fac, key, [key], true);
+      tplContent.appendChild(block);
+    });
+  }
+}
+
+// Render a template-key block (may contain 1 or multiple sub-keys for tiered factions)
+function renderKeyBlock(fac, displayName, subKeys, flatMode) {
+  const data = MODEL.groups[fac];
+  // total variants across all sub-keys
+  const totalVariants = subKeys.reduce((s, k) => s + (data.templates[k]?.length || 0), 0);
+  // total units
+  const totalUnits = subKeys.reduce((s, k) =>
+    s + (data.templates[k] || []).reduce((ss, v) => ss + v.length, 0), 0);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'tpl-key-block';
+  wrap.dataset.faction = fac;
+  wrap.dataset.key = displayName;
+
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'tpl-key-hdr';
+  hdr.innerHTML = `
+    <span class="tpl-chevron" id="chev-${fac}-${cssId(displayName)}">▶</span>
+    <span class="tpl-key-name">${displayName}</span>
+    <span class="tpl-key-meta">
+      <span class="badge-count">${totalVariants} variant${totalVariants !== 1 ? 's' : ''}</span>
+      <span class="badge-count" style="margin-left:3px">${totalUnits} units</span>
+    </span>
+    <button class="sm" style="margin-left:10px;font-size:11px" onclick="addVariantToKey(event,'${fac}','${subKeys[subKeys.length - 1]}')">+ Variant</button>
+  `;
+  hdr.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') return;
+    const body = document.getElementById(`body-${fac}-${cssId(displayName)}`);
+    const chev = document.getElementById(`chev-${fac}-${cssId(displayName)}`);
+    body.classList.toggle('open');
+    chev.classList.toggle('open');
+  });
+  wrap.appendChild(hdr);
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'tpl-key-body';
+  body.id = `body-${fac}-${cssId(displayName)}`;
+
+  if (flatMode || subKeys.length === 1) {
+    // Render all variants of the single key
+    const key = subKeys[0];
+    (data.templates[key] || []).forEach((variant, vi) => {
+      body.appendChild(renderVariantRow(fac, key, vi, variant));
+    });
+  } else {
+    // Tiered: show each sub-key (e.g. Squad_0, Squad_1, ...) as a sub-section
+    subKeys.forEach(subKey => {
+      const tierLabel = document.createElement('div');
+      const tierNum = subKey.match(/_(\d+)$/)?.[1] ?? subKey;
+      tierLabel.style.cssText = 'font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)';
+      tierLabel.textContent = `Tier ${tierNum}`;
+      body.appendChild(tierLabel);
+      (data.templates[subKey] || []).forEach((variant, vi) => {
+        body.appendChild(renderVariantRow(fac, subKey, vi, variant));
+      });
+    });
+  }
+
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function cssId(s) {
+  return s.replace(/[^a-zA-Z0-9]/g, '_');
+}
+
+// ============================================================
+//  RENDER VARIANT ROW
+// ============================================================
+function renderVariantRow(fac, key, vi, units) {
+  const row = document.createElement('div');
+  row.className = 'variant-row';
+  row.id = `vrow-${fac}-${cssId(key)}-${vi}`;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'variant-hdr';
+  hdr.innerHTML = `<span class="vnum">Variant ${vi + 1}</span> <span style="color:#556">${units.length} unit${units.length !== 1 ? 's' : ''}</span>`;
+
+  const acts = document.createElement('div');
+  acts.className = 'variant-actions';
+  const delBtn = document.createElement('button');
+  delBtn.className = 'sm danger';
+  delBtn.style.fontSize = '10px';
+  delBtn.textContent = '✕ Remove variant';
+  delBtn.addEventListener('click', () => removeVariant(fac, key, vi));
+  acts.appendChild(delBtn);
+  hdr.appendChild(acts);
+  row.appendChild(hdr);
+
+  // Unit chips
+  const chips = document.createElement('div');
+  chips.className = 'unit-chips';
+  units.forEach((cls, ui) => {
+    chips.appendChild(renderUnitChip(fac, key, vi, ui, cls, units.length));
+  });
+
+  // "+ add unit" button
+  const addBtn = document.createElement('div');
+  addBtn.className = 'add-unit-btn';
+  addBtn.title = 'Add unit';
+  addBtn.innerHTML = `<div class="add-unit-thumb">+</div><div class="add-unit-label">add unit</div>`;
+  addBtn.addEventListener('click', () => openPicker(fac, key, vi, units.length));
+  chips.appendChild(addBtn);
+
+  row.appendChild(chips);
+  return row;
+}
+
+// ============================================================
+//  UNIT CHIP
+// ============================================================
+function renderUnitChip(fac, key, vi, ui, cls, totalUnits) {
+  const udata = MODEL.units[cls];
+  const hasThumb = udata && udata.thumb;
+  const displayName = udata ? udata.name : cls;
+  const isUnknown = !udata;
+
+  const chip = document.createElement('div');
+  chip.className = 'unit-chip';
+  chip.title = `${cls}\n${displayName}`;
+
+  const thumbDiv = document.createElement('div');
+  thumbDiv.className = 'unit-chip-thumb';
+  if (hasThumb) {
+    const img = document.createElement('img');
+    img.src = `assets/thumbs/${udata.thumb}`;
+    img.alt = displayName;
+    img.loading = 'lazy';
+    img.onerror = function() {
+      this.parentElement.innerHTML = '<span class="glyph">⬡</span>';
+    };
+    thumbDiv.appendChild(img);
+  } else {
+    thumbDiv.innerHTML = '<span class="glyph">⬡</span>';
+  }
+
+  const nameDiv = document.createElement('div');
+  nameDiv.className = 'unit-chip-name' + (isUnknown ? ' warn' : '');
+  nameDiv.textContent = displayName.length > 10 ? displayName.slice(0, 9) + '…' : displayName;
+
+  // Hover buttons: move left, move right, remove
+  const btns = document.createElement('div');
+  btns.className = 'unit-chip-btns';
+  if (ui > 0) {
+    const ml = document.createElement('button');
+    ml.className = 'unit-chip-btn';
+    ml.textContent = '◀';
+    ml.title = 'Move left';
+    ml.addEventListener('click', (e) => { e.stopPropagation(); moveUnit(fac, key, vi, ui, -1); });
+    btns.appendChild(ml);
+  }
+  if (ui < totalUnits - 1) {
+    const mr = document.createElement('button');
+    mr.className = 'unit-chip-btn';
+    mr.textContent = '▶';
+    mr.title = 'Move right';
+    mr.addEventListener('click', (e) => { e.stopPropagation(); moveUnit(fac, key, vi, ui, +1); });
+    btns.appendChild(mr);
+  }
+  const del = document.createElement('button');
+  del.className = 'unit-chip-btn del';
+  del.textContent = '✕';
+  del.title = 'Remove unit';
+  del.addEventListener('click', (e) => { e.stopPropagation(); removeUnit(fac, key, vi, ui); });
+  btns.appendChild(del);
+
+  chip.appendChild(thumbDiv);
+  chip.appendChild(nameDiv);
+  chip.appendChild(btns);
+  if (isUnknown) {
+    const warnChip = document.createElement('span');
+    warnChip.className = 'warn-chip';
+    warnChip.textContent = '?';
+    warnChip.title = `Classname "${cls}" not found in unit catalog`;
+    chip.appendChild(warnChip);
+  }
+  return chip;
+}
+
+// ============================================================
+//  MUTATIONS
+// ============================================================
+function removeUnit(fac, key, vi, ui) {
+  MODEL.groups[fac].templates[key][vi].splice(ui, 1);
+  refreshVariantRow(fac, key, vi);
+  refreshKeyBlockMeta(fac, key);
+}
+
+function moveUnit(fac, key, vi, ui, dir) {
+  const arr = MODEL.groups[fac].templates[key][vi];
+  const ni = ui + dir;
+  if (ni < 0 || ni >= arr.length) return;
+  [arr[ui], arr[ni]] = [arr[ni], arr[ui]];
+  refreshVariantRow(fac, key, vi);
+}
+
+function addUnitToRoster(fac, key, vi, cls) {
+  MODEL.groups[fac].templates[key][vi].push(cls);
+  refreshVariantRow(fac, key, vi);
+  refreshKeyBlockMeta(fac, key);
+}
+
+function removeVariant(fac, key, vi) {
+  MODEL.groups[fac].templates[key].splice(vi, 1);
+  // Re-render the whole templates panel so variant numbers stay correct
+  renderTemplates(fac);
+  reopenKey(fac, key);
+}
+
+function addVariantToKey(e, fac, key) {
+  e.stopPropagation();
+  MODEL.groups[fac].templates[key].push([]);
+  const vi = MODEL.groups[fac].templates[key].length - 1;
+  // find the display name for this key
+  const displayName = getDisplayNameForKey(fac, key);
+  // just re-render
+  renderTemplates(fac);
+  reopenKey(fac, displayName);
+}
+
+function addNewKey() {
+  const input = document.getElementById('newKeyInput');
+  const hint = document.getElementById('newKeyHint');
+  const keyName = input.value.trim();
+  if (!keyName) { hint.innerHTML = '<span style="color:var(--orange)">Enter a key name.</span>'; return; }
+  const fac = MODEL.faction;
+  if (!fac) { hint.innerHTML = '<span style="color:var(--orange)">Select a faction first.</span>'; return; }
+  if (MODEL.groups[fac].templates[keyName]) {
+    hint.innerHTML = `<span style="color:var(--orange)">Key "${keyName}" already exists.</span>`;
+    return;
+  }
+  MODEL.groups[fac].templates[keyName] = [[]]; // one empty variant
+  input.value = '';
+  hint.innerHTML = `<span style="color:var(--olive)">Added "${keyName}" with 1 empty variant.</span>`;
+  renderTemplates(fac);
+  reopenKey(fac, keyName);
+}
+
+function getDisplayNameForKey(fac, key) {
+  if (!isTieredFaction(fac)) return key;
+  // For tiered factions, the display name is the base (without numeric suffix)
+  const m = key.match(/^(.+)_\d+$/);
+  return m ? m[1] : key;
+}
+
+function reopenKey(fac, displayName) {
+  // Try to open the block for this key
+  const id = `body-${fac}-${cssId(displayName)}`;
+  const chevId = `chev-${fac}-${cssId(displayName)}`;
+  const body = document.getElementById(id);
+  const chev = document.getElementById(chevId);
+  if (body) {
+    body.classList.add('open');
+    if (chev) chev.classList.add('open');
+    body.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ============================================================
+//  PARTIAL RE-RENDER HELPERS
+// ============================================================
+function refreshVariantRow(fac, key, vi) {
+  const rowId = `vrow-${fac}-${cssId(key)}-${vi}`;
+  const oldRow = document.getElementById(rowId);
+  if (!oldRow) { renderTemplates(fac); return; }
+  const units = MODEL.groups[fac].templates[key][vi];
+  const newRow = renderVariantRow(fac, key, vi, units);
+  oldRow.parentNode.replaceChild(newRow, oldRow);
+}
+
+function refreshKeyBlockMeta(fac, keyOrDisplay) {
+  // Find the block and update variant/unit counts in the header
+  const tplContent = document.getElementById('tplContent');
+  const blocks = tplContent.querySelectorAll('.tpl-key-block');
+  blocks.forEach(block => {
+    if (block.dataset.faction === fac && block.dataset.key === keyOrDisplay) {
+      const data = MODEL.groups[fac];
+      // figure out subKeys
+      let subKeys;
+      if (isTieredFaction(fac)) {
+        const tg = groupTieredKeys(Object.keys(data.templates));
+        subKeys = tg[keyOrDisplay] || [keyOrDisplay];
+      } else {
+        subKeys = [keyOrDisplay];
+      }
+      const totalVariants = subKeys.reduce((s, k) => s + (data.templates[k]?.length || 0), 0);
+      const totalUnits = subKeys.reduce((s, k) =>
+        s + (data.templates[k] || []).reduce((ss, v) => ss + v.length, 0), 0);
+      const meta = block.querySelector('.tpl-key-meta');
+      if (meta) {
+        meta.innerHTML = `
+          <span class="badge-count">${totalVariants} variant${totalVariants !== 1 ? 's' : ''}</span>
+          <span class="badge-count" style="margin-left:3px">${totalUnits} units</span>
+        `;
+      }
+    }
+  });
+}
+
+// ============================================================
+//  PICKER MODAL
+// ============================================================
+let PICKER_CTX = null; // { fac, key, vi, insertAt }
+let PICKER_FILTER_PREFIX = '';
+
+function openPicker(fac, key, vi, insertAt) {
+  PICKER_CTX = { fac, key, vi, insertAt };
+  document.getElementById('pickerTitle').textContent = `Add Unit — ${key} Variant ${vi + 1}`;
+  document.getElementById('pickerSearch').value = '';
+  PICKER_FILTER_PREFIX = '';
+  buildPickerSide();
+  renderPickerGrid();
+  document.getElementById('pickerModal').classList.add('open');
+  document.getElementById('pickerSearch').focus();
+}
+
+function closePicker() {
+  document.getElementById('pickerModal').classList.remove('open');
+  PICKER_CTX = null;
+}
+
+// Close picker on backdrop click
+document.getElementById('pickerModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('pickerModal')) closePicker();
+});
+
+// Close picker on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closePicker();
+});
+
+function buildPickerSide() {
+  const side = document.getElementById('pickerSide');
+  side.innerHTML = '';
+  // Build prefix categories from classnames
+  const prefixes = new Set();
+  prefixes.add('ALL');
+  Object.keys(MODEL.units).forEach(cls => {
+    const prefix = cls.split('_')[0];
+    prefixes.add(prefix);
+  });
+
+  const allBtn = document.createElement('button');
+  allBtn.className = 'modal-side-chip on';
+  allBtn.textContent = 'ALL';
+  allBtn.dataset.prefix = '';
+  allBtn.addEventListener('click', () => {
+    PICKER_FILTER_PREFIX = '';
+    side.querySelectorAll('.modal-side-chip').forEach(b => b.classList.remove('on'));
+    allBtn.classList.add('on');
+    renderPickerGrid();
+  });
+  side.appendChild(allBtn);
+
+  Array.from(prefixes).filter(p => p !== 'ALL').sort().forEach(prefix => {
+    const btn = document.createElement('button');
+    btn.className = 'modal-side-chip';
+    btn.textContent = prefix;
+    btn.dataset.prefix = prefix;
+    btn.addEventListener('click', () => {
+      PICKER_FILTER_PREFIX = prefix;
+      side.querySelectorAll('.modal-side-chip').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      renderPickerGrid();
+    });
+    side.appendChild(btn);
+  });
+}
+
+function renderPickerGrid() {
+  const grid = document.getElementById('pickerGrid');
+  const empty = document.getElementById('pickerEmpty');
+  const query = document.getElementById('pickerSearch').value.toLowerCase().trim();
+
+  let entries = Object.entries(MODEL.units);
+  // Filter by prefix
+  if (PICKER_FILTER_PREFIX) {
+    entries = entries.filter(([cls]) => cls.startsWith(PICKER_FILTER_PREFIX + '_') || cls === PICKER_FILTER_PREFIX);
+  }
+  // Filter by search
+  if (query) {
+    entries = entries.filter(([cls, data]) =>
+      cls.toLowerCase().includes(query) || (data.name && data.name.toLowerCase().includes(query))
+    );
+  }
+
+  grid.innerHTML = '';
+  if (entries.length === 0) {
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  entries.forEach(([cls, data]) => {
+    const tile = document.createElement('div');
+    tile.className = 'pick-tile';
+
+    if (data.thumb) {
+      const img = document.createElement('img');
+      img.className = 'pick-tile-img';
+      img.src = `assets/thumbs/${data.thumb}`;
+      img.alt = data.name;
+      img.loading = 'lazy';
+      img.onerror = function() {
+        this.outerHTML = `<div class="pick-tile-glyph">⬡</div>`;
+      };
+      tile.appendChild(img);
+    } else {
+      const glyph = document.createElement('div');
+      glyph.className = 'pick-tile-glyph';
+      glyph.textContent = '⬡';
+      tile.appendChild(glyph);
+    }
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'pick-tile-name';
+    nameDiv.textContent = data.name || cls;
+    tile.appendChild(nameDiv);
+
+    const classDiv = document.createElement('div');
+    classDiv.className = 'pick-tile-class';
+    classDiv.textContent = cls;
+    tile.appendChild(classDiv);
+
+    tile.addEventListener('click', () => pickUnit(cls));
+    grid.appendChild(tile);
+  });
+}
+
+function pickUnit(cls) {
+  if (!PICKER_CTX) return;
+  const { fac, key, vi } = PICKER_CTX;
+  addUnitToRoster(fac, key, vi, cls);
+  closePicker();
+}
+
+// Also handle typed classname not in catalog (warn but allow)
+// The picker UI only shows catalog entries; for typing custom classnames,
+// the validation warn chip appears automatically in renderUnitChip when cls not in MODEL.units.
+
+// ============================================================
+//  BOOT
+// ============================================================
+loadData();
+</script>
+</body>
+</html>
