@@ -286,6 +286,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
     <span class="t2">WASP ORDER OF BATTLE</span>
   </div>
   <div class="spacer"></div>
+  <a href="https://miksuu.com/tools" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b939c;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:3px 10px;background:#0d1014;white-space:nowrap;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--bone)';this.style.borderColor='var(--orange)'" onmouseout="this.style.color='#8b939c';this.style.borderColor='var(--line)'">← All Tools</a>
   <div class="chip">model: <b id="statusChip">loading…</b></div>
 </div>
 
@@ -689,6 +690,11 @@ function renderKeyBlock(fac, displayName, subKeys, flatMode) {
   // Header
   const hdr = document.createElement('div');
   hdr.className = 'tpl-key-hdr';
+  // For flat/single-key blocks, the header carries the "+ Variant" button.
+  // For tiered blocks, each tier section gets its own "+ Variant" button in the body.
+  const headerVariantBtn = (flatMode || subKeys.length === 1)
+    ? `<button class="sm" style="margin-left:10px;font-size:11px" onclick="addVariantToKey(event,'${fac}','${subKeys[0]}')">+ Variant</button>`
+    : '';
   hdr.innerHTML = `
     <span class="tpl-chevron" id="chev-${fac}-${cssId(displayName)}">▶</span>
     <span class="tpl-key-name">${displayName}</span>
@@ -696,7 +702,7 @@ function renderKeyBlock(fac, displayName, subKeys, flatMode) {
       <span class="badge-count">${totalVariants} variant${totalVariants !== 1 ? 's' : ''}</span>
       <span class="badge-count" style="margin-left:3px">${totalUnits} units</span>
     </span>
-    <button class="sm" style="margin-left:10px;font-size:11px" onclick="addVariantToKey(event,'${fac}','${subKeys[subKeys.length - 1]}')">+ Variant</button>
+    ${headerVariantBtn}
   `;
   hdr.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') return;
@@ -720,12 +726,23 @@ function renderKeyBlock(fac, displayName, subKeys, flatMode) {
     });
   } else {
     // Tiered: show each sub-key (e.g. Squad_0, Squad_1, ...) as a sub-section
+    // Each tier gets its own "+ Variant" button so variants go to the right tier.
     subKeys.forEach(subKey => {
-      const tierLabel = document.createElement('div');
       const tierNum = subKey.match(/_(\d+)$/)?.[1] ?? subKey;
-      tierLabel.style.cssText = 'font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)';
+      const tierHdr = document.createElement('div');
+      tierHdr.style.cssText = 'display:flex;align-items:center;gap:8px;margin:10px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line)';
+      const tierLabel = document.createElement('span');
+      tierLabel.style.cssText = 'font-family:JetBrains Mono,monospace;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;flex:1';
       tierLabel.textContent = `Tier ${tierNum}`;
-      body.appendChild(tierLabel);
+      tierHdr.appendChild(tierLabel);
+      const tierAddBtn = document.createElement('button');
+      tierAddBtn.className = 'sm';
+      tierAddBtn.style.cssText = 'font-size:10px;padding:2px 7px';
+      tierAddBtn.textContent = '+ Variant';
+      tierAddBtn.setAttribute('aria-label', `Add variant to ${displayName} Tier ${tierNum}`);
+      tierAddBtn.addEventListener('click', (e) => addVariantToKey(e, fac, subKey));
+      tierHdr.appendChild(tierAddBtn);
+      body.appendChild(tierHdr);
       (data.templates[subKey] || []).forEach((variant, vi) => {
         body.appendChild(renderVariantRow(fac, subKey, vi, variant));
       });
@@ -1552,14 +1569,14 @@ function expInitPasteCapture() {
     expUpdateGarStatus();
   });
 
-  // If user types/clears via keyboard instead of paste, fall back to textarea value
+  // If user types/clears/edits via keyboard, always sync EXP raw to current textarea value
   gpEl.addEventListener('input', () => {
-    if (gpEl.value === '') { EXP.groupsRaw = null; expUpdateGroupsStatus(); }
-    else if (EXP.groupsRaw === null) { EXP.groupsRaw = gpEl.value; expUpdateGroupsStatus(); }
+    EXP.groupsRaw = gpEl.value === '' ? null : gpEl.value;
+    expUpdateGroupsStatus();
   });
   garEl.addEventListener('input', () => {
-    if (garEl.value === '') { EXP.garrisonRaw = null; expUpdateGarStatus(); }
-    else if (EXP.garrisonRaw === null) { EXP.garrisonRaw = garEl.value; expUpdateGarStatus(); }
+    EXP.garrisonRaw = garEl.value === '' ? null : garEl.value;
+    expUpdateGarStatus();
   });
 }
 
@@ -2123,14 +2140,45 @@ function fhbAccept() {
   const { token, side, coreUnits } = FHB_PENDING;
   // If faction already exists, don't overwrite — just select it
   if (!MODEL.groups[token]) {
-    // Seed from GUE (or first faction) so the new faction has editable templates
-    const seedFac = MODEL.groups['GUE'] ? 'GUE' : Object.keys(MODEL.groups)[0];
-    const seedTemplates = seedFac
-      ? JSON.parse(JSON.stringify(MODEL.groups[seedFac].templates))
-      : {};
+    let templates;
+    if (Array.isArray(coreUnits) && coreUnits.length > 0) {
+      // Build templates from the coreUnits payload (Faction Builder roster).
+      // Group units by factory_key so each slot type becomes a meaningful template group.
+      // factory_key: 'Barracks'→Squad/Team, 'Light'→Motorized, 'Heavy'→Armored_Light,
+      //              'Aircraft'→Air, 'Depot'→Support, 'Defenses'→Defense_Static
+      const KEY_MAP = {
+        Barracks: 'Squad',
+        Light:    'Motorized',
+        Heavy:    'Armored_Light',
+        Aircraft: 'Air',
+        Depot:    'Support',
+        Defenses: 'Defense_Static'
+      };
+      const buckets = {};
+      coreUnits.forEach(u => {
+        const tplKey = KEY_MAP[u.factory_key] || u.factory_key || 'Other';
+        if (!buckets[tplKey]) buckets[tplKey] = [];
+        buckets[tplKey].push(u.cls);
+      });
+      // Each bucket becomes one template key with a single variant containing all its units
+      templates = {};
+      Object.entries(buckets).forEach(([tplKey, clsList]) => {
+        templates[tplKey] = [clsList];
+      });
+      // If Barracks units exist, also derive a 'Team' variant (first 5 units of Squad)
+      if (templates['Squad'] && templates['Squad'][0].length > 5) {
+        templates['Team'] = [templates['Squad'][0].slice(0, 5)];
+      }
+    } else {
+      // No coreUnits payload — fall back to seeding from GUE templates
+      const seedFac = MODEL.groups['GUE'] ? 'GUE' : Object.keys(MODEL.groups)[0];
+      templates = seedFac
+        ? JSON.parse(JSON.stringify(MODEL.groups[seedFac].templates))
+        : {};
+    }
     MODEL.groups[token] = {
       side: side || 'GUER',
-      templates: seedTemplates
+      templates
     };
     buildFactionChips();
   }
