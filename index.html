@@ -10,50 +10,231 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ---- Tokens ---- */
+/* ============================================================
+   TOKENS — palette + derived tints (no new hues)
+   ============================================================ */
 :root{
+  /* Core palette — LOCKED */
   --gunmetal:#14171B;--steel:#2A2F36;--steel2:#343b44;
   --olive:#5C6536;--bone:#E7E3D6;--orange:#D9763C;--orange-deep:#B85F2A;
   --chalk:#F2EFE8;--line:#39414b;--danger:#c0392b;
+  /* Derived tints/alphas only */
+  --orange-glow:rgba(217,118,60,.15);
+  --orange-dim:rgba(217,118,60,.08);
+  --danger-bg:rgba(192,57,43,.12);
+  --olive-dim:rgba(92,101,54,.15);
+  --steel-mid:rgba(52,59,68,.6);
+  /* LED states */
+  --led-green:#39c563;
+  --led-orange:#D9763C;
+  --led-red:#c0392b;
+  /* ORBAT threat colours (derived from palette) */
+  --threat-0:rgba(92,101,54,.08);   /* minimal — olive ghost */
+  --threat-1:rgba(92,101,54,.18);   /* low */
+  --threat-2:rgba(217,118,60,.10);  /* medium — orange hint */
+  --threat-3:rgba(217,118,60,.22);  /* high */
+  --threat-4:rgba(192,57,43,.18);   /* severe — danger tint */
 }
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:Inter,system-ui,'Segoe UI',Arial,sans-serif;background:var(--gunmetal);color:var(--bone);overflow:hidden}
+html,body{height:100%;font-family:Inter,system-ui,'Segoe UI',Arial,sans-serif;
+  background:var(--gunmetal);color:var(--bone);overflow:hidden}
 h1,h2,h3{font-family:Oswald,Inter,sans-serif;font-weight:600;letter-spacing:.5px}
 
-/* ---- Brand bar ---- */
-.brandbar{height:54px;display:flex;align-items:center;gap:14px;padding:0 16px;
-  background:linear-gradient(90deg,#101317 0%,#171b20 100%);border-bottom:1px solid var(--line);position:relative;z-index:5}
+/* ============================================================
+   LOAD ORCHESTRATION — staggered reveal on boot
+   Item 7: brandbar → panels left-to-right → stage, 250–400ms
+   ============================================================ */
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal-1,.reveal-2,.reveal-3,.reveal-4{
+  opacity:0;
+  animation:fade-up .25s ease forwards;
+}
+.reveal-1{animation-delay:.04s}
+.reveal-2{animation-delay:.12s}
+.reveal-3{animation-delay:.22s}
+.reveal-4{animation-delay:.35s}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal-1,.reveal-2,.reveal-3,.reveal-4{
+    opacity:1;animation:none;
+  }
+}
+
+/* ============================================================
+   STAGE FRAMING — corner brackets + grain/scanline overlay
+   Item 2: targeting-reticle brackets, grain opacity ≤ .04
+   ============================================================ */
+.stage-frame{position:relative}
+.stage-frame::before,.stage-frame::after{
+  content:'';position:absolute;pointer-events:none;z-index:1;
+  width:18px;height:18px;
+}
+/* top-left */
+.stage-frame::before{
+  top:0;left:0;
+  border-top:2px solid var(--line);
+  border-left:2px solid var(--line);
+}
+/* top-right — corners done via pseudo on children or we use a wrapper */
+/* We use a single inset box overlay instead to avoid pseudo conflicts */
+
+.stage-overlay{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 3px,
+      rgba(0,0,0,.03) 3px,
+      rgba(0,0,0,.03) 4px
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.9;
+}
+
+/* Corner bracket overlay (4 corners via clip) */
+.stage-corners{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  overflow:hidden;
+}
+.stage-corners::before,.stage-corners::after,
+.stage-corners .corner-br,.stage-corners .corner-bl{
+  content:'';position:absolute;
+  width:18px;height:18px;
+  border-color:var(--line);border-style:solid;
+}
+.stage-corners::before{top:0;left:0;border-width:2px 0 0 2px}
+.stage-corners::after{top:0;right:0;border-width:2px 2px 0 0}
+.stage-corners .corner-br{bottom:0;right:0;border-width:0 2px 2px 0}
+.stage-corners .corner-bl{bottom:0;left:0;border-width:0 0 2px 2px}
+
+/* ============================================================
+   BRANDBAR — Item 1
+   ============================================================ */
+.brandbar{
+  height:54px;display:flex;align-items:center;gap:14px;padding:0 16px;
+  background:linear-gradient(90deg,#101317 0%,#171b20 100%);
+  border-bottom:1px solid var(--line);
+  border-top:1px solid var(--olive); /* 1px olive top rule */
+  position:relative;z-index:5;flex:0 0 auto;
+}
 .brandbar .mark{width:34px;height:34px;flex:0 0 auto}
 .brandbar .word{display:flex;flex-direction:column;line-height:1}
-.brandbar .word .t1{font-family:Oswald,sans-serif;font-weight:600;font-size:19px;letter-spacing:2px;color:var(--bone)}
+.brandbar .word .t1{
+  font-family:Oswald,sans-serif;font-weight:600;font-size:19px;
+  letter-spacing:4px; /* +2px from brief */
+  text-transform:uppercase;color:var(--bone)
+}
 .brandbar .word .t2{font-family:Oswald,sans-serif;font-weight:400;font-size:10px;letter-spacing:6px;color:var(--orange);margin-top:2px}
 .brandbar .spacer{flex:1}
-.brandbar .chip{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;border:1px solid var(--line);border-radius:10px;padding:3px 9px;background:#0d1014}
+.brandbar .chip{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;
+  border:1px solid var(--line);border-radius:10px;padding:3px 9px;background:#0d1014
+}
 .brandbar .chip b{color:var(--olive)}
 
-/* ---- 3-tab layout ---- */
-.tabs-bar{display:flex;gap:0;padding:0 16px;background:#101317;border-bottom:1px solid var(--line)}
-.tab-btn{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:1px;text-transform:uppercase;background:none;border:none;color:#8b939c;padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s}
+/* Help button in brandbar — Item 9 */
+.brandbar-help-btn{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#8b939c;background:#0d1014;border:1px solid var(--line);
+  border-radius:50%;width:22px;height:22px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;flex:0 0 auto;line-height:1;
+  transition:border-color .12s,color .12s;padding:0;
+}
+.brandbar-help-btn:hover{border-color:var(--orange);color:var(--orange)}
+
+/* Status LED — Item 1 */
+.status-led{
+  width:8px;height:8px;border-radius:50%;flex:0 0 auto;
+  background:var(--led-green);
+  box-shadow:0 0 6px var(--led-green);
+  cursor:default;transition:background .3s,box-shadow .3s;
+}
+.status-led.loading{background:#8b939c;box-shadow:none}
+.status-led.dirty{
+  background:var(--led-orange);
+  box-shadow:0 0 8px var(--led-orange);
+  animation:led-pulse 1.4s ease-in-out infinite;
+}
+.status-led.error{background:var(--led-red);box-shadow:0 0 6px var(--led-red)}
+@keyframes led-pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.35}
+}
+@media (prefers-reduced-motion:reduce){
+  .status-led.dirty{animation:none}
+}
+
+/* ============================================================
+   TABS BAR
+   ============================================================ */
+.tabs-bar{
+  display:flex;gap:0;padding:0 16px;
+  background:#101317;border-bottom:1px solid var(--line);flex:0 0 auto;
+}
+.tab-btn{
+  font-family:Oswald,sans-serif;font-size:13px;letter-spacing:1px;
+  text-transform:uppercase;background:none;border:none;color:#8b939c;
+  padding:10px 20px;cursor:pointer;border-bottom:2px solid transparent;
+  transition:color .15s,border-color .15s;
+}
 .tab-btn:hover{color:var(--bone)}
 .tab-btn.on{color:var(--orange);border-bottom-color:var(--orange)}
-.tab-content{display:none;height:calc(100vh - 54px - 40px);overflow:hidden}
+.tab-content{display:none;height:calc(100vh - 54px - 40px);overflow:hidden;position:relative}
 .tab-content.on{display:flex}
 
-/* ---- Panels ---- */
+/* ============================================================
+   PANEL HEADERS — Item 3
+   Oswald uppercase, 1.5px tracking, 3px olive left accent, ordinal
+   ============================================================ */
 .panel-left{width:290px;flex:0 0 290px;display:flex;flex-direction:column;border-right:1px solid var(--line);background:var(--steel);min-height:0}
 .panel-main{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0}
-.panel-hdr{padding:11px 14px;border-bottom:1px solid var(--line);background:var(--gunmetal);flex:0 0 auto}
-.panel-hdr h2{font-size:14px}
+
+.panel-hdr{
+  padding:10px 14px 10px 18px;
+  border-bottom:1px solid var(--line);
+  background:var(--gunmetal);flex:0 0 auto;
+  border-left:3px solid var(--olive); /* accent bar */
+  position:relative;
+}
+.panel-hdr .hdr-ordinal{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  color:rgba(92,101,54,.7);letter-spacing:1px;
+  text-transform:uppercase;display:block;margin-bottom:2px;
+}
+.panel-hdr h2{
+  font-family:Oswald,sans-serif;font-size:14px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--bone);
+}
 .panel-hdr .sub{font-size:11px;color:#9aa3ad;margin-top:3px;font-family:'JetBrains Mono',monospace}
 .scroll{overflow:auto;padding:12px 14px;flex:1;min-height:0}
 
-/* ---- Forms ---- */
+/* ============================================================
+   FORMS — Item 4 buttons, consistent radii
+   ============================================================ */
 label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;margin:10px 0 4px}
 input,select,button{font-family:inherit;font-size:13px}
-input[type=text],select{width:100%;background:var(--gunmetal);border:1px solid var(--line);color:var(--bone);border-radius:5px;padding:7px 8px;outline:none}
+input[type=text],select{
+  width:100%;background:var(--gunmetal);border:1px solid var(--line);
+  color:var(--bone);border-radius:5px;padding:7px 8px;outline:none;
+}
 input:focus,select:focus{border-color:var(--orange)}
-button{cursor:pointer;background:var(--steel2);color:var(--bone);border:1px solid var(--line);border-radius:5px;padding:6px 10px}
+button{
+  cursor:pointer;background:var(--steel2);color:var(--bone);
+  border:1px solid var(--line);border-radius:5px;padding:6px 10px;
+  transition:border-color .12s,background .12s,transform .12s;
+}
 button:hover{border-color:var(--orange)}
+button:active{transform:scale(.98)} /* Item 4: 120ms press */
+button:disabled{opacity:.4;cursor:not-allowed;pointer-events:none}
 button.primary{background:var(--orange);border-color:var(--orange);color:#1a1208;font-weight:600}
 button.primary:hover{background:var(--orange-deep);border-color:var(--orange-deep)}
 button.danger{border-color:var(--danger);color:#e88}
@@ -65,180 +246,481 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 .divider{height:1px;background:var(--line);margin:12px 0}
 .hint{font-size:11px;color:#8b939c;line-height:1.5;margin-top:6px}
 .hint code{background:#0d1014;padding:1px 4px;border-radius:3px;color:var(--orange)}
-.badge{display:inline-block;font-size:10px;background:var(--olive);color:var(--chalk);padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle}
-.badge-count{display:inline-block;font-size:10px;background:var(--steel2);color:#9aa3ad;padding:1px 6px;border-radius:10px;margin-left:5px;vertical-align:middle;font-family:'JetBrains Mono',monospace}
+
+/* ============================================================
+   CHIPS / BADGES — Item 5, JetBrains Mono 10px pill
+   ============================================================ */
+.badge{
+  display:inline-block;font-size:10px;font-family:'JetBrains Mono',monospace;
+  background:var(--olive);color:var(--chalk);padding:1px 7px;border-radius:10px;
+  margin-left:5px;vertical-align:middle;letter-spacing:.4px;
+}
+.badge-count{
+  display:inline-block;font-size:10px;font-family:'JetBrains Mono',monospace;
+  background:var(--steel2);color:#9aa3ad;padding:1px 7px;border-radius:10px;
+  margin-left:5px;vertical-align:middle;
+}
 .warn-text{color:var(--orange);font-size:10px;font-family:'JetBrains Mono',monospace}
 
-/* ---- Status bar ---- */
-.statusbar{font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;padding:5px 8px;background:#0d1014;border-radius:4px;border:1px solid var(--line);margin-top:8px}
+/* ============================================================
+   STATUS BAR
+   ============================================================ */
+.statusbar{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#8b939c;
+  padding:5px 8px;background:#0d1014;border-radius:4px;
+  border:1px solid var(--line);margin-top:8px
+}
 .statusbar .ok{color:var(--olive)}
 .statusbar .loading{color:#9aa3ad}
 .statusbar .err{color:var(--danger)}
 
-/* ---- Faction chips ---- */
+/* ============================================================
+   FACTION CHIPS
+   ============================================================ */
 .faction-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
-.faction-chip{font-family:'JetBrains Mono',monospace;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:4px 10px;background:var(--gunmetal);cursor:pointer;color:#9aa3ad;transition:all .12s}
+.faction-chip{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  border:1px solid var(--line);border-radius:4px;padding:4px 10px;
+  background:var(--gunmetal);cursor:pointer;color:#9aa3ad;
+  transition:border-color .12s,color .12s,background .12s;
+}
 .faction-chip:hover{border-color:var(--orange);color:var(--bone)}
 .faction-chip.on{border-color:var(--orange);color:var(--orange);background:#251f18;font-weight:600}
 .faction-side{display:inline-block;font-size:9px;margin-left:4px;color:#556;vertical-align:middle}
 
-/* ---- Template key blocks ---- */
-.tpl-key-block{border:1px solid var(--line);border-radius:6px;margin-bottom:10px;overflow:hidden}
-.tpl-key-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0e1115;cursor:pointer;user-select:none}
-.tpl-key-hdr:hover{background:#111518}
-.tpl-key-name{font-family:Oswald,sans-serif;font-size:14px;letter-spacing:.5px;flex:1}
+/* ============================================================
+   TEMPLATE KEY BLOCKS — ORBAT cards (identity moment)
+   NATO echelon pips via SVG, unit cards with atmospheric treatment
+   ============================================================ */
+.tpl-key-block{
+  border:1px solid var(--line);border-radius:6px;margin-bottom:10px;
+  overflow:hidden;
+  transition:box-shadow .15s;
+}
+.tpl-key-block:hover{box-shadow:0 0 0 1px rgba(217,118,60,.18)}
+
+/* ORBAT card header */
+.tpl-key-hdr{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;
+  background:linear-gradient(90deg,#0d1014 0%,#111518 100%);
+  cursor:pointer;user-select:none;position:relative;
+}
+.tpl-key-hdr:hover{background:linear-gradient(90deg,#101317 0%,#131a1e 100%)}
+
+/* Echelon pip strip (NATO-style dots/crosses for size class) */
+.orbat-pips{display:flex;gap:3px;align-items:center;flex:0 0 auto}
+.orbat-pip{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--olive);opacity:.7;
+}
+.orbat-pip.x-pip{
+  border-radius:0;
+  background:none;
+  border:1px solid var(--olive);
+  transform:rotate(45deg);
+  width:7px;height:7px;opacity:.7;
+}
+
+.tpl-key-name{
+  font-family:Oswald,sans-serif;font-size:14px;letter-spacing:1px;
+  flex:1;text-transform:uppercase;color:var(--bone);
+}
 .tpl-key-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad}
 .tpl-key-body{padding:10px 12px;border-top:1px solid var(--line);display:none}
 .tpl-key-body.open{display:block}
-.tpl-chevron{font-size:10px;color:#9aa3ad;transition:transform .15s}
+.tpl-chevron{font-size:10px;color:#9aa3ad;transition:transform .15s;flex:0 0 auto}
 .tpl-chevron.open{transform:rotate(90deg)}
-/* tier group header (for suffixed factions) */
-.tier-group-hdr{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--gunmetal);border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+
+/* tier group header */
+.tier-group-hdr{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  background:var(--gunmetal);border-bottom:1px solid var(--line);
+  cursor:pointer;user-select:none
+}
 .tier-group-hdr:hover{background:#101317}
 .tier-group-name{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.5px;flex:1}
 .tier-group-body{padding:10px 14px;border-bottom:1px solid var(--line);display:none}
 .tier-group-body.open{display:block}
 
-/* ---- Variant rows ---- */
+/* ============================================================
+   VARIANT ROWS
+   ============================================================ */
 .variant-row{margin-bottom:8px;border:1px solid var(--line);border-radius:5px;overflow:hidden}
-.variant-hdr{display:flex;align-items:center;gap:8px;padding:5px 10px;background:#0d1014;font-size:11px;font-family:'JetBrains Mono',monospace;color:#9aa3ad}
+.variant-hdr{
+  display:flex;align-items:center;gap:8px;padding:5px 10px;
+  background:#0d1014;font-size:11px;font-family:'JetBrains Mono',monospace;color:#9aa3ad
+}
 .variant-hdr .vnum{color:var(--orange);font-weight:600}
 .variant-actions{display:flex;gap:4px;margin-left:auto}
-.unit-chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;background:#0a0c0f;min-height:44px;align-items:flex-start;align-content:flex-start}
+.unit-chips{
+  display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;
+  background:#0a0c0f;min-height:44px;align-items:flex-start;align-content:flex-start
+}
 .unit-chip{display:flex;flex-direction:column;align-items:center;width:58px;cursor:default;position:relative}
-.unit-chip-thumb{width:48px;height:48px;border-radius:4px;background:var(--gunmetal);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 48px}
+
+/* Item 8: hover lift on picker tiles (and unit chips) */
+.unit-chip-thumb{
+  width:48px;height:48px;border-radius:4px;background:var(--gunmetal);
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  overflow:hidden;flex:0 0 48px;
+  transition:transform .12s,border-color .12s;
+}
+.unit-chip:hover .unit-chip-thumb{
+  transform:translateY(-1px);
+  border-color:rgba(217,118,60,.5);
+}
 .unit-chip-thumb img{width:100%;height:100%;object-fit:contain}
 .unit-chip-thumb .glyph{font-size:18px;color:#39414b;line-height:1}
-.unit-chip-name{font-family:'JetBrains Mono',monospace;font-size:8px;color:#9aa3ad;text-align:center;margin-top:3px;width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2}
+.unit-chip-name{
+  font-family:'JetBrains Mono',monospace;font-size:8px;color:#9aa3ad;
+  text-align:center;margin-top:3px;width:58px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;line-height:1.2
+}
 .unit-chip-name.warn{color:var(--orange)}
-.unit-chip-btns{display:none;position:absolute;top:0;right:-2px;flex-direction:column;gap:2px;z-index:2}
+.unit-chip-btns{
+  display:none;position:absolute;top:0;right:-2px;
+  flex-direction:column;gap:2px;z-index:2
+}
 .unit-chip:hover .unit-chip-btns{display:flex}
-.unit-chip-btn{font-size:10px;padding:1px 4px;border-radius:3px;background:rgba(20,23,27,.9);border:1px solid var(--line);color:#9aa3ad;cursor:pointer;line-height:1.4}
+.unit-chip-btn{
+  font-size:10px;padding:1px 4px;border-radius:3px;
+  background:rgba(20,23,27,.9);border:1px solid var(--line);
+  color:#9aa3ad;cursor:pointer;line-height:1.4;
+  transition:border-color .1s,color .1s;
+}
 .unit-chip-btn:hover{border-color:var(--orange);color:var(--orange)}
 .unit-chip-btn.del:hover{border-color:var(--danger);color:#e88}
-.add-unit-btn{display:flex;flex-direction:column;align-items:center;width:48px;cursor:pointer;opacity:.6;background:none;border:none;padding:0;font-family:inherit;color:inherit}
+.add-unit-btn{
+  display:flex;flex-direction:column;align-items:center;width:48px;
+  cursor:pointer;opacity:.6;background:none;border:none;padding:0;
+  font-family:inherit;color:inherit;transition:opacity .12s;
+}
 .add-unit-btn:hover{opacity:1}
-.add-unit-thumb{width:48px;height:48px;border-radius:4px;border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;color:#39414b;background:none}
+.add-unit-thumb{
+  width:48px;height:48px;border-radius:4px;border:1px dashed var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  color:#39414b;background:none;transition:border-color .12s,color .12s;
+}
 .add-unit-btn:hover .add-unit-thumb{border-color:var(--orange);color:var(--orange)}
 .add-unit-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:#556;text-align:center;margin-top:3px}
 
-/* ---- Scrollbars ---- */
-::-webkit-scrollbar{width:8px;height:8px}
+/* ============================================================
+   SCROLLBARS — Item 10 (10px thumb steel2)
+   ============================================================ */
+::-webkit-scrollbar{width:10px;height:10px}
 ::-webkit-scrollbar-thumb{background:var(--steel2);border-radius:6px}
 ::-webkit-scrollbar-track{background:transparent}
 
-/* ---- Picker modal ---- */
-.modal-back{position:fixed;inset:0;background:rgba(8,10,13,.7);display:none;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(3px)}
+/* ============================================================
+   PICKER MODAL
+   ============================================================ */
+.modal-back{
+  position:fixed;inset:0;background:rgba(8,10,13,.75);
+  display:none;align-items:center;justify-content:center;
+  z-index:50;backdrop-filter:blur(3px);
+}
 .modal-back.open{display:flex}
-.modal{width:820px;max-width:96vw;max-height:88vh;background:var(--steel);border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;overflow:hidden}
-.modal-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--gunmetal);flex:0 0 auto}
-.modal-head h2{font-size:15px;flex:1}
-.modal-head .x{cursor:pointer;color:#9aa3ad;font-size:22px;line-height:1;background:none;border:none;padding:0 4px}
+.modal{
+  width:820px;max-width:96vw;max-height:88vh;
+  background:var(--steel);border:1px solid var(--line);
+  border-radius:8px;display:flex;flex-direction:column;overflow:hidden;
+}
+.modal-head{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;
+  border-bottom:1px solid var(--line);background:var(--gunmetal);
+  flex:0 0 auto;border-left:3px solid var(--olive);
+}
+.modal-head h2{
+  font-family:Oswald,sans-serif;font-size:15px;flex:1;
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+.modal-head .x{
+  cursor:pointer;color:#9aa3ad;font-size:22px;line-height:1;
+  background:none;border:none;padding:0 4px;transition:color .12s;
+}
 .modal-head .x:hover{color:var(--bone)}
-.modal-search-bar{padding:10px 14px;border-bottom:1px solid var(--line);background:var(--gunmetal);flex:0 0 auto}
-.modal-search-bar input{width:100%;background:var(--steel);border:1px solid var(--line);color:var(--bone);border-radius:5px;padding:8px 10px;font-size:13px;outline:none}
+.modal-search-bar{
+  padding:10px 14px;border-bottom:1px solid var(--line);
+  background:var(--gunmetal);flex:0 0 auto
+}
+.modal-search-bar input{
+  width:100%;background:var(--steel);border:1px solid var(--line);
+  color:var(--bone);border-radius:5px;padding:8px 10px;font-size:13px;outline:none
+}
 .modal-search-bar input:focus{border-color:var(--orange)}
 .modal-body{display:flex;min-height:0;flex:1}
 .modal-side{width:140px;border-right:1px solid var(--line);overflow-y:auto;padding:8px 6px;flex:0 0 140px}
-.modal-side-chip{display:block;width:100%;text-align:left;font-family:'JetBrains Mono',monospace;font-size:11px;background:none;border:1px solid transparent;border-radius:4px;padding:4px 8px;color:#9aa3ad;cursor:pointer;margin-bottom:3px}
+.modal-side-chip{
+  display:block;width:100%;text-align:left;font-family:'JetBrains Mono',monospace;
+  font-size:11px;background:none;border:1px solid transparent;border-radius:4px;
+  padding:4px 8px;color:#9aa3ad;cursor:pointer;margin-bottom:3px;
+  transition:background .1s,color .1s,border-color .1s;
+}
 .modal-side-chip:hover{background:var(--steel2);color:var(--bone)}
 .modal-side-chip.on{background:var(--steel2);border-color:var(--orange);color:var(--orange)}
 .modal-grid-wrap{flex:1;overflow-y:auto;padding:12px}
 .pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
-.pick-tile{border:1px solid var(--line);border-radius:5px;background:var(--gunmetal);cursor:pointer;overflow:hidden;display:flex;flex-direction:column;transition:border-color .1s}
-.pick-tile:hover{border-color:var(--orange)}
+.pick-tile{
+  border:1px solid var(--line);border-radius:5px;background:var(--gunmetal);
+  cursor:pointer;overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .1s,transform .12s;
+}
+/* Item 8: hover lift on picker tiles */
+.pick-tile:hover{border-color:var(--orange);transform:translateY(-1px)}
 .pick-tile-img{width:100%;height:60px;object-fit:contain;background:#11141a;display:block}
 .pick-tile-glyph{width:100%;height:60px;display:flex;align-items:center;justify-content:center;background:#11141a;color:#39414b;font-size:22px}
-.pick-tile-name{font-family:'JetBrains Mono',monospace;font-size:9px;color:#c8d0d8;padding:4px 5px;border-top:1px solid var(--steel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pick-tile-class{font-family:'JetBrains Mono',monospace;font-size:8px;color:#556;padding:0 5px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pick-empty{font-size:12px;color:#8b939c;padding:20px;text-align:center}
-.warn-chip{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;background:#3a1a1a;color:var(--orange);border:1px solid #6a3a2a;border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle}
+.pick-tile-name{
+  font-family:'JetBrains Mono',monospace;font-size:9px;color:#c8d0d8;
+  padding:4px 5px;border-top:1px solid var(--steel);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.pick-tile-class{
+  font-family:'JetBrains Mono',monospace;font-size:8px;color:#556;
+  padding:0 5px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.pick-empty{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#556;padding:32px;text-align:center;letter-spacing:.5px;
+  text-transform:uppercase;line-height:2;
+}
+.warn-chip{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;
+  background:#3a1a1a;color:var(--orange);border:1px solid #6a3a2a;
+  border-radius:3px;padding:1px 5px;margin-left:4px;vertical-align:middle
+}
 
-/* ---- Garrison Table ---- */
+/* ============================================================
+   GARRISON TABLE — threat-level tint bars (identity moment)
+   ============================================================ */
 .gar-layout{display:flex;width:100%;height:100%;min-height:0;min-width:0}
-.gar-sidebar{width:240px;flex:0 0 240px;border-right:1px solid var(--line);background:var(--steel);display:flex;flex-direction:column;min-height:0}
-.gar-main{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:auto;padding:14px}
+.gar-sidebar{
+  width:240px;flex:0 0 240px;border-right:1px solid var(--line);
+  background:var(--steel);display:flex;flex-direction:column;min-height:0
+}
+.gar-main{
+  flex:1;display:flex;flex-direction:column;min-height:0;min-width:0;
+  overflow:auto;padding:14px;position:relative;
+}
 .gar-type-list{overflow-y:auto;flex:1;padding:8px 10px}
-.gar-type-btn{display:flex;align-items:center;gap:6px;width:100%;text-align:left;background:none;border:1px solid transparent;border-radius:5px;padding:7px 10px;margin-bottom:4px;color:#9aa3ad;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all .12s}
+.gar-type-btn{
+  display:flex;align-items:center;gap:6px;width:100%;text-align:left;
+  background:none;border:1px solid transparent;border-radius:5px;
+  padding:7px 10px;margin-bottom:4px;color:#9aa3ad;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  cursor:pointer;transition:all .12s;position:relative;overflow:hidden;
+}
+/* Threat tint bar: pseudo-element on the left */
+.gar-type-btn::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:transparent;transition:background .2s;
+}
+.gar-type-btn[data-threat="0"]::before{background:var(--olive);opacity:.5}
+.gar-type-btn[data-threat="1"]::before{background:var(--olive)}
+.gar-type-btn[data-threat="2"]::before{background:var(--orange);opacity:.7}
+.gar-type-btn[data-threat="3"]::before{background:var(--orange)}
+.gar-type-btn[data-threat="4"]::before{background:var(--danger)}
 .gar-type-btn:hover{background:var(--gunmetal);color:var(--bone);border-color:var(--line)}
 .gar-type-btn.on{background:var(--gunmetal);border-color:var(--orange);color:var(--orange)}
-.gar-type-btn .gar-badge{font-size:9px;background:var(--olive);color:var(--chalk);padding:1px 5px;border-radius:8px;margin-left:auto;white-space:nowrap}
+.gar-type-btn .gar-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;background:var(--olive);color:var(--chalk);
+  padding:1px 5px;border-radius:8px;margin-left:auto;white-space:nowrap
+}
 .gar-type-btn.on .gar-badge{background:var(--orange);color:#1a1208}
 .gar-crosslink{padding:10px;border-top:1px solid var(--line);flex:0 0 auto}
 .gar-crosslink label{margin-top:0;font-size:10px}
-.gar-crosslink-drop{border:1px dashed var(--line);border-radius:5px;padding:8px;text-align:center;font-size:11px;font-family:'JetBrains Mono',monospace;color:#556;cursor:pointer;background:var(--gunmetal);transition:all .15s;margin-bottom:6px}
+.gar-crosslink-drop{
+  border:1px dashed var(--line);border-radius:5px;padding:8px;
+  text-align:center;font-size:11px;font-family:'JetBrains Mono',monospace;
+  color:#556;cursor:pointer;background:var(--gunmetal);
+  transition:all .15s;margin-bottom:6px
+}
 .gar-crosslink-drop:hover{border-color:var(--orange);color:var(--orange)}
 .gar-crosslink-drop.drag-over{border-color:var(--orange);background:#1a1208;color:var(--orange)}
-.gar-card{background:var(--steel);border:1px solid var(--line);border-radius:7px;padding:14px;max-width:900px}
-.gar-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.gar-card-hdr h2{font-family:Oswald,sans-serif;font-size:17px;letter-spacing:.5px;flex:1}
-.gar-card-hdr .type-badge{font-family:'JetBrains Mono',monospace;font-size:10px;background:#0d1014;border:1px solid var(--line);border-radius:8px;padding:2px 8px;color:#9aa3ad}
+
+/* Garrison card — with threat-level tint background row */
+.gar-card{
+  background:var(--steel);border:1px solid var(--line);
+  border-radius:7px;padding:14px;max-width:900px;
+  position:relative;overflow:hidden;
+}
+/* Threat tint strip at top of card */
+.gar-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--olive);opacity:.6;
+}
+.gar-card[data-threat="2"]::before{background:var(--orange);opacity:.5}
+.gar-card[data-threat="3"]::before{background:var(--orange);opacity:.8}
+.gar-card[data-threat="4"]::before{background:var(--danger);opacity:.8}
+
+.gar-card-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:6px}
+.gar-card-hdr h2{
+  font-family:Oswald,sans-serif;font-size:17px;
+  letter-spacing:1.5px;text-transform:uppercase;flex:1
+}
+.gar-card-hdr .type-badge{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  background:#0d1014;border:1px solid var(--line);border-radius:8px;
+  padding:2px 8px;color:#9aa3ad
+}
 .gar-scalars{display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap}
 .gar-scalar-group{display:flex;flex-direction:column;gap:4px}
 .gar-scalar-group label{margin:0;font-size:10px}
 .gar-scalar-row{display:flex;align-items:center;gap:8px}
 .gar-scalar-row input[type=number]{width:72px}
 .gar-scalar-row input[type=range]{width:120px;accent-color:var(--orange)}
-.gar-scalar-row .val-display{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--orange);min-width:28px}
+.gar-scalar-row .val-display{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--orange);min-width:28px
+}
 .gar-coef-note{font-family:'JetBrains Mono',monospace;font-size:10px;color:#556;margin-top:2px}
+
+/* Pool header with ordinal */
 .gar-pool-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.gar-pool-hdr h3{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.5px;flex:1}
+.gar-pool-hdr h3{
+  font-family:Oswald,sans-serif;font-size:13px;
+  letter-spacing:1.5px;text-transform:uppercase;flex:1;
+  color:var(--bone);
+}
 .gar-pool-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px}
-.gar-pool-table th{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#9aa3ad;padding:4px 8px;border-bottom:1px solid var(--line);text-align:left;background:var(--gunmetal)}
+.gar-pool-table th{
+  font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;
+  letter-spacing:.6px;color:#9aa3ad;padding:4px 8px;
+  border-bottom:1px solid var(--line);text-align:left;background:var(--gunmetal)
+}
 .gar-pool-table td{padding:5px 8px;border-bottom:1px solid #1e232a;vertical-align:middle}
 .gar-pool-table tr:last-child td{border-bottom:none}
 .gar-pool-table tr:hover td{background:#0d1014}
+/* Threat tint on table rows */
+.gar-pool-table tr[data-threat="3"]:not(:hover) td{background:rgba(217,118,60,.04)}
+.gar-pool-table tr[data-threat="4"]:not(:hover) td{background:rgba(192,57,43,.05)}
 .gar-pool-table select{width:160px;font-size:12px;padding:4px 6px}
 .gar-pool-table input[type=number]{width:60px;font-size:12px;padding:4px 6px}
-.bucket-toggle{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;font-size:11px;font-family:'JetBrains Mono',monospace}
-.bucket-toggle button{background:none;border:none;color:#9aa3ad;padding:4px 10px;cursor:pointer;border-radius:0;transition:all .1s}
+.bucket-toggle{
+  display:flex;border:1px solid var(--line);border-radius:4px;
+  overflow:hidden;font-size:11px;font-family:'JetBrains Mono',monospace
+}
+.bucket-toggle button{
+  background:none;border:none;color:#9aa3ad;padding:4px 10px;
+  cursor:pointer;border-radius:0;transition:all .1s
+}
 .bucket-toggle button.on{background:var(--orange);color:#1a1208;font-weight:600}
-.gar-preview{background:#0a0c0f;border:1px solid var(--line);border-radius:5px;padding:10px 12px;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#9aa3ad;line-height:1.7}
-.gar-preview .prev-title{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#556;margin-bottom:6px}
+.gar-preview{
+  background:#0a0c0f;border:1px solid var(--line);border-radius:5px;
+  padding:10px 12px;margin-top:12px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:#9aa3ad;line-height:1.7
+}
+.gar-preview .prev-title{
+  font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#556;margin-bottom:6px
+}
 .gar-preview .prev-line{margin-bottom:2px}
 .gar-preview .prev-key{color:var(--bone)}
 .gar-preview .prev-calc{color:var(--orange);font-size:12px;margin-top:6px;font-weight:600}
 .gar-crosslink-status{font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;line-height:1.6}
 .gar-crosslink-status .ok{color:var(--olive)}
 .gar-crosslink-status .cnt{color:var(--orange);font-weight:600}
-/* placeholder-wrap kept for other potential use */
+
+/* placeholder-wrap kept */
 .placeholder-wrap{flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;color:#39414b}
 .placeholder-wrap .big{font-size:56px;line-height:1}
 .placeholder-wrap .p1{font-family:Oswald,sans-serif;font-size:18px;color:#556;letter-spacing:1px}
 .placeholder-wrap .p2{font-family:'JetBrains Mono',monospace;font-size:11px;color:#39414b;text-align:center;line-height:1.8}
 
-/* ---- Add-key form ---- */
+/* ============================================================
+   ADD KEY FORM
+   ============================================================ */
 .add-key-form{padding:10px 12px;border-top:1px solid var(--line);background:#0a0c0f}
 .add-key-form input{width:100%;margin-bottom:6px}
 
-/* ---- Empty state ---- */
-.empty-state{text-align:center;padding:32px;color:#39414b;font-family:'JetBrains Mono',monospace;font-size:12px}
+/* ============================================================
+   EMPTY STATES — Item 6: military-flavor JetBrains Mono caps
+   ============================================================ */
+.empty-state{
+  text-align:center;padding:48px 32px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:#39414b;line-height:2.2;
+}
+.empty-state .es-title{
+  display:block;font-size:13px;color:#556;
+  letter-spacing:2px;margin-bottom:8px;
+}
+.empty-state .es-hint{
+  display:block;font-size:10px;color:#39414b;
+  text-transform:none;letter-spacing:.5px;margin-top:4px;
+}
+/* Ghost ORBAT silhouette for empty state */
+.empty-state .es-ghost{
+  display:block;font-size:40px;opacity:.12;margin-bottom:12px;
+  line-height:1;filter:grayscale(1);
+}
 
-/* ---- Export panel ---- */
+/* ============================================================
+   EXPORT PANEL
+   ============================================================ */
 .exp-layout{display:flex;width:100%;height:100%;min-height:0;gap:0}
-.exp-sidebar{width:280px;flex:0 0 280px;border-right:1px solid var(--line);background:var(--steel);display:flex;flex-direction:column;min-height:0;overflow:auto;padding:14px}
+.exp-sidebar{
+  width:280px;flex:0 0 280px;border-right:1px solid var(--line);
+  background:var(--steel);display:flex;flex-direction:column;
+  min-height:0;overflow:auto;padding:14px
+}
 .exp-main{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;padding:0}
 .exp-section{margin-bottom:18px}
-.exp-section-title{font-family:Oswald,sans-serif;font-size:13px;letter-spacing:.5px;text-transform:uppercase;color:#9aa3ad;margin-bottom:8px}
+.exp-section-title{
+  font-family:Oswald,sans-serif;font-size:13px;letter-spacing:1.5px;
+  text-transform:uppercase;color:#9aa3ad;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.exp-section-title::before{
+  content:'';display:inline-block;width:3px;height:13px;
+  background:var(--olive);border-radius:1px;flex:0 0 auto;
+}
 .exp-file-area{background:#0a0c0f;border:1px solid var(--line);border-radius:5px;overflow:hidden}
-.exp-file-hdr{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--gunmetal);border-bottom:1px solid var(--line)}
+.exp-file-hdr{
+  display:flex;align-items:center;gap:8px;padding:7px 10px;
+  background:var(--gunmetal);border-bottom:1px solid var(--line)
+}
 .exp-file-hdr .fname{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bone);flex:1}
-.exp-file-hdr .fstatus{font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 7px;border-radius:8px;white-space:nowrap}
+.exp-file-hdr .fstatus{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  padding:1px 7px;border-radius:8px;white-space:nowrap
+}
 .exp-file-hdr .fstatus.loaded{background:#1a3a1a;color:var(--olive)}
 .exp-file-hdr .fstatus.unloaded{background:#0d1014;color:#39414b}
 .exp-file-hdr .fstatus.dirty{background:#2a1a08;color:var(--orange)}
-.exp-paste-area{width:100%;min-height:60px;max-height:110px;background:#0a0c0f;border:none;resize:vertical;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;padding:8px 10px;outline:none;display:block;box-sizing:border-box}
+.exp-paste-area{
+  width:100%;min-height:60px;max-height:110px;background:#0a0c0f;border:none;
+  resize:vertical;font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:#9aa3ad;padding:8px 10px;outline:none;display:block;box-sizing:border-box
+}
 .exp-paste-area::placeholder{color:#39414b}
 .exp-out-wrap{flex:1;display:flex;flex-direction:column;min-height:0;padding:14px;gap:12px}
-.exp-out-file{background:var(--steel);border:1px solid var(--line);border-radius:7px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.exp-out-file-hdr{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--gunmetal);flex:0 0 auto}
+.exp-out-file{
+  background:var(--steel);border:1px solid var(--line);border-radius:7px;
+  display:flex;flex-direction:column;min-height:0;overflow:hidden
+}
+.exp-out-file-hdr{
+  display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:var(--gunmetal);flex:0 0 auto;border-left:3px solid var(--olive);
+}
 .exp-out-file-hdr .outname{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bone);flex:1}
 .exp-out-file-hdr .mode-chip{font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 7px;border-radius:8px}
 .exp-out-file-hdr .mode-chip.patch{background:#1a2a3a;color:#6ab0ff}
 .exp-out-file-hdr .mode-chip.changelist{background:#2a1a08;color:var(--orange)}
-.exp-out-code{flex:1;overflow:auto;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;white-space:pre;line-height:1.6;min-height:80px;max-height:280px;background:#08090c}
-.exp-out-actions{display:flex;gap:6px;padding:8px 12px;background:var(--gunmetal);border-top:1px solid var(--line);flex:0 0 auto}
-.exp-roundtrip-bar{background:var(--gunmetal);border:1px solid var(--line);border-radius:5px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:11px}
+.exp-out-code{
+  flex:1;overflow:auto;padding:10px 12px;font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:#9aa3ad;white-space:pre;line-height:1.6;
+  min-height:80px;max-height:280px;background:#08090c
+}
+.exp-out-actions{
+  display:flex;gap:6px;padding:8px 12px;
+  background:var(--gunmetal);border-top:1px solid var(--line);flex:0 0 auto
+}
+.exp-roundtrip-bar{
+  background:var(--gunmetal);border:1px solid var(--line);
+  border-radius:5px;padding:10px 12px;
+  font-family:'JetBrains Mono',monospace;font-size:11px
+}
 .exp-roundtrip-bar .rt-pass{color:var(--olive)}
 .exp-roundtrip-bar .rt-fail{color:var(--danger)}
 .exp-roundtrip-bar .rt-idle{color:#39414b}
@@ -246,25 +728,146 @@ button.ico:hover{color:var(--bone);border-color:var(--line)}
 .diff-line-rem{color:#9e5a5a}
 .diff-line-ctx{color:#39414b}
 
-/* ---- Faction handoff banner ---- */
-#factionHandoffBanner{display:none;align-items:center;gap:10px;padding:7px 14px;background:#1a2a18;border-bottom:1px solid #3a5a30;font-family:'JetBrains Mono',monospace;font-size:11px;color:#a8d4a0;flex:0 0 auto;z-index:4;position:relative}
+/* ============================================================
+   FACTION HANDOFF BANNER
+   ============================================================ */
+#factionHandoffBanner{
+  display:none;align-items:center;gap:10px;padding:7px 14px;
+  background:#1a2a18;border-bottom:1px solid #3a5a30;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:#a8d4a0;flex:0 0 auto;z-index:4;position:relative
+}
 #factionHandoffBanner .fhb-token{color:var(--olive);font-weight:600}
-#factionHandoffBanner .fhb-add{background:var(--olive);color:#1a2a12;border:none;border-radius:4px;padding:3px 10px;font-size:11px;font-family:'JetBrains Mono',monospace;cursor:pointer;font-weight:600}
+#factionHandoffBanner .fhb-add{
+  background:var(--olive);color:#1a2a12;border:none;border-radius:4px;
+  padding:3px 10px;font-size:11px;font-family:'JetBrains Mono',monospace;
+  cursor:pointer;font-weight:600
+}
 #factionHandoffBanner .fhb-add:hover{background:#6e7d40}
-#factionHandoffBanner .fhb-dismiss{background:none;border:none;color:#556;font-size:16px;line-height:1;cursor:pointer;padding:0 2px;margin-left:auto}
+#factionHandoffBanner .fhb-dismiss{
+  background:none;border:none;color:#556;font-size:16px;
+  line-height:1;cursor:pointer;padding:0 2px;margin-left:auto
+}
 #factionHandoffBanner .fhb-dismiss:hover{color:var(--bone)}
 
-/* ---- Garrison cross-link button (open Sector Planner) ---- */
-.gar-open-planner{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;background:var(--gunmetal);border:1px solid var(--line);border-radius:4px;padding:3px 9px;cursor:pointer;text-decoration:none;transition:border-color .12s,color .12s;white-space:nowrap}
+/* ============================================================
+   SECTOR PLANNER LINK BUTTON
+   ============================================================ */
+.gar-open-planner{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;
+  background:var(--gunmetal);border:1px solid var(--line);border-radius:4px;
+  padding:3px 9px;cursor:pointer;text-decoration:none;
+  transition:border-color .12s,color .12s;white-space:nowrap
+}
 .gar-open-planner:hover{border-color:var(--orange);color:var(--orange)}
 
-/* ---- Focus-trap modal (picker) ---- */
+/* ============================================================
+   FOCUS + A11Y — Item 10 (orange focus rings, AA contrast)
+   ============================================================ */
 .modal-back:focus-visible{outline:none}
 button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* already styled with border-color */
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}
 
-/* ---- Live region (screen reader announcements) ---- */
+/* ============================================================
+   TOAST — Item 8: bottom-right, steel bg, olive left rule
+   ============================================================ */
+#toast-container{
+  position:fixed;bottom:20px;right:20px;
+  display:flex;flex-direction:column;gap:8px;
+  z-index:200;pointer-events:none;
+}
+.toast{
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--steel2);color:var(--bone);
+  border:1px solid var(--line);border-radius:5px;
+  border-left:3px solid var(--olive);
+  padding:8px 14px;min-width:200px;max-width:340px;
+  pointer-events:auto;
+  opacity:0;transform:translateX(12px);
+  transition:opacity .2s ease,transform .2s ease;
+}
+.toast.show{opacity:1;transform:translateX(0)}
+.toast.toast-error{border-left-color:var(--danger)}
+@media (prefers-reduced-motion:reduce){
+  .toast{transition:none}
+}
+
+/* ============================================================
+   HELP OVERLAY — Item 9
+   ============================================================ */
+#helpOverlay{
+  position:fixed;inset:0;background:rgba(8,10,13,.82);
+  display:none;align-items:center;justify-content:center;
+  z-index:100;backdrop-filter:blur(4px);
+}
+#helpOverlay.open{display:flex}
+.help-modal{
+  width:520px;max-width:92vw;max-height:88vh;overflow-y:auto;
+  background:var(--steel);border:1px solid var(--line);border-radius:8px;
+  display:flex;flex-direction:column;
+}
+.help-modal-head{
+  display:flex;align-items:center;gap:10px;padding:12px 16px;
+  border-bottom:1px solid var(--line);background:var(--gunmetal);
+  border-left:3px solid var(--olive);flex:0 0 auto;
+}
+.help-modal-head h2{
+  font-family:Oswald,sans-serif;font-size:15px;
+  letter-spacing:1.5px;text-transform:uppercase;flex:1;
+}
+.help-modal-head .x{
+  cursor:pointer;color:#9aa3ad;font-size:22px;line-height:1;
+  background:none;border:none;padding:0 4px;transition:color .12s;
+}
+.help-modal-head .x:hover{color:var(--bone)}
+.help-body{padding:16px}
+.help-section{margin-bottom:18px}
+.help-section-title{
+  font-family:Oswald,sans-serif;font-size:12px;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--olive);margin-bottom:8px;
+}
+.help-row{
+  display:flex;align-items:center;gap:10px;
+  padding:5px 0;border-bottom:1px solid rgba(57,65,75,.5);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:#9aa3ad;
+}
+.help-row:last-child{border-bottom:none}
+.help-key{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  background:#0d1014;border:1px solid var(--line);border-radius:3px;
+  padding:2px 7px;color:var(--bone);white-space:nowrap;flex:0 0 auto;min-width:60px;text-align:center;
+}
+.help-desc{flex:1;color:#9aa3ad}
+
+/* ============================================================
+   FOOTER STRIP — Item 11
+   ============================================================ */
+.footer-strip{
+  height:28px;display:flex;align-items:center;justify-content:flex-end;
+  padding:0 16px;gap:12px;
+  background:#0d1014;border-top:1px solid var(--line);
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#39414b;
+  flex:0 0 auto;
+}
+.footer-strip a{color:#556;text-decoration:none;transition:color .12s}
+.footer-strip a:hover{color:var(--orange)}
+.footer-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--gunmetal);border:1px solid var(--line);
+  border-radius:8px;padding:1px 8px;color:#556;
+}
+
+/* ============================================================
+   LIVE REGION
+   ============================================================ */
 #liveAnnounce{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ============================================================
+   TAB HEIGHT: adjust for footer strip (28px)
+   ============================================================ */
+.tab-content{height:calc(100vh - 54px - 40px - 28px)}
 </style>
 </head>
 <body>
@@ -273,7 +876,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
 <div id="liveAnnounce" aria-live="polite" aria-atomic="true"></div>
 
 <!-- ====== Brand bar ====== -->
-<div class="brandbar">
+<div class="brandbar reveal-1">
   <svg class="mark" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
     <g fill="none" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter">
       <polyline points="20,54 48,30 76,54" stroke="#D9763C"/>
@@ -285,13 +888,22 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
     <span class="t1">GARRISON &amp; AI GROUPS</span>
     <span class="t2">WASP ORDER OF BATTLE</span>
   </div>
+  <!-- Status LED (Item 1) -->
+  <div class="status-led loading" id="statusLed" role="status"
+       title="Loading data…" aria-label="Data status: loading"></div>
   <div class="spacer"></div>
-  <a href="https://miksuu.com/tools" target="_blank" rel="noopener" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b939c;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:3px 10px;background:#0d1014;white-space:nowrap;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--bone)';this.style.borderColor='var(--orange)'" onmouseout="this.style.color='#8b939c';this.style.borderColor='var(--line)'">← All Tools</a>
+  <!-- Help button (Item 9) -->
+  <button class="brandbar-help-btn" id="helpBtn" onclick="openHelp()"
+          aria-label="Open keyboard shortcuts" title="Help / Keyboard shortcuts (?)">?</button>
+  <a href="https://miksuu.com/tools" target="_blank" rel="noopener"
+     style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8b939c;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:3px 10px;background:#0d1014;white-space:nowrap;transition:color .15s,border-color .15s"
+     onmouseover="this.style.color='var(--bone)';this.style.borderColor='var(--orange)'"
+     onmouseout="this.style.color='#8b939c';this.style.borderColor='var(--line)'">← All Tools</a>
   <div class="chip">model: <b id="statusChip">loading…</b></div>
 </div>
 
 <!-- ====== 3-tab bar ====== -->
-<div class="tabs-bar" role="tablist" aria-label="Editor sections">
+<div class="tabs-bar reveal-2" role="tablist" aria-label="Editor sections">
   <button class="tab-btn on" id="tabBtnTemplates" role="tab" aria-selected="true" aria-controls="tabTemplates" onclick="switchTab('templates')">Group Templates</button>
   <button class="tab-btn" id="tabBtnGarrison" role="tab" aria-selected="false" aria-controls="tabGarrison" onclick="switchTab('garrison')">Garrison Table</button>
   <button class="tab-btn" id="tabBtnExport" role="tab" aria-selected="false" aria-controls="tabExport" onclick="switchTab('export')">Export</button>
@@ -308,8 +920,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
 <div class="tab-content on" id="tabTemplates" role="tabpanel" aria-labelledby="tabBtnTemplates">
 
   <!-- LEFT: faction selector -->
-  <div class="panel-left">
+  <div class="panel-left reveal-3">
     <div class="panel-hdr">
+      <span class="hdr-ordinal">01 / ROSTER</span>
       <h2>Faction</h2>
       <div class="sub">select to load templates</div>
     </div>
@@ -325,7 +938,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
 
       <div class="divider"></div>
 
-      <div style="font-size:11px;color:#9aa3ad;margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px">Add New Key</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#9aa3ad;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">New Key</div>
       <div style="display:flex;gap:6px">
         <input type="text" id="newKeyInput" placeholder="e.g. Team_AT" style="flex:1;font-size:12px;padding:6px 8px" autocomplete="off" onkeydown="if(event.key==='Enter')addNewKey()">
         <button class="sm" onclick="addNewKey()" style="flex:0 0 auto">+ Add</button>
@@ -334,14 +947,26 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
     </div>
   </div>
 
-  <!-- MAIN: template keys -->
-  <div class="panel-main">
+  <!-- MAIN: template keys (stage-framed) -->
+  <div class="panel-main reveal-4" style="position:relative">
     <div class="panel-hdr">
+      <span class="hdr-ordinal">02 / ORDER OF BATTLE</span>
       <h2 id="tplPanelTitle">Group Templates</h2>
       <div class="sub" id="tplPanelSub">select a faction</div>
     </div>
-    <div class="scroll" id="tplScroll">
-      <div class="empty-state" id="tplEmpty">Select a faction from the left panel to view its group templates.</div>
+    <!-- Stage framing corners -->
+    <div class="stage-corners" aria-hidden="true">
+      <span class="corner-br"></span>
+      <span class="corner-bl"></span>
+    </div>
+    <div class="stage-overlay" aria-hidden="true"></div>
+    <div class="scroll" id="tplScroll" style="position:relative;z-index:1">
+      <div class="empty-state" id="tplEmpty">
+        <span class="es-ghost">&#9769;</span>
+        <span class="es-title">— AWAITING ORDERS —</span>
+        Select a faction from the left panel to view its group templates.
+        <span class="es-hint">Choose a faction token → templates load automatically</span>
+      </div>
       <div id="tplContent" style="display:none"></div>
     </div>
   </div>
@@ -355,6 +980,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
     <!-- LEFT: type list + cross-link -->
     <div class="gar-sidebar">
       <div class="panel-hdr">
+        <span class="hdr-ordinal">03 / DEPLOYMENT</span>
         <h2>Town Types</h2>
         <div class="sub">10 types · click to edit</div>
       </div>
@@ -366,7 +992,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
           aria-labelledby="garDropLabel"
           aria-describedby="garDropHint"
           title="Click or drag a seed-towns.json here">
-          <span aria-hidden="true">📂</span> Drop seed-towns.json<br><span style="font-size:10px;color:#39414b">or click to browse</span>
+          <span aria-hidden="true">&#128193;</span> Drop seed-towns.json<br><span style="font-size:10px;color:#39414b">or click to browse</span>
         </div>
         <div id="garDropHint" class="hint" style="display:none">Accepts seed-towns.json from the Sector Planner export.</div>
         <input type="file" id="garFileInput" accept=".json" style="display:none" aria-label="Load seed-towns.json campaign file">
@@ -375,9 +1001,22 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
     </div>
 
     <!-- MAIN: selected type card -->
-    <div class="gar-main" id="garMain">
-      <div class="empty-state" id="garEmpty" style="padding-top:60px">Select a town type from the left panel to edit its garrison.</div>
-      <div id="garCard" style="display:none"></div>
+    <div class="gar-main" id="garMain" style="position:relative">
+      <!-- Stage corners -->
+      <div class="stage-corners" aria-hidden="true">
+        <span class="corner-br"></span>
+        <span class="corner-bl"></span>
+      </div>
+      <div class="stage-overlay" aria-hidden="true"></div>
+      <div style="position:relative;z-index:1;flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="empty-state" id="garEmpty" style="padding-top:80px">
+          <span class="es-ghost">&#127968;</span>
+          <span class="es-title">— SECTOR CLEAR —</span>
+          Select a town type from the left panel to edit its garrison.
+          <span class="es-hint">Choose a town type → configure defender cap &amp; group pool</span>
+        </div>
+        <div id="garCard" style="display:none"></div>
+      </div>
     </div>
 
   </div>
@@ -437,7 +1076,12 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
     <!-- RIGHT: output -->
     <div class="exp-main">
       <div class="exp-out-wrap" id="expOutWrap">
-        <div class="empty-state" id="expEmpty" style="padding-top:80px">Click Export to generate output.<br><span style="color:#39414b;font-size:11px">Paste source files on the left for byte-identical patch mode.</span></div>
+        <div class="empty-state" id="expEmpty" style="padding-top:80px">
+          <span class="es-ghost">&#128196;</span>
+          <span class="es-title">— NO OUTPUT YET —</span>
+          Click Export to generate output.
+          <span class="es-hint">Paste source files on the left for byte-identical patch mode.</span>
+        </div>
         <div id="expOutGroups" style="display:none" class="exp-out-file">
           <div class="exp-out-file-hdr">
             <span class="outname" id="expOutGroupsName">Groups_CDF.sqf</span>
@@ -466,6 +1110,77 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
   </div>
 </div>
 
+<!-- ====== Toast Container (Item 8) ====== -->
+<div id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+<!-- ====== Help Overlay (Item 9) ====== -->
+<div id="helpOverlay" aria-hidden="true">
+  <div class="help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="help-modal-head">
+      <h2 id="helpTitle">Keyboard Shortcuts</h2>
+      <button class="x" onclick="closeHelp()" aria-label="Close help">×</button>
+    </div>
+    <div class="help-body">
+      <div class="help-section">
+        <div class="help-section-title">Navigation</div>
+        <div class="help-row">
+          <span class="help-key">1</span>
+          <span class="help-desc">Switch to Group Templates tab</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">2</span>
+          <span class="help-desc">Switch to Garrison Table tab</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">3</span>
+          <span class="help-desc">Switch to Export tab</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">?</span>
+          <span class="help-desc">Open this help overlay</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">Esc</span>
+          <span class="help-desc">Close modal / dismiss banner</span>
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">Group Templates</div>
+        <div class="help-row">
+          <span class="help-key">Enter</span>
+          <span class="help-desc">Add new key (in the key input field)</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">Esc</span>
+          <span class="help-desc">Close unit picker modal</span>
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">ORBAT Cards</div>
+        <div class="help-row">
+          <span class="help-key">Click hdr</span>
+          <span class="help-desc">Expand / collapse group template block</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">+ Variant</span>
+          <span class="help-desc">Add a new empty roster variant</span>
+        </div>
+        <div class="help-row">
+          <span class="help-key">+ Unit</span>
+          <span class="help-desc">Open unit picker to add a unit to roster</span>
+        </div>
+      </div>
+      <div class="help-section">
+        <div class="help-section-title">Export</div>
+        <div class="help-row">
+          <span class="help-key">Ctrl+C</span>
+          <span class="help-desc">Copy output (use the Copy button in output panel)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ====== Unit Picker Modal ====== -->
 <div class="modal-back" id="pickerModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
@@ -484,6 +1199,17 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none}/* 
       </div>
     </div>
   </div>
+</div>
+
+<!-- ====== Footer Strip (Item 11) ====== -->
+<div class="footer-strip" aria-label="Suite footer">
+  <span class="footer-chip">
+    <span style="color:var(--olive)">&#9632;</span>
+    Garrison Editor v1.0
+  </span>
+  <a href="https://miksuu.com/tools" target="_blank" rel="noopener">
+    Part of the Warfare Tools suite &rarr; miksuu.com/tools
+  </a>
 </div>
 
 <script>
@@ -2198,6 +2924,236 @@ function fhbDismiss() {
 // Init paste capture on DOMContentLoaded (or inline since script is at body end)
 expInitPasteCapture();
 fhbCheck();
+
+// ============================================================
+//  STATUS LED (Item 1)
+//  States: loading → green (data ok) | orange (dirty/unsaved) | red (error)
+// ============================================================
+function setLed(state, tooltip) {
+  const led = document.getElementById('statusLed');
+  if (!led) return;
+  led.className = 'status-led ' + state;
+  led.title = tooltip || state;
+  led.setAttribute('aria-label', 'Data status: ' + (tooltip || state));
+}
+
+// ============================================================
+//  TOAST SYSTEM (Item 8)
+//  showToast(msg, type?) — type: '' | 'error'
+// ============================================================
+function showToast(msg, type) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const t = document.createElement('div');
+  t.className = 'toast' + (type === 'error' ? ' toast-error' : '');
+  t.textContent = msg;
+  container.appendChild(t);
+  // Trigger transition
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => t.classList.add('show'));
+  });
+  setTimeout(() => {
+    t.classList.remove('show');
+    setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 250);
+  }, 2800);
+}
+
+// ============================================================
+//  HELP OVERLAY (Item 9)
+// ============================================================
+function openHelp() {
+  const el = document.getElementById('helpOverlay');
+  el.classList.add('open');
+  el.setAttribute('aria-hidden', 'false');
+  // Focus close button
+  const x = el.querySelector('.x');
+  if (x) setTimeout(() => x.focus(), 50);
+}
+function closeHelp() {
+  const el = document.getElementById('helpOverlay');
+  el.classList.remove('open');
+  el.setAttribute('aria-hidden', 'true');
+  document.getElementById('helpBtn')?.focus();
+}
+
+// Focus trap for help overlay
+document.getElementById('helpOverlay').addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { closeHelp(); return; }
+  if (e.key !== 'Tab') return;
+  const modal = document.getElementById('helpOverlay').querySelector('.help-modal');
+  const focusable = Array.from(modal.querySelectorAll(
+    'button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])'
+  )).filter(el => el.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+  else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+});
+document.getElementById('helpOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('helpOverlay')) closeHelp();
+});
+
+// ============================================================
+//  KEYBOARD SHORTCUTS (Item 9 + tab nav)
+// ============================================================
+document.addEventListener('keydown', (e) => {
+  // Already handled: Escape closes picker/fhb (original code above)
+  const tag = document.activeElement?.tagName?.toLowerCase();
+  const inInput = tag === 'input' || tag === 'textarea' || tag === 'select';
+  if (inInput) return;
+  const pickerOpen = document.getElementById('pickerModal')?.classList.contains('open');
+  const helpOpen = document.getElementById('helpOverlay')?.classList.contains('open');
+  if (pickerOpen || helpOpen) return;
+
+  if (e.key === '?') { openHelp(); }
+  if (e.key === '1') { switchTab('templates'); }
+  if (e.key === '2') { switchTab('garrison'); }
+  if (e.key === '3') { switchTab('export'); }
+});
+
+// ============================================================
+//  ORBAT PIPS — render NATO-style echelon pips based on key name
+//  Team → 1 dot, Squad → 2 dots, Platoon → 3 dots,
+//  Motorized/Armored → ×, Air → △, Other → nothing
+// ============================================================
+function getOrbatPips(keyName) {
+  const k = keyName.toLowerCase();
+  if (k.includes('air') || k.includes('heli') || k.includes('aircraft')) {
+    // X pip (crossed) = air
+    return '<span class="orbat-pip x-pip" aria-hidden="true"></span>';
+  }
+  if (k.includes('squad') || k.includes('section')) {
+    return '<span class="orbat-pip" aria-hidden="true"></span><span class="orbat-pip" aria-hidden="true"></span>';
+  }
+  if (k.includes('team')) {
+    return '<span class="orbat-pip" aria-hidden="true"></span>';
+  }
+  if (k.includes('motorized') || k.includes('armored') || k.includes('mech')) {
+    return '<span class="orbat-pip x-pip" aria-hidden="true"></span><span class="orbat-pip x-pip" aria-hidden="true"></span>';
+  }
+  if (k.includes('platoon') || k.includes('company')) {
+    return '<span class="orbat-pip" aria-hidden="true"></span><span class="orbat-pip" aria-hidden="true"></span><span class="orbat-pip" aria-hidden="true"></span>';
+  }
+  return ''; // No pip for unrecognized
+}
+
+// ============================================================
+//  THREAT LEVEL — derive from defender cap + percentage_inf
+//  Returns 0–4 (used for data-threat attribute)
+// ============================================================
+function deriveThreatLevel(groups_max, percentage_inf) {
+  // Simple heuristic: combine cap and infantry ratio
+  const infCount = Math.round(groups_max * percentage_inf / 100);
+  if (groups_max >= 10 || infCount >= 7) return 4;
+  if (groups_max >= 7 || infCount >= 5) return 3;
+  if (groups_max >= 5 || infCount >= 3) return 2;
+  if (groups_max >= 3) return 1;
+  return 0;
+}
+
+// ============================================================
+//  ORBAT PIPS: inject into tpl-key-hdrs after DOM render
+//  Called after every renderTemplates() via MutationObserver on #tplContent
+// ============================================================
+function injectOrbatPips() {
+  const content = document.getElementById('tplContent');
+  if (!content) return;
+  content.querySelectorAll('.tpl-key-hdr').forEach(hdr => {
+    if (hdr.querySelector('.orbat-pips')) return; // already done
+    const nameEl = hdr.querySelector('.tpl-key-name');
+    if (!nameEl) return;
+    const displayName = nameEl.textContent.trim();
+    const pipsHtml = getOrbatPips(displayName);
+    if (!pipsHtml) return;
+    const pipsSpan = document.createElement('span');
+    pipsSpan.className = 'orbat-pips';
+    pipsSpan.innerHTML = pipsHtml;
+    const chevron = hdr.querySelector('.tpl-chevron');
+    if (chevron && chevron.nextSibling) {
+      hdr.insertBefore(pipsSpan, chevron.nextSibling);
+    } else {
+      hdr.appendChild(pipsSpan);
+    }
+  });
+}
+
+// Observe #tplContent for DOM changes to auto-inject pips
+(function setupPipsObserver() {
+  const target = document.getElementById('tplContent');
+  if (!target) return;
+  const obs = new MutationObserver(injectOrbatPips);
+  obs.observe(target, { childList: true, subtree: false });
+})();
+
+// ============================================================
+//  GARRISON THREAT ATTRIBUTES — injected after build/render
+//  (non-invasive: walk the DOM after the existing functions run)
+// ============================================================
+function applyGarThreatAttrs() {
+  document.querySelectorAll('.gar-type-btn').forEach(btn => {
+    const tt = btn.dataset.type;
+    const data = MODEL.garrison[tt];
+    if (data) {
+      btn.setAttribute('data-threat', deriveThreatLevel(data.groups_max, data.percentage_inf));
+    }
+  });
+}
+
+function applyGarCardThreat(tt) {
+  const card = document.querySelector('#garCard .gar-card');
+  if (card && MODEL.garrison[tt]) {
+    card.setAttribute('data-threat', deriveThreatLevel(MODEL.garrison[tt].groups_max, MODEL.garrison[tt].percentage_inf));
+  }
+}
+
+// Observe the garrison type list and card containers for DOM changes
+(function setupGarObservers() {
+  const typeList = document.getElementById('garTypeList');
+  if (typeList) {
+    new MutationObserver(applyGarThreatAttrs).observe(typeList, { childList: true });
+  }
+  const garCard = document.getElementById('garCard');
+  if (garCard) {
+    new MutationObserver(() => {
+      if (GAR_SELECTED) applyGarCardThreat(GAR_SELECTED);
+    }).observe(garCard, { childList: true, subtree: false });
+  }
+})();
+
+// ============================================================
+//  LED: hook into loadData result via existing setStatus
+//  We watch the statusBar element for content changes
+// ============================================================
+(function setupLedObserver() {
+  const bar = document.getElementById('statusBar');
+  if (!bar) return;
+  new MutationObserver(() => {
+    const text = bar.textContent || '';
+    if (text.includes('Error') || text.includes('error')) {
+      setLed('error', bar.textContent.trim());
+      showToast('LOAD ERROR: ' + bar.textContent.trim().slice(0, 80), 'error');
+    } else if (text.includes('Loaded') || text.includes('faction')) {
+      setLed('', 'Data loaded — all systems operational');
+    }
+  }).observe(bar, { childList: true, subtree: true, characterData: true });
+})();
+
+// ============================================================
+//  TOAST on copy (Item 8)
+//  We add a post-copy toast to the copy buttons via event delegation.
+//  The existing expCopy() function is untouched; we listen for the
+//  "Copied!" text appearing in the buttons as a signal.
+// ============================================================
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const id = btn.id;
+  if (id === 'expCpGroups') {
+    setTimeout(() => showToast('COPIED ✓  Groups file in clipboard'), 200);
+  } else if (id === 'expCpGarrison') {
+    setTimeout(() => showToast('COPIED ✓  Garrison file in clipboard'), 200);
+  }
+}, true); // capture phase so it fires before the click handler
 
 // ============================================================
 //  BOOT
